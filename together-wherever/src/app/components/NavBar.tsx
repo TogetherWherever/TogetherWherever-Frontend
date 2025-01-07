@@ -8,7 +8,7 @@ export default function NavBar() {
 
     const links = [
         { href: '/', label: 'Home' },
-        { href: '/destination-detail', label: 'Destination' },
+        { href: '/discover', label: 'Discover' },
         { href: '/your-trips', label: 'Your Trips' },
     ];
 

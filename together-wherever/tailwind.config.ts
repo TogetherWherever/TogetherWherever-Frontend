@@ -16,6 +16,7 @@ const config: Config = {
         'asparagus-green': '#60993E',
         'mint-cream': '#EFF9F0',
         'bistre': '#33261D',
+        'earth-yellow-light': '#ECE2D7',
       },
     },
   },
