@@ -18,7 +18,7 @@ export default function NavBar() {
                 <img src="/logo.png" alt="Logo" className="h-10 w-auto pr-4" />
             </Link>
             {links.map((link) => (
-                <Link href={link.href}key={link.label} className={`px-4 text-lg ${pathname === link.href ? 'text-earth-yellow font-bold' : ''}`}>
+                <Link href={link.href} key={link.label} className={`px-4 text-lg ${pathname === link.href ? 'text-earth-yellow font-bold' : ''}`}>
                     {link.label}
                 </Link>
             ))}
