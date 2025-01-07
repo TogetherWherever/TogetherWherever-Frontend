@@ -11,6 +11,11 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'earth-yellow': '#E0A458',
+        'moonstone-blue': '#009FB7',
+        'asparagus-green': '#60993E',
+        'mint-cream': '#EFF9F0',
+        'bistre': '#33261D',
       },
     },
   },
