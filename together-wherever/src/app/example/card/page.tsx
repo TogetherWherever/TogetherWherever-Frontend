@@ -1,9 +1,13 @@
 'use client';
 
+import { useState } from "react";
 import { TripCard } from "@/app/components/cards/TripCard"
 import { ReviewCard } from "@/app/components/cards/ReviewCard"
 
+
 export default function ExampleButton () {  
+  const [mockLikeScore, setMockLikeScore] = useState(0);
+
   const start = new Date(2024, 2, 13);  // March 30, 2024
   const end = new Date(2024, 2, 15);    // March 31, 2024
   
@@ -31,6 +35,8 @@ export default function ExampleButton () {
         profileImage="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
         userName="Jane Doe"
         desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus."
+        likeScore={mockLikeScore}
+        setLikeScore={setMockLikeScore}
       />
     </div>
   );

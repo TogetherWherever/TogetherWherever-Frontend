@@ -2,6 +2,7 @@
 
 import Image from "next/image"; 
 import { BaseCard } from "@/app/components/cards/BaseCard"
+import { CalendarIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
 interface TripCardPropsInterface {
   profileImage: string;
@@ -52,20 +53,10 @@ export const TripCard = ({profileImage, image, startDate, endDate, destinationsN
           height={50}
           objectFit="cover"
           className="rounded-full aspect-square object-cover mr-2"
-        />
-        <Image
-          src="/calender-icon.svg"
-          alt="img"
-          width={35}
-          height={35}
-        />
-        <div className="mx-2 text-xl"> {formatDateRange(startDate, endDate)} </div>
-        <Image
-          src="/pin-point-icon.svg"
-          alt="img"
-          width={35}
-          height={35}
-        />
+        />        
+        <CalendarIcon className="w-[35px] h-[35px]"/>
+        <div className="mx-2 text-xl"> {formatDateRange(startDate, endDate)} </div>       
+        <MapPinIcon className="w-[35px] h-[35px]"/>
         <div className="mx-2 text-xl"> {destinationsNumber} Places </div>
       </div>
     </div>

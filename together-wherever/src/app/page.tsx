@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from "react";
 import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { TripCard } from "@/app/components/cards/TripCard"
 import { ReviewCard } from "@/app/components/cards/ReviewCard"
@@ -13,6 +14,8 @@ const start = new Date(2024, 2, 13);  // March 30, 2024
 const end = new Date(2024, 2, 15);    // March 31, 2024
 
 export default function Home() {
+    const [mockLikeScore, setMockLikeScore] = useState(10);
+
     return (
         <div className="flex flex-col py-2">
             <div>
@@ -57,6 +60,8 @@ export default function Home() {
                     userName="Jane Doe"
                     desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus."
                     onClick={handleClick}
+                    likeScore={mockLikeScore}
+                    setLikeScore={setMockLikeScore}
                 />
             </div>
             
