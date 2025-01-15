@@ -1,15 +1,14 @@
 'use client';
 
 import { Button } from '@headlessui/react';
-import Image from "next/image"; 
 import clsx from 'clsx';
 
 interface BaseButtonPropsInterface {
   buttonTxt?: string;
-  leftIcon?: string;
-  rightIcon?: string;
-  leftIconSize?: number;
-  rightIconSize?: number;
+  leftIcon?: React.ComponentType<{className?: string}>;
+  rightIcon?: React.ComponentType<{className?: string}>;
+  leftIconCustomization?: string;
+  rightIconCustomization?: string;
   color?: string;
   className?: string;   
   onClick?: () => void; 
@@ -17,10 +16,10 @@ interface BaseButtonPropsInterface {
 
 export const BaseButton = ({
   buttonTxt="Button Text", 
-  leftIcon, 
-  rightIcon, 
-  leftIconSize=20,
-  rightIconSize=20,
+  leftIcon: LeftIcon,
+  rightIcon: RightIcon,
+  leftIconCustomization,
+  rightIconCustomization,
   color="moonstone-blue", 
   className,
   onClick: handleClick
@@ -29,28 +28,13 @@ export const BaseButton = ({
     'flex items-center rounded-3xl py-3 px-5 text-xl text-white gap-1', 
     `bg-${color}`,
     className,
-    leftIcon || rightIcon ? "justify-between" : "justify-center"
   );
   return (
     <div>
       <Button className={buttonProperties} onClick={handleClick}>
-        {leftIcon && (
-          <Image
-            src={leftIcon}
-            alt="Left Icon"
-            width={leftIconSize}
-            height={leftIconSize}
-          />
-        )}
+        {LeftIcon && <LeftIcon className={leftIconCustomization} />}
         {buttonTxt}
-        {rightIcon && (
-          <Image
-            src={rightIcon}
-            alt="Left Icon"
-            width={rightIconSize}
-            height={rightIconSize}
-          />
-        )}
+        {RightIcon && <RightIcon className={rightIconCustomization} />}
       </Button>
     </div>
   );

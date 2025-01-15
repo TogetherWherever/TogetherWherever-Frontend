@@ -3,6 +3,7 @@
 import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { TripCard } from "@/app/components/cards/TripCard"
 import { ReviewCard } from "@/app/components/cards/ReviewCard"
+import { PlusIcon } from '@heroicons/react/24/solid';
 
 const handleClick = () => {
 alert("Click!");
@@ -21,7 +22,8 @@ export default function Home() {
                         className="bg-moonstone-blue"
                         color="earth-yellow"
                         buttonTxt="New Trip" 
-                        leftIcon="/plus-icon.svg"
+                        leftIcon={PlusIcon}
+                        leftIconCustomization="w-[25px] h-[25px]"
                         onClick={handleClick}
                     />
                 </div>

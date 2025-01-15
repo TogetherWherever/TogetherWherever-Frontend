@@ -1,6 +1,8 @@
 'use client';
 
 import { BaseButton } from "@/app/components/buttons/BaseButton";
+import { PlusIcon } from '@heroicons/react/24/solid';
+import { ShareIcon } from '@heroicons/react/24/solid';
 
 export default function ExampleButton () {
   const handleClick = () => {
@@ -11,7 +13,8 @@ export default function ExampleButton () {
     <div className="flex justify-between items-center">
       <BaseButton 
         buttonTxt="New Trip" 
-        leftIcon="/plus-icon.svg"
+        leftIcon={PlusIcon}
+        leftIconCustomization="w-[25px] h-[25px]"
         onClick={handleClick}
       />
       <BaseButton 
@@ -20,11 +23,11 @@ export default function ExampleButton () {
         onClick={handleClick}
       />
       <BaseButton 
-        buttonTxt="Share" 
-        color="" 
+        buttonTxt="Share"  
+        color=""       
         className="border !border-4 border-earth-yellow !text-earth-yellow !px-5 py-2 !gap-3"
-        leftIcon="/share-icon.svg"  
-        leftIconSize={25}
+        leftIcon={ShareIcon}
+        leftIconCustomization="w-[25px] h-[25px]"
         onClick={handleClick}
       />
       <BaseButton 
