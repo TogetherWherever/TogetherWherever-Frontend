@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect } from "react";
 
 export default function NavBar() {
     const pathname = usePathname();
@@ -12,13 +13,41 @@ export default function NavBar() {
         { href: '/your-trips', label: 'Your Trips' },
     ];
 
+    const highlightedPathsForNewTrip = [
+        '/home', '/discover', '/your-trips'
+    ];
+
+    useEffect(() => {        
+        console.log(pathname.includes("/create-new-trip"))
+    }, [pathname]);
+
     return (
         <nav className="flex items-center px-10 py-4 shadow-md">
             <Link href="/">
                 <img src="/logo.png" alt="Logo" className="h-10 w-auto pr-4" />
             </Link>
             {links.map((link) => (
-                <Link href={link.href} key={link.label} className={`px-4 text-lg ${pathname === link.href ? 'text-earth-yellow font-bold' : ''}`}>
+                <Link 
+                    href={link.href} 
+                    key={link.label} 
+                    className={`px-4 text-lg ${(() => {
+                        const isExactMatch = pathname === link.href;                        
+                        const isHighlightedPath = () => {
+                            if (pathname.startsWith('/home')) {
+                                return '/'
+                            } 
+                            else if (pathname.startsWith('/discover')) { 
+                                return '/discover'
+                            } else {
+                                return '/your-trips'
+                            }
+                        }
+                        const isCreatingNewTrip = pathname.includes("/create-new-trip");
+                    
+                        return isExactMatch || isCreatingNewTrip && isHighlightedPath() === link.href
+                          ? "text-earth-yellow font-bold"
+                          : "";
+                    })()}`}>
                     {link.label}
                 </Link>
             ))}
