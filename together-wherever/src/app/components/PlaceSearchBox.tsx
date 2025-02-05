@@ -4,29 +4,34 @@ import { useRef } from "react";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
-const libraries: ("places")[] = ["places"];
+interface SearchProps {
+    onSelect: (lat: number, lng: number) => void;
+}
 
-const PlaceSearchBox = ({ onSelect }: { onSelect: (place: google.maps.places.PlaceResult | null) => void }) => {
+export default function PlaceSearchBox({ onSelect }: SearchProps) {
     const inputRef = useRef<google.maps.places.SearchBox | null>(null);
 
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string, // Use env variable
-        libraries
+        libraries: ["places"],
     });
 
     const handleOnPlacesChanged = () => {
         if (inputRef.current) {
             const places = inputRef.current.getPlaces();
             if (places && places.length > 0) {
-                onSelect(places[0]); // Pass first place result to parent component
-                console.log(places[0]);
+                const lat = places[0].geometry?.location?.lat();
+                const lng = places[0].geometry?.location?.lng();
+                if (lat !== undefined && lng !== undefined) {
+                    onSelect(lat, lng);
+                }
             }
         }
     };
 
-    return (
-        <div className="mb-6 relative">
+    return isLoaded? (
+        <div className="relative">
             {/* Magnifying Glass Icon */}
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
 
@@ -43,7 +48,9 @@ const PlaceSearchBox = ({ onSelect }: { onSelect: (place: google.maps.places.Pla
                 </StandaloneSearchBox>
             )}
         </div>
+    ): (
+        <div>
+            Loading Search Bar...
+        </div>
     );
 };
-
-export default PlaceSearchBox;

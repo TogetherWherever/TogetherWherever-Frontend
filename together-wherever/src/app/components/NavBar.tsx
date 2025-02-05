@@ -13,16 +13,13 @@ export default function NavBar() {
         { href: '/your-trips', label: 'Your Trips' },
     ];
 
-    const highlightedPathsForNewTrip = [
-        '/home', '/discover', '/your-trips'
-    ];
 
     useEffect(() => {        
         console.log(pathname.includes("/create-new-trip"))
     }, [pathname]);
 
     return (
-        <nav className="flex items-center px-10 py-4 shadow-md">
+        <nav className="flex items-center px-10 py-4 shadow-md z-40">
             <Link href="/">
                 <img src="/logo.png" alt="Logo" className="h-10 w-auto pr-4" />
             </Link>
