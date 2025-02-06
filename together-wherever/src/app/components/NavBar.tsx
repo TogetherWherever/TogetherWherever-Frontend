@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect } from "react";
+import Image from 'next/image';
 
 export default function NavBar() {
     const pathname = usePathname();
@@ -20,9 +21,7 @@ export default function NavBar() {
 
     return (
         <nav className="flex items-center px-10 py-4 shadow-md z-40">
-            <Link href="/">
-                <img src="/logo.png" alt="Logo" className="h-10 w-auto pr-4" />
-            </Link>
+                <Image src="/logo.png" alt="Logo" width={1000} height={1000} className="h-10 w-auto pr-4" />
             {links.map((link) => (
                 <Link 
                     href={link.href} 

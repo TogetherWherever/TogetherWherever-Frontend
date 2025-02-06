@@ -4,11 +4,7 @@ import { useRef } from "react";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
-interface SearchProps {
-    onSelect: (lat: number, lng: number) => void;
-}
-
-export default function PlaceSearchBox({ onSelect }: SearchProps) {
+export default function PlaceSearchBox({ onSelect }: { onSelect: (placeId: string) => void }) {
     const inputRef = useRef<google.maps.places.SearchBox | null>(null);
 
     const { isLoaded } = useJsApiLoader({
@@ -20,12 +16,8 @@ export default function PlaceSearchBox({ onSelect }: SearchProps) {
     const handleOnPlacesChanged = () => {
         if (inputRef.current) {
             const places = inputRef.current.getPlaces();
-            if (places && places.length > 0) {
-                const lat = places[0].geometry?.location?.lat();
-                const lng = places[0].geometry?.location?.lng();
-                if (lat !== undefined && lng !== undefined) {
-                    onSelect(lat, lng);
-                }
+            if (places && places[0].place_id) {
+                onSelect(places[0].place_id); // Pass the place_id to the parent component
             }
         }
     };
