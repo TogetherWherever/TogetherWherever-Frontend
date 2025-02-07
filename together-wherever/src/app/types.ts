@@ -1,7 +1,6 @@
-type NearbyPlaces = {
+export type NearbyPlaces = {
     destID: string;
     destName: string;
-    rating: number;
     photos: string;
 }
 
@@ -15,7 +14,7 @@ type AccessibilityOptions = {
 export type PlaceDetails = {
     destID: string;
     destName: string;
-    destTyep?: string[];
+    destType?: string[];
     desc?: string;
     rating?: number;
     address?: string;
