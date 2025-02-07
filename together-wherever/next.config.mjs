@@ -6,6 +6,7 @@ const nextConfig = {
       'd3h1lg3ksw6i6b.cloudfront.net',
       'plus.unsplash.com',
       'ik.imgkit.net',
+      'lh3.googleusercontent.com',
     ],
   },
 };

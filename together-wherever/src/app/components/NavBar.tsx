@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect } from "react";
+import Image from 'next/image';
 
 export default function NavBar() {
     const pathname = usePathname();
@@ -13,19 +14,14 @@ export default function NavBar() {
         { href: '/your-trips', label: 'Your Trips' },
     ];
 
-    const highlightedPathsForNewTrip = [
-        '/home', '/discover', '/your-trips'
-    ];
 
     useEffect(() => {        
         console.log(pathname.includes("/create-new-trip"))
     }, [pathname]);
 
     return (
-        <nav className="flex items-center px-10 py-4 shadow-md">
-            <Link href="/">
-                <img src="/logo.png" alt="Logo" className="h-10 w-auto pr-4" />
-            </Link>
+        <nav className="flex items-center px-10 py-4 shadow-md z-40">
+                <Image src="/logo.png" alt="Logo" width={1000} height={1000} className="h-10 w-auto pr-4" />
             {links.map((link) => (
                 <Link 
                     href={link.href} 

@@ -26,3 +26,19 @@ body {
     text-wrap: balance;
   }
 }
+
+
+/* Style the autocomplete dropdown */
+.pac-container {
+    @apply bg-white rounded-lg shadow-lg border border-gray-200;
+}
+
+/* Style each item in the dropdown */
+.pac-item {
+    @apply p-2;
+}
+
+/* Hover effect */
+.pac-item:hover {
+    @apply bg-earth-yellow-light;
+}
