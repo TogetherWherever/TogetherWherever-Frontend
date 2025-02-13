@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { Input } from '@headlessui/react';
 import PlaceSearchBox from "@/app/components/PlaceSearchBox";
+import DateRangeInput from '@/app/components/DateRangeInput'
 import { PlaceDetails } from "@/app/types";
 import axios from "axios";
+import { addDays } from "date-fns";
 
 const defaultCenter = {
     lat: 13.736717, // Default to Bangkok, Thailand
@@ -14,14 +16,21 @@ const defaultCenter = {
 export default function CreateNewTrip() {
     const [tripName, setTripName] = useState('');
     const [selectedPlace, setSelectedPlace] = useState(defaultCenter);
-        const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
+    const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
+    const [range, setRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: addDays(new Date(), 7),
+            key: "selection",
+        },
+    ]);
     
-        // Helper function to format strings
-        const formatString = (str: string) => {
-            return str
-                .replace(/_/g, " ") // Replace underscores with spaces
-                .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
-        };
+    // Helper function to format strings
+    const formatString = (str: string) => {
+        return str
+            .replace(/_/g, " ") // Replace underscores with spaces
+            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
+    };
 
     const fetchPlaceDetails = async (placeId: string) => {
         try {
@@ -50,11 +59,11 @@ export default function CreateNewTrip() {
     };
 
     return (
-        <div className="flex flex-col w-full items-center justify-center gap-4">
+        <div className="flex flex-col w-full items-center justify-center gap-4 p-4">
             <div className="flex justify-center w-full font-bold text-4xl">
                 Plan a Trip
             </div>
-            <div className="flex max-w-[1100px] w-full">
+            <div className="flex w-[1100px] w-full">
                 <form onSubmit={handleSubmit} className="flex flex-col w-full gap-2">
                     <div className="flex flex-col gap-1">
                         <label htmlFor="trip-name" className="text-xl font-bold text-black">
@@ -77,6 +86,21 @@ export default function CreateNewTrip() {
                             Where to?
                         </label>
                         <PlaceSearchBox onSelect={fetchPlaceDetails} />
+                    </div>
+                    <div className="flex w-full mt-4 gap-2">
+                        <div className="flex flex-col gap-2 w-1/2">
+                            <label htmlFor="trip-name" className="text-xl font-bold text-black">
+                                Dates
+                            </label>
+                            <div className="w-full">
+                                <DateRangeInput range={range} setRange={setRange}/>
+                            </div>
+                        </div>
+                        <div className="w-1/2">
+                            <label htmlFor="trip-name" className="text-xl font-bold text-black">
+                                Companion
+                            </label>
+                        </div>
                     </div>
                 </form>
             </div>
