@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Input } from '@headlessui/react';
 import PlaceSearchBox from "@/app/components/PlaceSearchBox";
 import DateRangeInput from '@/app/components/DateRangeInput'
+import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { PlaceDetails } from "@/app/types";
 import axios from "axios";
 import { addDays } from "date-fns";
@@ -49,7 +50,11 @@ export default function CreateNewTrip() {
         }
     };
 
-    const handleChange = (e: any) => {
+    const handleChangeTripName = (e: any) => {
+        setTripName(e.target.value);
+    };
+
+    const handleChangeCompanions = (e: any) => {
         setTripName(e.target.value);
     };
 
@@ -58,12 +63,16 @@ export default function CreateNewTrip() {
         console.log('Trip Name:', tripName);
     };
 
+    const handleClick = () => {
+        alert("Click!");
+      };
+
     return (
-        <div className="flex flex-col w-full items-center justify-center gap-4 p-4">
-            <div className="flex justify-center w-full font-bold text-4xl">
+        <div className="flex flex-col items-center justify-center gap-4 px-12 pb-12">
+            <div className="flex justify-center font-bold text-4xl">
                 Plan a Trip
             </div>
-            <div className="flex w-[1100px] w-full">
+            <div className="flex w-[1100px]">
                 <form onSubmit={handleSubmit} className="flex flex-col w-full gap-2">
                     <div className="flex flex-col gap-1">
                         <label htmlFor="trip-name" className="text-xl font-bold text-black">
@@ -73,7 +82,7 @@ export default function CreateNewTrip() {
                             id="trip-name"
                             type="text"
                             value={tripName}
-                            onChange={handleChange}
+                            onChange={handleChangeTripName}
                             placeholder="e.g., Summer in Phuket w/ my gang"
                             className={
                                 "mt-1 block w-full h-[50px] rounded-xl border-2 border-hurricane bg-transparent py-1.5 px-3 focus:outline-none focus:ring-0"
@@ -96,10 +105,30 @@ export default function CreateNewTrip() {
                                 <DateRangeInput range={range} setRange={setRange}/>
                             </div>
                         </div>
-                        <div className="w-1/2">
+                        <div className="flex flex-col w-1/2 h-full">                            
                             <label htmlFor="trip-name" className="text-xl font-bold text-black">
                                 Companion
                             </label>
+                            <div className="flex flex-col flex-grow">
+                                <div className="mt-1">
+                                    <label className="text-base">Invite companions</label>
+                                    <Input
+                                        id="companions"
+                                        type="text"
+                                        value={tripName}
+                                        onChange={handleChangeCompanions}
+                                        placeholder="Enter username"
+                                        className="mt-1 block w-full h-[50px] rounded-xl border-2 border-hurricane bg-transparent py-1.5 px-3 focus:outline-none focus:ring-0"
+                                    />
+                                </div>
+                            </div>
+                            <div className="mt-auto flex justify-center w-full">
+                                <BaseButton 
+                                    buttonTxt="Start Planning" 
+                                    onClick={handleClick}
+                                    className="!px-10"
+                                />
+                            </div>
                         </div>
                     </div>
                 </form>
