@@ -5,7 +5,7 @@ import { Input } from '@headlessui/react';
 import PlaceSearchBox from "@/app/components/PlaceSearchBox";
 import DateRangeInput from '@/app/components/DateRangeInput'
 import Image from "next/image"; 
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { useCreateNewTrips } from "@/app/hooks/create-new-trip";
@@ -133,8 +133,8 @@ export default function CreateNewTrip() {
                                                         onClick={() => handleRemoveCompanion(user.userId)} 
                                                         className="cursor-pointer relative group"
                                                     >
-                                                        <div className="w-[50px] h-[50px] absolute flex items-center justify-center rounded-full bg-red bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <XMarkIcon className="w-[25px] text-white" />                                                            
+                                                        <div className="w-[50px] h-[50px] absolute flex items-center justify-center rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <TrashIcon className="w-[25px] text-white" />                                                            
                                                         </div>   
                                                                                                              
                                                         <Image
@@ -146,7 +146,7 @@ export default function CreateNewTrip() {
                                                             objectFit="cover"
                                                             className="rounded-full aspect-square object-cover mr-2"
                                                         />        
-                                                        <div className="rounded-lg flex justify-center itmes-center absolute left-0 right-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <div className="pr-2 flex w-full justify-center itmes-center absolute left-0 right-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                                                             {user.name}                                                            
                                                         </div>                                                  
                                                     </div>                                                                                                  
@@ -173,7 +173,7 @@ export default function CreateNewTrip() {
                                                                 .map((user) => (
                                                                     <div key={user.userId} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">                                                                        
                                                                         <span className="text-black">{user.name}</span>
-                                                                        <XMarkIcon 
+                                                                        <TrashIcon 
                                                                             className='w-5 h-5 cursor-pointer' 
                                                                             onClick={() => handleRemoveCompanion(user.userId)}    
                                                                         />
