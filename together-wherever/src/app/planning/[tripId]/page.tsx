@@ -1,19 +1,20 @@
 'use client';
 
 import MapView from "@/app/components/Map";
-import { ArrowLeftIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, ArrowRightIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import Image from 'next/image';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { ShareIcon } from '@heroicons/react/24/solid';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { addDays, format } from "date-fns";
 
 const mockTripDetailData = {
     tripName: "Trip To: Phuket",
     startDate: new Date(),
-    lastDate: new Date(),
-    photo: "https://ik.imgkit.net/3vlqs5axxjf/external/ik-seo/http://images.ntmllc.com/v4/destination/Thailand/Phuket-City/220668_SCN_Phuket_iStock910551026_Z20B18/Phuket-City-Scenery.jpg?tr=w-780%2Ch-437%2Cfo-auto",
+    lastDate: addDays(new Date(), 7),
+    photo: "https://wallpapercat.com/w/full/5/6/4/708549-3840x2160-desktop-4k-phuket-wallpaper-image.jpg",
     lat: 0,
     lng: 0,
     trip_day: [
@@ -45,29 +46,32 @@ export default function Planning() {
         <div className="flex flex-row h-screen w-full">
             
             {/* Left Panel: Search and Place Details */}
-            <div className="w-2/3 p-5 flex flex-col">
-                <div className="flex justify-between h-14 items-center">
+            <div className="w-2/3 flex flex-col gap-4">
+                <div className="flex justify-between h-14 items-center pt-5 px-5">
                     <div className="flex w-full h-full items-center gap-2">
                         <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.back()}/>
                         <Image src="/logo.png" alt="Logo" width={1000} height={1000} className="h-14 w-auto pr-4" />
                     </div>
-                    <div className="flex w-full h-full gap-2 items-center">
+                    <div className="flex w-full h-full gap-2 items-center justify-end">
                         <label className="text-xl"> Companions: </label>
                         {destDetails.companion.length > 0 && (
                             <div className="flex items-center">
                                 {destDetails.companion // Find matching users
                                     .slice(0, 4) // Show only the first two
                                     .map((user) => ( 
-                                        <div className="flex flex-col group items-center">                                                                                         
-                                            <Image
-                                                key={user.username}
-                                                src={user.profilePic}
-                                                alt={user.username}
-                                                width={40}
-                                                height={40}
-                                                objectFit="cover"
-                                                className="rounded-full aspect-square object-cover"
-                                            />        
+                                        <div className="flex flex-col group items-center">   
+                                            <div className="w-[40px] h-[40px]">
+                                                <Image
+                                                    key={user.username}
+                                                    src={user.profilePic}
+                                                    alt={user.username}
+                                                    width={40}
+                                                    height={40}
+                                                    objectFit="cover"
+                                                    className="rounded-full aspect-square object-cover"
+                                                />      
+                                            </div>                                                                                      
+                                                 
                                             <div className="absolute mt-[40px] flex text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                                                 {user.username}                                                            
                                             </div>                                                  
@@ -118,6 +122,22 @@ export default function Planning() {
                             leftIconCustomization="w-[25px] h-[25px]"
                             onClick={() => alert("Share")}
                         />
+                    </div>
+                </div>
+                <div className="h-full w-full mt-1">
+                    <div
+                        className="h-3/5 w-full bg-cover bg-center relative flex flex-col justify-between py-6 pl-4"
+                        style={{ backgroundImage: `url(${destDetails.photo})` }}
+                    >
+                        <label className="text-6xl text-white"> {destDetails.tripName} </label>
+                        <div className="flex w-1/3 justify-center bg-black bg-opacity-50 px-2 py-1 rounded-lg">
+                            <label className="text-white text-2xl"> {format(destDetails.startDate, 'MM/dd/yy')} </label>
+                            <ArrowRightIcon className="w-[20px] text-white"/>
+                            <label className="text-white text-2xl"> {format(destDetails.lastDate, 'MM/dd/yy')} </label>
+                        </div>
+                    </div>
+                    <div className="h-2/5 w-full">
+
                     </div>
                 </div>
             </div>
