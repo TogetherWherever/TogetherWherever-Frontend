@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import NavBar from "./components/NavBar";
+import NavWrapper from "./NavWrapper";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -19,13 +19,13 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+
     return (
         <html lang="en">
             <body className={poppins.variable}>
-                <NavBar />
-                <div className="px-[150px] pt-[50px]">
+                <NavWrapper>
                     {children}
-                </div>
+                </NavWrapper> 
             </body>
         </html>
     );

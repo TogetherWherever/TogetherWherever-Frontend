@@ -98,30 +98,30 @@ export default function CreateNewTrip() {
                             </label>
                             <div className="flex flex-col flex-grow">
                             <div className="mt-1">
-                                    <label className="text-base">Invite companions</label>
-                                    <Input
-                                        id="companions"
-                                        type="text"
-                                        value={companionName}
-                                        onChange={handleChangeCompanions}
-                                        placeholder="Enter username"
-                                        className="mt-1 block w-full h-[50px] rounded-xl border-2 border-hurricane bg-transparent py-1.5 px-3 focus:outline-none focus:ring-0"
-                                    />
-                                    {filteredResults.length > 0 && companionName && (
-                                        <div className="absolute mt-2 w-[545px] bg-white border border-gray-300 rounded-xl shadow-md z-10">
-                                            <ul className="divide-y divide-gray-200">
-                                                {filteredResults.map((item: { userId: string; name: string }) => (
-                                                    <li
-                                                        key={item.userId}
-                                                        onClick={() => handleSelectCompanion(item)}
-                                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg transition duration-200"
-                                                    >
-                                                        {item.name}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
+                                <label className="text-base">Invite companions</label>
+                                <Input
+                                    id="companions"
+                                    type="text"
+                                    value={companionName}
+                                    onChange={handleChangeCompanions}
+                                    placeholder="Enter username"
+                                    className="mt-1 block w-full h-[50px] rounded-xl border-2 border-hurricane bg-transparent py-1.5 px-3 focus:outline-none focus:ring-0"
+                                />
+                                {filteredResults.length > 0 && companionName && (
+                                    <div className="absolute mt-2 w-[545px] bg-white border border-gray-300 rounded-xl shadow-md z-10">
+                                        <ul className="divide-y divide-gray-200">
+                                            {filteredResults.map((item: { userId: string; name: string }) => (
+                                                <li
+                                                    key={item.userId}
+                                                    onClick={() => handleSelectCompanion(item)}
+                                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg transition duration-200"
+                                                >
+                                                    {item.name}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                                     {companionIds.length > 0 && (
                                         <div className="flex items-center mt-2 gap-6">
                                             {usersData
@@ -171,13 +171,13 @@ export default function CreateNewTrip() {
                                                                 .filter((user) => companionIds.includes(user.userId))
                                                                 .slice(2)
                                                                 .map((user) => (
-                                                                    <div key={user.userId} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">                                                                        
-                                                                        <span className="text-black">{user.name}</span>
-                                                                        <TrashIcon 
-                                                                            className='w-5 h-5 cursor-pointer' 
-                                                                            onClick={() => handleRemoveCompanion(user.userId)}    
-                                                                        />
-                                                                    </div>
+                                                                <div key={user.userId} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">                                                                        
+                                                                    <span className="text-black">{user.name}</span>
+                                                                    <TrashIcon 
+                                                                        className='w-5 h-5 cursor-pointer' 
+                                                                        onClick={() => handleRemoveCompanion(user.userId)}    
+                                                                    />
+                                                                </div>
                                                             ))}
                                                         </div>                                                        
                                                     </PopoverPanel>

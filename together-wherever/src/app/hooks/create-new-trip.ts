@@ -3,18 +3,23 @@
 import { useState, useEffect } from 'react';
 import { addDays } from "date-fns";
 import { PlaceDetails } from "@/app/types";
-import { createNewTrip } from "@/app/fetcher/create-new-trip";
+// import { createNewTrip } from "@/app/fetcher/create-new-trip";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
-interface CreateNewTripBodyInterface {
-  owner: string;
-  trip_name: string;
-  dest_id: number;
-  dest_name: string;
-  start_date: Date;
-  end_date: Date;
-  duration: number;
-  companion: string;
+// interface CreateNewTripBodyInterface {
+//   owner: string;
+//   trip_name: string;
+//   dest_id: number;
+//   dest_name: string;
+//   start_date: Date;
+//   end_date: Date;
+//   duration: number;
+//   companion: string;
+// };
+
+const tripMockData = {
+
 };
 
 export const useCreateNewTrips = () => {
@@ -31,6 +36,8 @@ export const useCreateNewTrips = () => {
         key: "selection",
     },
   ]);
+
+  const router = useRouter();
 
   const fetchPlaceDetails = async (placeId: string) => {
     try {
@@ -56,12 +63,9 @@ export const useCreateNewTrips = () => {
 
   const handleSelectCompanion = (item: any) => {
     setCompanionIds((prev) => {
-      // Check if the userId already exists in the array
       if (!prev.includes(item.userId)) {
-        // If it doesn't exist, add it to the array
         return [...prev, item.userId];
       }
-      // If it exists, return the previous array without changes
       return prev;
     });
     setCompanionName('');
@@ -72,19 +76,23 @@ export const useCreateNewTrips = () => {
   };
 
   const handleClickStartPlanning = () => {
-    if (tripName !== '' && placeId !== '' && placeName !== '') {
-      const body: CreateNewTripBodyInterface = {
-        owner: '01',  // replace with actual owner name, e.g. `user.name` or similar
-        trip_name: tripName,
-        dest_id: 1,  // Ensure that placeId is a number
-        dest_name: 'Phuket',
-        start_date: range[0].startDate,
-        end_date: range[0].endDate,  // Adjusted to match the field name `end_date`
-        duration: (range[0].endDate.getTime() - range[0].startDate.getTime()) / (1000 * 3600 * 24) + 1,  // Calculate duration in days
-        companion: companionIds.join(','),  // Assuming `companionIds` is an array of companion names/IDs
-      };  
-      createNewTrip(body);
-    }
+    // if (tripName !== '' && placeId !== '' && placeName !== '') {
+    //   const body: CreateNewTripBodyInterface = {
+    //     owner: '01',  // replace with actual owner name, e.g. `user.name` or similar
+    //     trip_name: tripName,
+    //     dest_id: 1,  // Ensure that placeId is a number
+    //     dest_name: 'Phuket',
+    //     start_date: range[0].startDate,
+    //     end_date: range[0].endDate,  // Adjusted to match the field name `end_date`
+    //     duration: (range[0].endDate.getTime() - range[0].startDate.getTime()) / (1000 * 3600 * 24) + 1,  // Calculate duration in days
+    //     companion: companionIds.join(','),  // Assuming `companionIds` is an array of companion names/IDs
+    //   };  
+    //   createNewTrip(body);
+    // }
+
+    const res = {message: "Mocked response from creating a new trip.", trip_id: '001'};
+
+    router.push(`/planning/${res.trip_id}`);
   };
 
   useEffect(() => {
@@ -93,7 +101,7 @@ export const useCreateNewTrips = () => {
 
   useEffect(() => {
     if (tripName.length > 50) {
-        setTripName(tripName.slice(0, 50)); // Trim to 50 characters
+        setTripName(tripName.slice(0, 50));
     }
   }, [tripName]);
 
