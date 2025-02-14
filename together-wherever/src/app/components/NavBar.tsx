@@ -2,11 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from 'next/image';
+import { jwtDecode } from 'jwt-decode';
 
 export default function NavBar() {
     const pathname = usePathname();
+    const [username, setUsername] = useState('');
+    
 
     const links = [
         { href: '/', label: 'Home' },
@@ -16,7 +19,15 @@ export default function NavBar() {
 
 
     useEffect(() => {        
-        console.log(pathname.includes("/create-new-trip"))
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                setUsername(decoded.sub);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
     }, [pathname]);
 
     return (
@@ -47,6 +58,11 @@ export default function NavBar() {
                     {link.label}
                 </Link>
             ))}
+            {username && (
+                <div className="flex flex-row ml-auto text-lg font-semibold text-asparagus-green">
+                    <p>Hi!,</p><p>{ username }</p>
+                </div>
+            )}
         </nav>
     );
 }
