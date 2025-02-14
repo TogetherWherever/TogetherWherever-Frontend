@@ -3,7 +3,19 @@
 import { useState, useEffect } from 'react';
 import { addDays } from "date-fns";
 import { PlaceDetails } from "@/app/types";
+import { createNewTrip } from "@/app/fetcher/create-new-trip";
 import axios from "axios";
+
+interface CreateNewTripBodyInterface {
+  owner: string;
+  trip_name: string;
+  dest_id: number;
+  dest_name: string;
+  start_date: Date;
+  end_date: Date;
+  duration: number;
+  companion: string;
+};
 
 export const useCreateNewTrips = () => {
   const [tripName, setTripName] = useState('');
@@ -60,17 +72,19 @@ export const useCreateNewTrips = () => {
   };
 
   const handleClickStartPlanning = () => {
-    if (tripName !== '' && placeId !== '' &&  placeName !== '') {
-      const body = {
-        tripName: tripName,
-        destID: '01', // mock
-        destName: 'Phuket', // mock
-        startDate: range[0].startDate,
-        lastDate: range[0].endDate,
-        companion: companionIds
-      }
-      console.log(body);
-    }    
+    if (tripName !== '' && placeId !== '' && placeName !== '') {
+      const body: CreateNewTripBodyInterface = {
+        owner: '01',  // replace with actual owner name, e.g. `user.name` or similar
+        trip_name: tripName,
+        dest_id: 1,  // Ensure that placeId is a number
+        dest_name: 'Phuket',
+        start_date: range[0].startDate,
+        end_date: range[0].endDate,  // Adjusted to match the field name `end_date`
+        duration: (range[0].endDate.getTime() - range[0].startDate.getTime()) / (1000 * 3600 * 24) + 1,  // Calculate duration in days
+        companion: companionIds.join(','),  // Assuming `companionIds` is an array of companion names/IDs
+      };  
+      createNewTrip(body);
+    }
   };
 
   useEffect(() => {

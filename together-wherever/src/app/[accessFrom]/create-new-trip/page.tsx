@@ -133,7 +133,7 @@ export default function CreateNewTrip() {
                                                         onClick={() => handleRemoveCompanion(user.userId)} 
                                                         className="cursor-pointer relative group"
                                                     >
-                                                        <div className="w-[50px] h-[50px] absolute flex items-center justify-center rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <div className="w-[50px] h-[50px] absolute flex items-center justify-center rounded-full bg-red bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
                                                             <XMarkIcon className="w-[25px] text-white" />                                                            
                                                         </div>   
                                                                                                              
