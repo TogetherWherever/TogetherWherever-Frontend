@@ -2,8 +2,14 @@
 
 import { ChevronDownIcon, ChevronRightIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { useState, useMemo } from "react";
+import { format } from "date-fns";
 
-export default function TripDayDropDown() {
+interface TripDateDropdownPropsInterface {
+  tripDate: Date;
+};
+
+export default function TripDayDropDown({tripDate}: TripDateDropdownPropsInterface) {
+  const formattedDate = format(tripDate, "EEEE, MMMM dd");
   const [showDestination, setShowDestination] = useState<boolean>(false);
 
   // Generate a stable random color
@@ -12,25 +18,25 @@ export default function TripDayDropDown() {
   }, []);
 
   return (
-    <div className="cursor-pointer flex flex-col bg-transparent gap-4 w-full">
+    <div className="flex flex-col bg-transparent gap-4 w-full">
       {/* Clickable Icon for toggling */}
       <div 
         onClick={() => setShowDestination(prev => !prev)} 
         className="flex items-center gap-4"
       >
         {showDestination ? (
-          <ChevronDownIcon className="w-12 h-12" />
+          <ChevronDownIcon className="w-12 h-12 cursor-pointer" />
         ) : (
-          <ChevronRightIcon className="w-12 h-12" />
+          <ChevronRightIcon className="w-12 h-12 cursor-pointer" />
         )}
 
         {/* Trip Information */}
         <div className="flex flex-col w-full pb-4 cursor-pointer">
-          <div className="flex gap-4 items-center">
-            <label className="text-4xl cursor-pointer"> dddd, MMMM dd </label>
-            <MapPinIcon className="w-8 h-8" style={{ color: randomColor }} />
+          <div className="flex gap-4 items-center cursor-pointer">
+            <label className="text-4xl cursor-pointer"> {formattedDate} </label>
+            <MapPinIcon className="w-8 h-8 cursor-pointer" style={{ color: randomColor }} />
           </div>
-          <label className="text-xl border-b-2 border-black/50 w-full cursor-pointer"> n Places </label>     
+          <label className="text-xl border-b-2 border-black/50 w-full cursor-pointer pb-6"> n Places </label>     
         </div>
       </div>
 

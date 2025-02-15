@@ -42,27 +42,24 @@ const mockTripDetailData = {
     ],
     companion: [
         {username: "Christopher", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Christopher", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Christopher", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Christopher", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Christopher", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
+        {username: "Bob", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
+        {username: "Susan", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
+        {username: "Richard", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
+        {username: "Johny", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
+        {username: "Justin", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
     ]
 };
 
 export default function Planning() {
     const router = useRouter();
     const [destDetails] = useState(mockTripDetailData); // using mock data
-    const tripDuration = (destDetails.lastDate.getTime() - destDetails.startDate.getTime()) / (1000 * 3600 * 24);
+    const tripDuration = (destDetails.lastDate.getTime() - destDetails.startDate.getTime()) / (1000 * 3600 * 24) + 1;
 
-    const renderTripDayDropDown = (duration: number, trip_day: any) => {
-        const components = [];
-    
-        for (let i = 0; i < duration; i++) {
-          // For example, render a different component for each day
-          components.push(<TripDayDropDown /> );
-        }
-    
-        return components;
+    const renderTripDayDropDown = (duration: number, startDate: Date) => {
+        return Array.from({ length: duration }, (_, index) => {
+            const tripDate = addDays(startDate, index); // Calculate the date for each day
+            return <TripDayDropDown key={index} tripDate={tripDate} />;
+        });
     };
 
     return (
@@ -99,7 +96,7 @@ export default function Planning() {
                                             </div>                                                  
                                         </div>                                                                                                  
                                     ))}
-                                {destDetails.companion.length > 2 && (
+                                {destDetails.companion.length > 4 && (
                                     <Popover className="relative">
                                         <PopoverButton>
                                             <div className="w-[40px] h-[40px] flex items-center justify-center rounded-full bg-gray-300 text-white font-bold text-lg">
@@ -115,7 +112,7 @@ export default function Planning() {
                                         >
                                                 <div className="flex flex-col gap-2">
                                                     {destDetails.companion
-                                                        .slice(2)
+                                                        .slice(4)
                                                         .map((user) => (
                                                         <div key={user.username} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">                                                                        
                                                             <Image
@@ -159,7 +156,7 @@ export default function Planning() {
                         </div>
                     </div>
                     <div className="w-full pt-12 py-6 pr-12 px-4 flex flex-col gap-2">                                              
-                        {renderTripDayDropDown(tripDuration, destDetails.trip_day)}
+                        {renderTripDayDropDown(tripDuration, destDetails.startDate)}
                     </div>
                 </div>
             </div>
