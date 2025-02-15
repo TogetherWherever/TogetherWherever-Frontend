@@ -3,6 +3,7 @@
 import { ChevronDownIcon, ChevronRightIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { useState, useMemo } from "react";
 import { format } from "date-fns";
+import DestCard from "./DestCard";
 
 interface TripDateDropdownPropsInterface {
   tripDate: Date;
@@ -42,13 +43,15 @@ export default function TripDayDropDown({tripDate, tripDay}: TripDateDropdownPro
           <label className="text-xl border-b-2 border-black/50 w-full cursor-pointer pb-6"> {numOfAvailableDest} Places {isVoted ? "Voted" : "Available"} </label>     
         </div>
       </div>
-
-      {/* Expandable Section with Smooth Transition */}
       <div 
-        className={`overflow-hidden transition-all duration-300 ${showDestination ? "h-[200px]" : "h-0"}`}
+        className={`overflow-hidden transition-all duration-300 ${showDestination ? "h-auto" : "h-0"}`}
       >
-        <div className="w-full h-[200px] border-b-2 border-black/50 ml-16">
-          {/* Add more details here */}
+        <div className="flex items-center overflow-x-auto border-b-2 border-black/50 ml-16 pb-4">
+          <div className="flex items-center gap-8 min-w-max">
+            {tripDay.map((dest) => (
+              <DestCard key={dest.destID} destData={dest} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

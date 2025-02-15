@@ -22,7 +22,7 @@ const mockTripDetailData = {
         {
             destID: "003", 
             destName: "The Big Buddha", 
-            photo: "https://ik.imgkit.net/3vlqs5axxjf/external/ik-seo/http://images.ntmllc.com/v4/destination/Thailand/Phuket-City/220668_SCN_Phuket_iStock910551026_Z20B18/Phuket-City-Scenery.jpg?tr=w-780%2Ch-437%2Cfo-auto", 
+            photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB8R2-W1BiFfDus87rupQ4oqmeYm7XYeph3c5rYizfqwxBoRB3WTe_E_fd7STBdNwy-xnbtaK2FqzLXBWMxoj2NhD4BX8fF9fWNdYK6JzYAlSZ1PfiAuUFbfAiwx6HEIpUdxYQhfwA=w353-h256-k-no", 
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
             openDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             openTime: "08:00",
@@ -33,13 +33,24 @@ const mockTripDetailData = {
         {
             destID: "004", 
             destName: "Phuket FantaSea", 
-            photo: "https://ik.imgkit.net/3vlqs5axxjf/external/ik-seo/http://images.ntmllc.com/v4/destination/Thailand/Phuket-City/220668_SCN_Phuket_iStock910551026_Z20B18/Phuket-City-Scenery.jpg?tr=w-780%2Ch-437%2Cfo-auto", 
+            photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB-nZEevBXD7TX3-w1mRY3C7YFuXCHhf4PqrH88xQXdBOE2HbFcXg01EPwqxNrULpfAMWODPDyQc-ZiSVR3QDg9U4PG7zYgt6dmqUECqw-teImfTKn_RUwKeoVrKy-Q1xDIAvr0=s1360-w1360-h1020-rw", 
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
             openDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             openTime: "08:00",
             closeTime: "18:00",
             lat: 7.956695821596965, 
             lng: 98.28742629999998
+        },
+        {
+            destID: "005", 
+            destName: "Andamanda Phuket", 
+            photo: "https://lh3.googleusercontent.com/p/AF1QipPsrXH0SQaoPL2QuXn_tzad7R8tamEuFhj-8KZu=s1360-w1360-h1020-rw", 
+            desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
+            openDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            openTime: "08:00",
+            closeTime: "18:00",
+            lat: 7.904687851358944, 
+            lng: 98.36365107116391
         }
     ],
     companion: [
