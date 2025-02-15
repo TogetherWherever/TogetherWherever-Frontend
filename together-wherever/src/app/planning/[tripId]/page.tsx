@@ -21,23 +21,25 @@ const mockTripDetailData = {
     trip_day: [
         {
             destID: "003", 
-            destName: "Lorem", 
+            destName: "The Big Buddha", 
             photo: "https://ik.imgkit.net/3vlqs5axxjf/external/ik-seo/http://images.ntmllc.com/v4/destination/Thailand/Phuket-City/220668_SCN_Phuket_iStock910551026_Z20B18/Phuket-City-Scenery.jpg?tr=w-780%2Ch-437%2Cfo-auto", 
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
-            openTime: new Date(),
-            closeTime: new Date(),
-            lat: 0, 
-            lng: 0
+            openDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            openTime: "08:00",
+            closeTime: "18:00",
+            lat: 7.827868593792716, 
+            lng: 98.31278865581969
         },
         {
             destID: "004", 
-            destName: "Lorem", 
+            destName: "Phuket FantaSea", 
             photo: "https://ik.imgkit.net/3vlqs5axxjf/external/ik-seo/http://images.ntmllc.com/v4/destination/Thailand/Phuket-City/220668_SCN_Phuket_iStock910551026_Z20B18/Phuket-City-Scenery.jpg?tr=w-780%2Ch-437%2Cfo-auto", 
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
-            openTime: new Date(),
-            closeTime: new Date(),
-            lat: 0, 
-            lng: 0
+            openDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            openTime: "08:00",
+            closeTime: "18:00",
+            lat: 7.956695821596965, 
+            lng: 98.28742629999998
         }
     ],
     companion: [
@@ -55,10 +57,17 @@ export default function Planning() {
     const [destDetails] = useState(mockTripDetailData); // using mock data
     const tripDuration = (destDetails.lastDate.getTime() - destDetails.startDate.getTime()) / (1000 * 3600 * 24) + 1;
 
-    const renderTripDayDropDown = (duration: number, startDate: Date) => {
+    const renderTripDayDropDown = (duration: number, startDate: Date, tripDay: Array<any>) => {
         return Array.from({ length: duration }, (_, index) => {
-            const tripDate = addDays(startDate, index); // Calculate the date for each day
-            return <TripDayDropDown key={index} tripDate={tripDate} />;
+            const tripDate = addDays(startDate, index);
+            const dayOfWeek = format(tripDate, "EEEE");
+
+            const destinationsForDay = tripDay.filter(dest => dest.openDays.includes(dayOfWeek))
+            .map(dest => ({
+                ...dest,                
+            }));
+
+            return <TripDayDropDown key={index} tripDate={tripDate} tripDay={destinationsForDay}/>;
         });
     };
 
@@ -156,7 +165,7 @@ export default function Planning() {
                         </div>
                     </div>
                     <div className="w-full pt-12 py-6 pr-12 px-4 flex flex-col gap-2">                                              
-                        {renderTripDayDropDown(tripDuration, destDetails.startDate)}
+                        {renderTripDayDropDown(tripDuration, destDetails.startDate, destDetails.trip_day)}
                     </div>
                 </div>
             </div>

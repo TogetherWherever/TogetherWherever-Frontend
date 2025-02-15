@@ -6,11 +6,14 @@ import { format } from "date-fns";
 
 interface TripDateDropdownPropsInterface {
   tripDate: Date;
+  tripDay: Array<any>
 };
 
-export default function TripDayDropDown({tripDate}: TripDateDropdownPropsInterface) {
+export default function TripDayDropDown({tripDate, tripDay}: TripDateDropdownPropsInterface) {
   const formattedDate = format(tripDate, "EEEE, MMMM dd");
   const [showDestination, setShowDestination] = useState<boolean>(false);
+  const numOfAvailableDest = tripDay.length;
+  const [isVoted] = useState<boolean>(false); // tbd
 
   // Generate a stable random color
   const randomColor = useMemo(() => {
@@ -36,7 +39,7 @@ export default function TripDayDropDown({tripDate}: TripDateDropdownPropsInterfa
             <label className="text-4xl cursor-pointer"> {formattedDate} </label>
             <MapPinIcon className="w-8 h-8 cursor-pointer" style={{ color: randomColor }} />
           </div>
-          <label className="text-xl border-b-2 border-black/50 w-full cursor-pointer pb-6"> n Places </label>     
+          <label className="text-xl border-b-2 border-black/50 w-full cursor-pointer pb-6"> {numOfAvailableDest} Places {isVoted ? "Voted" : "Available"} </label>     
         </div>
       </div>
 
