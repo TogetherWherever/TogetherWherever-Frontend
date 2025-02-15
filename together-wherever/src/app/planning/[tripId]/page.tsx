@@ -9,17 +9,28 @@ import { ShareIcon } from '@heroicons/react/24/solid';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addDays, format } from "date-fns";
+import TripDayDropDown from './TripDayDropDown';
 
 const mockTripDetailData = {
     tripName: "Trip To: Phuket",
     startDate: new Date(),
     lastDate: addDays(new Date(), 7),
     photo: "https://wallpapercat.com/w/full/5/6/4/708549-3840x2160-desktop-4k-phuket-wallpaper-image.jpg",
-    lat: 0,
-    lng: 0,
+    lat: 7.878978,
+    lng: 98.398392,
     trip_day: [
         {
             destID: "003", 
+            destName: "Lorem", 
+            photo: "https://ik.imgkit.net/3vlqs5axxjf/external/ik-seo/http://images.ntmllc.com/v4/destination/Thailand/Phuket-City/220668_SCN_Phuket_iStock910551026_Z20B18/Phuket-City-Scenery.jpg?tr=w-780%2Ch-437%2Cfo-auto", 
+            desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
+            openTime: new Date(),
+            closeTime: new Date(),
+            lat: 0, 
+            lng: 0
+        },
+        {
+            destID: "004", 
             destName: "Lorem", 
             photo: "https://ik.imgkit.net/3vlqs5axxjf/external/ik-seo/http://images.ntmllc.com/v4/destination/Thailand/Phuket-City/220668_SCN_Phuket_iStock910551026_Z20B18/Phuket-City-Scenery.jpg?tr=w-780%2Ch-437%2Cfo-auto", 
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
@@ -41,10 +52,21 @@ const mockTripDetailData = {
 export default function Planning() {
     const router = useRouter();
     const [destDetails] = useState(mockTripDetailData); // using mock data
+    const tripDuration = (destDetails.lastDate.getTime() - destDetails.startDate.getTime()) / (1000 * 3600 * 24);
+
+    const renderTripDayDropDown = (duration: number, trip_day: any) => {
+        const components = [];
+    
+        for (let i = 0; i < duration; i++) {
+          // For example, render a different component for each day
+          components.push(<TripDayDropDown /> );
+        }
+    
+        return components;
+    };
 
     return (
-        <div className="flex flex-row h-screen w-full">
-            
+        <div className="flex flex-row w-full h-full">            
             {/* Left Panel: Search and Place Details */}
             <div className="w-2/3 flex flex-col gap-4">
                 <div className="flex justify-between h-14 items-center pt-5 px-5">
@@ -124,9 +146,9 @@ export default function Planning() {
                         />
                     </div>
                 </div>
-                <div className="h-full w-full mt-1">
+                <div className="w-full mt-1 h-full">
                     <div
-                        className="h-3/5 w-full bg-cover bg-center relative flex flex-col justify-between py-6 pl-4"
+                        className="h-[300px] w-full bg-cover bg-center relative flex flex-col justify-between py-6 pl-4"
                         style={{ backgroundImage: `url(${destDetails.photo})` }}
                     >
                         <label className="text-6xl text-white"> {destDetails.tripName} </label>
@@ -136,14 +158,14 @@ export default function Planning() {
                             <label className="text-white text-2xl"> {format(destDetails.lastDate, 'MM/dd/yy')} </label>
                         </div>
                     </div>
-                    <div className="h-2/5 w-full">
-
+                    <div className="w-full pt-12 py-6 pr-12 px-4 flex flex-col gap-2">                                              
+                        {renderTripDayDropDown(tripDuration, destDetails.trip_day)}
                     </div>
                 </div>
             </div>
 
             {/* Right Panel: Map View */}
-            <div className="w-1/3 h-full">
+            <div className="w-1/3">
                 <MapView lat={destDetails.lat} lng={destDetails.lng} />
             </div>
         </div>
