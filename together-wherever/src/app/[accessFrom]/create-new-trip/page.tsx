@@ -8,7 +8,8 @@ import Image from "next/image";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { BaseButton } from "@/app/components/buttons/BaseButton";
-import { useCreateNewTrips } from "@/app/hooks/create-new-trip";
+import { useCreateNewTrips } from "@/app/hooks/useCreateNewTrip";
+import { useAuth } from "@/app/hooks/useAuth";
 
 const mockUsers = [
     {
@@ -34,6 +35,10 @@ const mockUsers = [
 ];
 
 export default function CreateNewTrip() {
+    const isAuthenticated = useAuth();
+    
+    if (!isAuthenticated) return null;
+    
     const {
         tripName,
         tripNameLength,
@@ -53,7 +58,7 @@ export default function CreateNewTrip() {
     const filteredResults = usersData.filter((item) =>
         item.name.toLowerCase().includes(companionName.toLowerCase())
     );
-    
+  
     return (
         <div className="flex flex-col items-center justify-center gap-4 px-12 pb-12">
             <div className="flex justify-center font-bold text-4xl">

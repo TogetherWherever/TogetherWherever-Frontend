@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addDays, format } from "date-fns";
 import TripDayDropDown from './TripDayDropDown';
+import { useAuth } from "@/app/hooks/useAuth";
 
 const mockTripDetailData = {
     tripName: "Trip To: Phuket",
@@ -58,6 +59,10 @@ const mockTripDetailData = {
 };
 
 export default function Planning() {
+    const isAuthenticated = useAuth();
+    
+    if (!isAuthenticated) return null;
+    
     const router = useRouter();
     const [destDetails] = useState(mockTripDetailData); // using mock data
     const tripDuration = (destDetails.lastDate.getTime() - destDetails.startDate.getTime()) / (1000 * 3600 * 24) + 1;
