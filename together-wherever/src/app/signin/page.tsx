@@ -16,12 +16,12 @@ export default function AuthPage() {
 
     const toggleForm = () => setIsLogin(!isLogin);
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             if (isLogin) {
@@ -36,7 +36,7 @@ export default function AuthPage() {
                 alert('Registration successful! Please login.');
                 setIsLogin(true);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Auth error:', error.response?.data || error);
             alert(error.response?.data?.detail || 'Authentication failed');
         }

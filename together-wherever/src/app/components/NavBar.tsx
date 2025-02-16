@@ -23,17 +23,36 @@ export default function NavBar() {
         router.push("/signin");
     };
 
+    const handleNavigateToProfilePage = () => {
+        if (username !== undefined) {
+            router.push(`/profile/${encodeURIComponent(username)}`);
+        }
+    };
+
 
     useEffect(() => {        
         const token = localStorage.getItem('token');
         if (token) {
             try {
                 const decoded = jwtDecode(token);
+                console.log('Decoded token:', decoded);
                 setUsername(decoded.sub);
             } catch (error) {
                 console.error('Error decoding token:', error);
             }
+        } else {
+            setUsername(undefined); // Reset username if token is removed
         }
+
+        const handleStorageChange = () => {
+            const newToken = localStorage.getItem('token');
+            if (!newToken) {
+                setUsername(undefined);
+            }
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+        return () => window.removeEventListener("storage", handleStorageChange);    
     }, [pathname]);
 
     return (
@@ -65,7 +84,10 @@ export default function NavBar() {
                 </Link>
             ))}
             {username ? (
-                <div className="flex flex-row ml-auto text-lg font-semibold text-asparagus-green">
+                <div 
+                    className="flex flex-row ml-auto text-lg font-semibold text-asparagus-green cursor-pointer"
+                    onClick={handleNavigateToProfilePage}
+                >
                     <p className='mr-1'>Hi!,</p><p>{ username }</p>
                 </div>
             ) : (

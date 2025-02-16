@@ -21,7 +21,8 @@ const config: Config = {
         'earth-yellow-light': '#ECE2D7',
         'dorado': '#6B5755',
         'hurricane': '#877C7B',
-        'satin-linen': '#ECE2D7'
+        'satin-linen': '#ECE2D7',
+        'red': '#ff0000'
       },
     },
   },
