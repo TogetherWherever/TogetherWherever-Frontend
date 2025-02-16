@@ -4,18 +4,24 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
+import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { jwtDecode } from 'jwt-decode';
 
 export default function NavBar() {
     const pathname = usePathname();
-    const [username, setUsername] = useState('');
+    const router = useRouter();
+    const [username, setUsername] = useState<string | undefined>('');
     
-
     const links = [
         { href: '/', label: 'Home' },
         { href: '/discover', label: 'Discover' },
         { href: '/your-trips', label: 'Your Trips' },
     ];
+
+    const handleNavigateToSignInPage = () => {
+        router.push("/signin");
+    };
 
 
     useEffect(() => {        
@@ -58,9 +64,17 @@ export default function NavBar() {
                     {link.label}
                 </Link>
             ))}
-            {username && (
+            {username ? (
                 <div className="flex flex-row ml-auto text-lg font-semibold text-asparagus-green">
-                    <p>Hi!,</p><p>{ username }</p>
+                    <p className='mr-1'>Hi!,</p><p>{ username }</p>
+                </div>
+            ) : (
+                <div className='flex flex-row ml-auto'>
+                  <BaseButton 
+                        buttonTxt="Sign in" 
+                        onClick={handleNavigateToSignInPage}
+                        className='!text-base !py-2 !px-4'
+                    />  
                 </div>
             )}
         </nav>
