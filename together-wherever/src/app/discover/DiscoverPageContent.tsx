@@ -124,7 +124,7 @@ const DiscoverPageContent = ({ accessFromPlanningPage }: { accessFromPlanningPag
 
             {/* Right Panel: Map View */}
             <div className="w-2/5 h-full">
-                <MapView lat={selectedPlace.lat} lng={selectedPlace.lng} />
+                <MapView lat={selectedPlace.lat} lng={selectedPlace.lng} makers={[{lat:selectedPlace.lat, lng:selectedPlace.lng}]} />
             </div>
         </div>
     );

@@ -67,6 +67,11 @@ export default function Planning() {
     const [destDetails] = useState(mockTripDetailData); // using mock data
     const tripDuration = (destDetails.lastDate.getTime() - destDetails.startDate.getTime()) / (1000 * 3600 * 24) + 1;
 
+    const markers = destDetails.trip_day.map((dest) => ({
+        lat: dest.lat,
+        lng: dest.lng,
+    }));
+
     const renderTripDayDropDown = (duration: number, startDate: Date, tripDay: Array<any>) => {
         return Array.from({ length: duration }, (_, index) => {
             const tripDate = addDays(startDate, index);
@@ -182,7 +187,7 @@ export default function Planning() {
 
             {/* Right Panel: Map View */}
             <div className="w-1/3">
-                <MapView lat={destDetails.lat} lng={destDetails.lng} />
+                <MapView lat={destDetails.lat} lng={destDetails.lng} makers={markers} />
             </div>
         </div>
     );
