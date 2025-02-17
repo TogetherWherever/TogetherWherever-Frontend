@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import PlaceSearchBox from "@/app/components/PlaceSearchBox";
 import MapView from "@/app/components/Map";
 import { PlaceDetails } from "@/app/types";
@@ -13,7 +14,8 @@ const defaultCenter = {
     lng: 100.523186,
 };
 
-export default function DiscoverPage () {
+export default function DiscoverDetail () {
+  const params = useParams();
   const [selectedPlace, setSelectedPlace] = useState(defaultCenter);
   const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
 
@@ -40,6 +42,13 @@ export default function DiscoverPage () {
             console.error("Failed to fetch place details", error);
         }
     };
+
+    useEffect(() => {     
+        if (params?.placeId !== undefined) {
+            console.log(params?.placeId)
+            fetchPlaceDetails(params?.placeId);
+        }
+  }, [params?.placeId]);
 
     return (
         <div className="flex flex-row h-screen">

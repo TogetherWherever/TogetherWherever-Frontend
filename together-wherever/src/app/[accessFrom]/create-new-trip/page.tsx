@@ -60,7 +60,7 @@ export default function CreateNewTrip() {
     );
   
     return (
-        <div className="flex flex-col items-center justify-center gap-4 px-12 pb-12">
+        <div className="flex flex-col items-center justify-center gap-4 p-12">
             <div className="flex justify-center font-bold text-4xl">
                 Plan a Trip
             </div>

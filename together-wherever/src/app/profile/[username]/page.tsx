@@ -16,13 +16,15 @@ export default function Profile() {
     const decodedUsername = decodeURIComponent(username as string);
 
     return (
-        <div className="flex flex-row justify-between w-full">
-            <p> {decodedUsername} </p>
-            <BaseButton 
-                buttonTxt="Logout" 
-                onClick={handleLogout}
-                className='!text-base !text-white !py-2 !px-4 !bg-red'
-            />              
+        <div className="px-[150px] pt-[50px]">
+            <div className="flex flex-row justify-between w-full">
+                <p> {decodedUsername} </p>
+                <BaseButton
+                    buttonTxt="Logout"
+                    onClick={handleLogout}
+                    className='!text-base !text-white !py-2 !px-4 !bg-red'
+                />
+            </div>
         </div>
     );
 }

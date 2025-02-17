@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import {useRouter} from "next/navigation";
 
 interface DestDataInterface {
   destID: string, 
@@ -17,8 +18,17 @@ interface DestCardPropsInterface {
 };
 
 export default function DestCard ({destData}: DestCardPropsInterface) {
+  const router = useRouter();
+
+  const handleNavigateToDiscoverPageDetail = () => {
+    router.push(`/discover/${destData.destID}`)
+  };
+
   return (
-    <div className="flex justify-center p-4 gap-4 rounded-lg bg-satin-linen h-[150px] w-[500px] mb-4">
+    <div 
+      className="flex justify-center p-4 gap-4 rounded-lg bg-satin-linen h-[150px] w-[500px] mb-4 cursor-pointer"
+      onClick={handleNavigateToDiscoverPageDetail}
+    >
       <Image 
         src={destData.photo}
         alt="Logo" 
