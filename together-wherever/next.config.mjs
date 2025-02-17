@@ -7,6 +7,7 @@ const nextConfig = {
       'plus.unsplash.com',
       'ik.imgkit.net',
       'lh3.googleusercontent.com',
+      'wallpapercat.com'
     ],
   },
 };

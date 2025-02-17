@@ -19,7 +19,10 @@ const config: Config = {
         'mint-cream': '#EFF9F0',
         'bistre': '#33261D',
         'earth-yellow-light': '#ECE2D7',
-        'dorado': '#6B5755'
+        'dorado': '#6B5755',
+        'hurricane': '#877C7B',
+        'satin-linen': '#ECE2D7',
+        'red': '#ff0000'
       },
     },
   },
