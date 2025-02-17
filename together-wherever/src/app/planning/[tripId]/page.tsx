@@ -16,35 +16,35 @@ const mockTripDetailData = {
     tripName: "Trip To: Phuket",
     startDate: new Date(),
     lastDate: addDays(new Date(), 7),
-    photo: "https://wallpapercat.com/w/full/5/6/4/708549-3840x2160-desktop-4k-phuket-wallpaper-image.jpg",
+    photo: "https://lh3.googleusercontent.com/places/ANXAkqEDRzE8jNSwMQEMHh667pTZnFMgvKYmkKLkYYA_km5wVT3kq28gdgDLcCuiFUYchxgsOj018x9n4ZjdMsIlLevCErBxPo7J0UY=s4800-w600-h600",
     lat: 7.878978,
     lng: 98.398392,
     trip_day: [
         {
-            destID: "ChIJOSmXz2AvUDARXCxlBBs7y38", 
-            destName: "The Big Buddha", 
-            photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB8R2-W1BiFfDus87rupQ4oqmeYm7XYeph3c5rYizfqwxBoRB3WTe_E_fd7STBdNwy-xnbtaK2FqzLXBWMxoj2NhD4BX8fF9fWNdYK6JzYAlSZ1PfiAuUFbfAiwx6HEIpUdxYQhfwA=w353-h256-k-no", 
-            desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
+            destID: "ChIJOSmXz2AvUDARXCxlBBs7y38",
+            destName: "The Big Buddha",
+            photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB8R2-W1BiFfDus87rupQ4oqmeYm7XYeph3c5rYizfqwxBoRB3WTe_E_fd7STBdNwy-xnbtaK2FqzLXBWMxoj2NhD4BX8fF9fWNdYK6JzYAlSZ1PfiAuUFbfAiwx6HEIpUdxYQhfwA=w353-h256-k-no",
+            desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
             openDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            lat: 7.827868593792716, 
+            lat: 7.827868593792716,
             lng: 98.31278865581969
         },
         {
-            destID: "ChIJQSLg8hg6UDARpDYnTS8kgLM", 
-            destName: "Phuket FantaSea", 
-            photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB-nZEevBXD7TX3-w1mRY3C7YFuXCHhf4PqrH88xQXdBOE2HbFcXg01EPwqxNrULpfAMWODPDyQc-ZiSVR3QDg9U4PG7zYgt6dmqUECqw-teImfTKn_RUwKeoVrKy-Q1xDIAvr0=s1360-w1360-h1020-rw", 
-            desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
+            destID: "ChIJQSLg8hg6UDARpDYnTS8kgLM",
+            destName: "Phuket FantaSea",
+            photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB-nZEevBXD7TX3-w1mRY3C7YFuXCHhf4PqrH88xQXdBOE2HbFcXg01EPwqxNrULpfAMWODPDyQc-ZiSVR3QDg9U4PG7zYgt6dmqUECqw-teImfTKn_RUwKeoVrKy-Q1xDIAvr0=s1360-w1360-h1020-rw",
+            desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
             openDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            lat: 7.956695821596965, 
+            lat: 7.956695821596965,
             lng: 98.28742629999998
         },
         {
-            destID: "ChIJ_YjQ6uQxUDARHVetUBkoi9k", 
-            destName: "Andamanda Phuket", 
-            photo: "https://lh3.googleusercontent.com/p/AF1QipPsrXH0SQaoPL2QuXn_tzad7R8tamEuFhj-8KZu=s1360-w1360-h1020-rw", 
-            desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.", 
+            destID: "ChIJ_YjQ6uQxUDARHVetUBkoi9k",
+            destName: "Andamanda Phuket",
+            photo: "https://lh3.googleusercontent.com/p/AF1QipPsrXH0SQaoPL2QuXn_tzad7R8tamEuFhj-8KZu=s1360-w1360-h1020-rw",
+            desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
             openDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            lat: 7.904687851358944, 
+            lat: 7.904687851358944,
             lng: 98.36365107116391
         }
     ],
@@ -60,9 +60,9 @@ const mockTripDetailData = {
 
 export default function Planning() {
     const isAuthenticated = useAuth();
-    
+
     if (!isAuthenticated) return null;
-    
+
     const router = useRouter();
     const [destDetails] = useState(mockTripDetailData); // using mock data
     const tripDuration = (destDetails.lastDate.getTime() - destDetails.startDate.getTime()) / (1000 * 3600 * 24) + 1;
@@ -74,7 +74,7 @@ export default function Planning() {
 
             const destinationsForDay = tripDay.filter(dest => dest.openDays.includes(dayOfWeek))
             .map(dest => ({
-                ...dest,                
+                ...dest,
             }));
 
             return <TripDayDropDown key={index} tripDate={tripDate} tripDay={destinationsForDay}/>;
@@ -82,7 +82,7 @@ export default function Planning() {
     };
 
     return (
-        <div className="flex flex-row w-full h-full">            
+        <div className="flex flex-row w-full h-full">
             {/* Left Panel: Search and Place Details */}
             <div className="w-2/3 flex flex-col gap-4">
                 <div className="flex justify-between h-14 items-center pt-5 px-5">
@@ -96,8 +96,8 @@ export default function Planning() {
                             <div className="flex items-center">
                                 {destDetails.companion // Find matching users
                                     .slice(0, 4) // Show only the first two
-                                    .map((user) => ( 
-                                        <div className="flex flex-col group items-center">   
+                                    .map((user) => (
+                                        <div className="flex flex-col group items-center">
                                             <div className="w-[40px] h-[40px]">
                                                 <Image
                                                     key={user.username}
@@ -107,13 +107,13 @@ export default function Planning() {
                                                     height={40}
                                                     objectFit="cover"
                                                     className="rounded-full aspect-square object-cover"
-                                                />      
-                                            </div>                                                                                      
-                                                 
+                                                />
+                                            </div>
+
                                             <div className="absolute mt-[40px] flex text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                                {user.username}                                                            
-                                            </div>                                                  
-                                        </div>                                                                                                  
+                                                {user.username}
+                                            </div>
+                                        </div>
                                     ))}
                                 {destDetails.companion.length > 4 && (
                                     <Popover className="relative">
@@ -122,8 +122,8 @@ export default function Planning() {
                                                 <EllipsisHorizontalIcon className="h-[30px] w-[30px]"/>
                                             </div>
                                         </PopoverButton>
-                                        <PopoverPanel 
-                                            anchor="bottom" 
+                                        <PopoverPanel
+                                            anchor="bottom"
                                             transition
                                             className="
                                                 w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0
@@ -133,7 +133,7 @@ export default function Planning() {
                                                     {destDetails.companion
                                                         .slice(4)
                                                         .map((user) => (
-                                                        <div key={user.username} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">                                                                        
+                                                        <div key={user.username} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
                                                             <Image
                                                                 key={user.username}
                                                                 src={user.profilePic}
@@ -142,19 +142,19 @@ export default function Planning() {
                                                                 height={30}
                                                                 objectFit="cover"
                                                                 className="rounded-full aspect-square object-cover"
-                                                            />  
-                                                            <span className="text-black text-base">{user.username}</span>                                                        
+                                                            />
+                                                            <span className="text-black text-base">{user.username}</span>
                                                         </div>
                                                     ))}
-                                            </div>                                                        
+                                            </div>
                                         </PopoverPanel>
-                                    </Popover>                                                
+                                    </Popover>
                                 )}
                             </div>
                         )}
-                        <BaseButton 
-                            buttonTxt="Share"  
-                            color=""       
+                        <BaseButton
+                            buttonTxt="Share"
+                            color=""
                             className="border !h-[40px] !border-2 border-earth-yellow !text-earth-yellow !px-4 py-2 !gap-3"
                             leftIcon={ShareIcon}
                             leftIconCustomization="w-[25px] h-[25px]"
@@ -174,7 +174,7 @@ export default function Planning() {
                             <label className="text-white text-2xl"> {format(destDetails.lastDate, 'MM/dd/yy')} </label>
                         </div>
                     </div>
-                    <div className="w-full pt-12 py-6 pr-12 px-4 flex flex-col gap-2">                                              
+                    <div className="w-full pt-12 py-6 pr-12 px-4 flex flex-col gap-2">
                         {renderTripDayDropDown(tripDuration, destDetails.startDate, destDetails.trip_day)}
                     </div>
                 </div>
