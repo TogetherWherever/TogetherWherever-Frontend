@@ -14,10 +14,10 @@ const defaultCenter = {
     lng: 100.523186,
 };
 
-export default function DiscoverDetail () {
-  const params = useParams();
-  const [selectedPlace, setSelectedPlace] = useState(defaultCenter);
-  const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
+export default function DiscoverDetail() {
+    const params = useParams();
+    const [selectedPlace, setSelectedPlace] = useState(defaultCenter);
+    const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
 
     // Helper function to format strings
     const formatString = (str: string) => {
@@ -43,12 +43,12 @@ export default function DiscoverDetail () {
         }
     };
 
-    useEffect(() => {     
+    useEffect(() => {
         if (params?.placeId !== undefined) {
             console.log(params?.placeId)
             fetchPlaceDetails(params?.placeId);
         }
-  }, [params?.placeId]);
+    }, [params?.placeId]);
 
     return (
         <div className="flex flex-row h-screen">
@@ -114,9 +114,9 @@ export default function DiscoverDetail () {
                         <h2 className="text-2xl font-bold text-asparagus-green">Related Destinations</h2>
                         <div className="flex flex-col">
                             <div className="grid grid-cols-2 gap-4">
-                            {placeDetails.nearbyPlaces.map((place) => (
-                                <NearbyCard key={place.destID} place={place} onSelect={fetchPlaceDetails} />
-                            ))}
+                                {placeDetails.nearbyPlaces.map((place) => (
+                                    <NearbyCard key={place.destID} place={place} onSelect={fetchPlaceDetails} />
+                                ))}
                             </div>
                         </div>
                     </div>

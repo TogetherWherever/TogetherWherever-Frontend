@@ -1,10 +1,10 @@
 'use client';
 
-import {useState, useEffect} from 'react';
-import {addDays} from "date-fns";
-import {CreateNewTripBodyInterface, PlaceDetails} from "@/app/types";
-import {createNewTrip} from "@/app/fetcher/create-new-trip";
-import {useRouter} from "next/navigation";
+import { useState, useEffect } from 'react';
+import { addDays } from "date-fns";
+import { CreateNewTripBodyInterface, PlaceDetails } from "@/app/types";
+import { createNewTrip } from "@/app/fetcher/create-new-trip";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 // const tripMockData = {};
@@ -80,7 +80,7 @@ export const useCreateNewTrips = () => {
             createNewTrip(body);
         }
 
-        const res = {message: "Mocked response from creating a new trip.", trip_id: '001'};
+        const res = { message: "Mocked response from creating a new trip.", trip_id: '001' };
 
         router.push(`/planning/${res.trip_id}`);
     };
