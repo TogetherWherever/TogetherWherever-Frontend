@@ -1,16 +1,16 @@
 'use client';
 
 import MapView from "@/app/components/Map";
-import { ArrowLeftIcon, ArrowRightIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
+import {ArrowLeftIcon, ArrowRightIcon, EllipsisHorizontalIcon} from "@heroicons/react/24/solid";
 import Image from 'next/image';
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
-import { BaseButton } from "@/app/components/buttons/BaseButton";
-import { ShareIcon } from '@heroicons/react/24/solid';
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { addDays, format } from "date-fns";
+import {Popover, PopoverButton, PopoverPanel} from '@headlessui/react'
+import {BaseButton} from "@/app/components/buttons/BaseButton";
+import {ShareIcon} from '@heroicons/react/24/solid';
+import {useState} from "react";
+import {useRouter} from "next/navigation";
+import {addDays, format} from "date-fns";
 import TripDayDropDown from './TripDayDropDown';
-import { useAuth } from "@/app/hooks/useAuth";
+import {useAuth} from "@/app/hooks/useAuth";
 
 const mockTripDetailData = {
     tripName: "Trip To: Phuket",
@@ -49,12 +49,30 @@ const mockTripDetailData = {
         }
     ],
     companion: [
-        {username: "Christopher", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Bob", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Susan", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Richard", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Johny", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
-        {username: "Justin", profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"},
+        {
+            username: "Christopher",
+            profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+        },
+        {
+            username: "Bob",
+            profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+        },
+        {
+            username: "Susan",
+            profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+        },
+        {
+            username: "Richard",
+            profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+        },
+        {
+            username: "Johny",
+            profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+        },
+        {
+            username: "Justin",
+            profilePic: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+        },
     ]
 };
 
@@ -73,14 +91,14 @@ export default function Planning() {
     }));
 
     const renderTripDayDropDown = (duration: number, startDate: Date, tripDay: Array<any>) => {
-        return Array.from({ length: duration }, (_, index) => {
+        return Array.from({length: duration}, (_, index) => {
             const tripDate = addDays(startDate, index);
             const dayOfWeek = format(tripDate, "EEEE");
 
             const destinationsForDay = tripDay.filter(dest => dest.openDays.includes(dayOfWeek))
-            .map(dest => ({
-                ...dest,
-            }));
+                .map(dest => ({
+                    ...dest,
+                }));
 
             return <TripDayDropDown key={index} tripDate={tripDate} tripDay={destinationsForDay}/>;
         });
@@ -93,7 +111,7 @@ export default function Planning() {
                 <div className="flex justify-between h-14 items-center pt-5 px-5">
                     <div className="flex w-full h-full items-center gap-2">
                         <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.back()}/>
-                        <Image src="/logo.png" alt="Logo" width={1000} height={1000} className="h-14 w-auto pr-4" />
+                        <Image src="/logo.png" alt="Logo" width={1000} height={1000} className="h-14 w-auto pr-4"/>
                     </div>
                     <div className="flex w-full h-full gap-2 items-center justify-end">
                         <label className="text-xl"> Companions: </label>
@@ -115,7 +133,8 @@ export default function Planning() {
                                                 />
                                             </div>
 
-                                            <div className="absolute mt-[40px] flex text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div
+                                                className="absolute mt-[40px] flex text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                                                 {user.username}
                                             </div>
                                         </div>
@@ -123,7 +142,8 @@ export default function Planning() {
                                 {destDetails.companion.length > 4 && (
                                     <Popover className="relative">
                                         <PopoverButton>
-                                            <div className="w-[40px] h-[40px] flex items-center justify-center rounded-full bg-gray-300 text-white font-bold text-lg">
+                                            <div
+                                                className="w-[40px] h-[40px] flex items-center justify-center rounded-full bg-gray-300 text-white font-bold text-lg">
                                                 <EllipsisHorizontalIcon className="h-[30px] w-[30px]"/>
                                             </div>
                                         </PopoverButton>
@@ -134,11 +154,12 @@ export default function Planning() {
                                                 w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0
                                             "
                                         >
-                                                <div className="flex flex-col gap-2">
-                                                    {destDetails.companion
-                                                        .slice(4)
-                                                        .map((user) => (
-                                                        <div key={user.username} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
+                                            <div className="flex flex-col gap-2">
+                                                {destDetails.companion
+                                                    .slice(4)
+                                                    .map((user) => (
+                                                        <div key={user.username}
+                                                             className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
                                                             <Image
                                                                 key={user.username}
                                                                 src={user.profilePic}
@@ -148,7 +169,8 @@ export default function Planning() {
                                                                 objectFit="cover"
                                                                 className="rounded-full aspect-square object-cover"
                                                             />
-                                                            <span className="text-black text-base">{user.username}</span>
+                                                            <span
+                                                                className="text-black text-base">{user.username}</span>
                                                         </div>
                                                     ))}
                                             </div>
@@ -170,7 +192,7 @@ export default function Planning() {
                 <div className="w-full mt-1 h-full">
                     <div
                         className="h-[300px] w-full bg-cover bg-center relative flex flex-col justify-between py-6 pl-4"
-                        style={{ backgroundImage: `url(${destDetails.photo})` }}
+                        style={{backgroundImage: `url(${destDetails.photo})`}}
                     >
                         <label className="text-6xl text-white"> {destDetails.tripName} </label>
                         <div className="flex w-1/3 justify-center bg-black bg-opacity-50 px-2 py-1 rounded-lg">
@@ -187,7 +209,7 @@ export default function Planning() {
 
             {/* Right Panel: Map View */}
             <div className="w-1/3">
-                <MapView lat={destDetails.lat} lng={destDetails.lng} makers={markers} />
+                <MapView lat={destDetails.lat} lng={destDetails.lng} makers={markers}/>
             </div>
         </div>
     );

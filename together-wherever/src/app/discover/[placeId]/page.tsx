@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import {useState, useEffect} from "react";
+import {useParams} from "next/navigation";
 import PlaceSearchBox from "@/app/components/PlaceSearchBox";
 import MapView from "@/app/components/Map";
-import { PlaceDetails } from "@/app/types";
+import {PlaceDetails} from "@/app/types";
 import axios from "axios";
-import { MapPinIcon, PhoneIcon, StarIcon, CheckIcon } from "@heroicons/react/24/solid";
-import { NearbyCard } from "@/app/components/cards/NearbyCard";
+import {MapPinIcon, PhoneIcon, StarIcon, CheckIcon} from "@heroicons/react/24/solid";
+import {NearbyCard} from "@/app/components/cards/NearbyCard";
 
 const defaultCenter = {
     lat: 13.736717, // Default to Bangkok, Thailand
@@ -37,7 +37,7 @@ export default function DiscoverDetail() {
             const lng = data.lon ?? defaultCenter.lng;
 
             setPlaceDetails(data);
-            setSelectedPlace({ lat, lng });
+            setSelectedPlace({lat, lng});
         } catch (error) {
             console.error("Failed to fetch place details", error);
         }
@@ -54,7 +54,7 @@ export default function DiscoverDetail() {
         <div className="flex flex-row h-screen">
             {/* Left Panel: Search and Place Details */}
             <div className="w-3/5 p-5 flex flex-col space-y-4">
-                <PlaceSearchBox onSelect={fetchPlaceDetails} />
+                <PlaceSearchBox onSelect={fetchPlaceDetails}/>
 
                 {/* Show Place Details if available */}
                 {placeDetails ? (
@@ -72,29 +72,38 @@ export default function DiscoverDetail() {
                             </div>
                             <div className="flex flex-col space-y-2 pt-2">
                                 <p>{placeDetails.desc || ""}</p>
-                                <span className="flex flex-row"><StarIcon className="w-5 h-5" /><p className="pl-2">{placeDetails.rating || "No rating"}</p></span>
-                                <span className="flex flex-row"><MapPinIcon className="w-5 h-5" /><p className="pl-2">{placeDetails.address || "-"}</p></span>
-                                <span className="flex flex-row"><PhoneIcon className="w-5 h-5" /><p className="pl-2">{placeDetails.phoneNum || "-"}</p></span>
-                                <span className="flex flex-row"><StarIcon className="w-5 h-5" /><p className="pl-2">{placeDetails.rating || "No rating"}</p></span>
+                                <span className="flex flex-row"><StarIcon className="w-5 h-5"/><p
+                                    className="pl-2">{placeDetails.rating || "No rating"}</p></span>
+                                <span className="flex flex-row"><MapPinIcon className="w-5 h-5"/><p
+                                    className="pl-2">{placeDetails.address || "-"}</p></span>
+                                <span className="flex flex-row"><PhoneIcon className="w-5 h-5"/><p
+                                    className="pl-2">{placeDetails.phoneNum || "-"}</p></span>
+                                <span className="flex flex-row"><StarIcon className="w-5 h-5"/><p
+                                    className="pl-2">{placeDetails.rating || "No rating"}</p></span>
                                 <div className="flex flex-col">
                                     <p className="">Facilities</p>
                                     <div className="flex flex-row">
                                         {placeDetails.fac.goodForChildren && (
-                                            <span className="flex flex-row"><CheckIcon className="w-4 h-4" /><p className="px-1 text-sm">Good for Children</p></span>
+                                            <span className="flex flex-row"><CheckIcon className="w-4 h-4"/><p
+                                                className="px-1 text-sm">Good for Children</p></span>
                                         )}
                                         {placeDetails.fac.accessibility && (
                                             <>
                                                 {placeDetails.fac.accessibility.wheelchairAccessibleParking && (
-                                                    <span className="flex flex-row"><CheckIcon className="w-4 h-4" /><p className="px-1 text-sm">Wheelchair Parking</p></span>
+                                                    <span className="flex flex-row"><CheckIcon className="w-4 h-4"/><p
+                                                        className="px-1 text-sm">Wheelchair Parking</p></span>
                                                 )}
                                                 {placeDetails.fac.accessibility.wheelchairAccessibleEntrance && (
-                                                    <span className="flex flex-row"><CheckIcon className="w-4 h-4" /><p className="px-1 text-sm">Wheelchair Entrance</p></span>
+                                                    <span className="flex flex-row"><CheckIcon className="w-4 h-4"/><p
+                                                        className="px-1 text-sm">Wheelchair Entrance</p></span>
                                                 )}
                                                 {placeDetails.fac.accessibility.wheelchairAccessibleRestroom && (
-                                                    <span className="flex flex-row"><CheckIcon className="w-4 h-4" /><p className="px-1 text-sm">Wheelchair Restroom</p></span>
+                                                    <span className="flex flex-row"><CheckIcon className="w-4 h-4"/><p
+                                                        className="px-1 text-sm">Wheelchair Restroom</p></span>
                                                 )}
                                                 {placeDetails.fac.accessibility.wheelchairAccessibleSeating && (
-                                                    <span className="flex flex-row"><CheckIcon className="w-4 h-4" /><p className="px-1 text-sm">Wheelchair Seating</p></span>
+                                                    <span className="flex flex-row"><CheckIcon className="w-4 h-4"/><p
+                                                        className="px-1 text-sm">Wheelchair Seating</p></span>
                                                 )}
                                             </>
                                         )}
@@ -105,7 +114,8 @@ export default function DiscoverDetail() {
                                 {placeDetails.photos && placeDetails.photos.length > 0 && (
                                     <div className="mt-3 flex overflow-x-auto space-x-3">
                                         {placeDetails.photos.map((photoUrl, index) => (
-                                            <img key={index} src={photoUrl} alt="Destination" className="h-32 rounded-md object-cover" />
+                                            <img key={index} src={photoUrl} alt="Destination"
+                                                 className="h-32 rounded-md object-cover"/>
                                         ))}
                                     </div>
                                 )}
@@ -115,7 +125,7 @@ export default function DiscoverDetail() {
                         <div className="flex flex-col">
                             <div className="grid grid-cols-2 gap-4">
                                 {placeDetails.nearbyPlaces.map((place) => (
-                                    <NearbyCard key={place.destID} place={place} onSelect={fetchPlaceDetails} />
+                                    <NearbyCard key={place.destID} place={place} onSelect={fetchPlaceDetails}/>
                                 ))}
                             </div>
                         </div>
@@ -125,7 +135,8 @@ export default function DiscoverDetail() {
 
             {/* Right Panel: Map View */}
             <div className="w-2/5 h-full">
-                <MapView lat={selectedPlace.lat} lng={selectedPlace.lng} makers={[{lat:selectedPlace.lat, lng:selectedPlace.lng}]} />
+                <MapView lat={selectedPlace.lat} lng={selectedPlace.lng}
+                         makers={[{lat: selectedPlace.lat, lng: selectedPlace.lng}]}/>
             </div>
         </div>
     );

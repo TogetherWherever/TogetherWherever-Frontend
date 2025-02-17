@@ -1,8 +1,8 @@
 'use client';
 
-import { ChevronDownIcon, ChevronRightIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import { useState, useMemo } from "react";
-import { format } from "date-fns";
+import {ChevronDownIcon, ChevronRightIcon, MapPinIcon} from "@heroicons/react/24/solid";
+import {useState, useMemo} from "react";
+import {format} from "date-fns";
 import DestCard from "./DestCard";
 
 interface TripDateDropdownPropsInterface {
@@ -10,7 +10,7 @@ interface TripDateDropdownPropsInterface {
     tripDay: Array<any>
 };
 
-export default function TripDayDropDown({ tripDate, tripDay }: TripDateDropdownPropsInterface) {
+export default function TripDayDropDown({tripDate, tripDay}: TripDateDropdownPropsInterface) {
     const formattedDate = format(tripDate, "EEEE, MMMM dd");
     const [showDestination, setShowDestination] = useState<boolean>(false);
     const numOfAvailableDest = tripDay.length;
@@ -29,18 +29,19 @@ export default function TripDayDropDown({ tripDate, tripDay }: TripDateDropdownP
                 className="flex items-center gap-4"
             >
                 {showDestination ? (
-                    <ChevronDownIcon className="w-12 h-12 cursor-pointer" />
+                    <ChevronDownIcon className="w-12 h-12 cursor-pointer"/>
                 ) : (
-                    <ChevronRightIcon className="w-12 h-12 cursor-pointer" />
+                    <ChevronRightIcon className="w-12 h-12 cursor-pointer"/>
                 )}
 
                 {/* Trip Information */}
                 <div className="flex flex-col w-full pb-4 cursor-pointer">
                     <div className="flex gap-4 items-center cursor-pointer">
                         <label className="text-4xl cursor-pointer"> {formattedDate} </label>
-                        <MapPinIcon className="w-8 h-8 cursor-pointer" style={{ color: randomColor }} />
+                        <MapPinIcon className="w-8 h-8 cursor-pointer" style={{color: randomColor}}/>
                     </div>
-                    <label className="text-xl border-b-2 border-black/50 w-full cursor-pointer pb-6"> {numOfAvailableDest} Places {isVoted ? "Voted" : "Available"} </label>
+                    <label
+                        className="text-xl border-b-2 border-black/50 w-full cursor-pointer pb-6"> {numOfAvailableDest} Places {isVoted ? "Voted" : "Available"} </label>
                 </div>
             </div>
             <div
@@ -49,7 +50,7 @@ export default function TripDayDropDown({ tripDate, tripDay }: TripDateDropdownP
                 <div className="flex items-center overflow-x-auto border-b-2 border-black/50 ml-16 pb-4">
                     <div className="flex items-center gap-8 min-w-max">
                         {tripDay.map((dest) => (
-                            <DestCard key={dest.destID} destData={dest} />
+                            <DestCard key={dest.destID} destData={dest}/>
                         ))}
                     </div>
                 </div>
