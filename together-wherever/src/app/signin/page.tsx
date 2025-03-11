@@ -21,8 +21,18 @@ export default function AuthPage() {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const isValidPassword = (password: string) => {
+        return password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password);
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!isLogin && !isValidPassword(formData.password)) {
+            alert('Password must be at least 8 characters long and contain both letters and numbers.');
+            return;
+        }
+
         try {
             if (isLogin) {
                 const res = await axios.post('http://localhost:8000/api/auth/login/token', new URLSearchParams({
