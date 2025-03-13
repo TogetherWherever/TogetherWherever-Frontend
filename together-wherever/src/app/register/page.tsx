@@ -55,7 +55,6 @@ export default function RegisterPage() {
         }
 
         try {
-            console.log(formData);
             await axios.post("http://localhost:8000/api/auth/register", formData);
             alert("Registration successful! Please login.");
             router.push("/login");
