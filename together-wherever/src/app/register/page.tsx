@@ -4,6 +4,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { preferences } from "@/app/utils/preferences";
+import { formatPreference } from "@/app/utils/formatPreferences";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -17,25 +19,28 @@ export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
 
+    // Handle input changes for text fields
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handlePreferenceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, checked } = e.target;
+    // Handle the preference toggle (select/deselect)
+    const handlePreferenceChange = (pref: string) => {
         setFormData((prev) => ({
             ...prev,
-            preferences: checked
-                ? [...prev.preferences, value]
-                : prev.preferences.filter(pref => pref !== value)
+            preferences: prev.preferences.includes(pref)
+                ? prev.preferences.filter((p) => p !== pref)
+                : [...prev.preferences, pref]
         }));
     };
 
+    // Password validation
     const isValidPassword = (password: string) => {
         return password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password);
     };
 
+    // Handle form submission
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -44,10 +49,15 @@ export default function RegisterPage() {
             return;
         }
 
+        if (formData.preferences.length < 3) {
+            alert("Please select at least 3 preferences.");
+            return;
+        }
+
         try {
+            console.log(formData);
             await axios.post("http://localhost:8000/api/auth/register", formData);
             alert("Registration successful! Please login.");
-            console.log(formData);
             router.push("/login");
         } catch (error: any) {
             alert(error.response?.data?.detail || "Registration failed");
@@ -56,9 +66,10 @@ export default function RegisterPage() {
 
     return (
         <div className="flex flex-col items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-4">
+            <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-6 space-y-4">
                 <h2 className="text-2xl font-bold text-center text-earth-yellow">Register</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Username, email, first name, last name */}
                     <input type="text" name="username" placeholder="Username" onChange={handleChange} required className="w-full p-2 border rounded-lg focus:outline-moonstone-blue" />
                     <input type="email" name="email" placeholder="Email" onChange={handleChange} required className="w-full p-2 border rounded-lg focus:outline-moonstone-blue" />
                     <input type="text" name="first_name" placeholder="First Name" onChange={handleChange} required className="w-full p-2 border rounded-lg focus:outline-moonstone-blue" />
@@ -74,17 +85,28 @@ export default function RegisterPage() {
 
                     {/* Travel Preferences */}
                     <div>
-                        <h3 className="text-lg font-semibold">Your Travel Preferences:</h3>
-                        <div className="grid grid-cols-2 gap-2">
-                            {["Nature", "Beaches", "Historical", "Food", "Adventure", "Shopping"].map((pref) => (
-                                <label key={pref} className="flex items-center space-x-2">
-                                    <input type="checkbox" value={pref} onChange={handlePreferenceChange} className="accent-moonstone-blue" />
-                                    <span>{pref}</span>
+                        <div className="flex flex-row items-baseline pb-2">
+                            <p className="text-lg font-semibold">Travel Preferences</p>
+                            <p className="text-sm pl-2 text-gray-500">Please select at least 3 preferences</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                            {preferences.map((pref) => (
+                                <label
+                                    key={pref}
+                                    onClick={() => handlePreferenceChange(pref)} // Handle toggle on click
+                                    className={`cursor-pointer items-center space-x-2 p-2 rounded-lg ${
+                                        formData.preferences.includes(pref)
+                                            ? "bg-asparagus-green text-white"
+                                            : "bg-gray-100 hover:bg-gray-200"
+                                    }`}
+                                >
+                                    <span>{formatPreference(pref)}</span>
                                 </label>
                             ))}
                         </div>
                     </div>
 
+                    {/* Submit Button */}
                     <button type="submit" className="w-full bg-moonstone-blue text-white p-2 rounded-xl hover:bg-teal-blue transition">
                         Register
                     </button>
