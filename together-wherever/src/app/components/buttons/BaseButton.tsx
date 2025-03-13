@@ -11,7 +11,7 @@ interface BaseButtonPropsInterface {
     rightIconCustomization?: string;
     color?: string;
     className?: string;
-    onClick?: () => void;
+    onClick?: (event?: any) => void;
 };
 
 export const BaseButton = ({

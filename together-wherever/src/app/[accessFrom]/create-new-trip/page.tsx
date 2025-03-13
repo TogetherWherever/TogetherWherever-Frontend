@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@headlessui/react';
 import PlaceSearchBox from "@/app/components/PlaceSearchBox";
-import DateRangeInput from '@/app/components/DateRangeInput'
+import DateRangeInput from '@/app/components/DateRangeInput';
 import Image from "next/image"; 
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { useCreateNewTrips } from "@/app/hooks/useCreateNewTrip";
-import { useAuth } from "@/app/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 const mockUsers = [
     {
@@ -35,10 +35,6 @@ const mockUsers = [
 ];
 
 export default function CreateNewTrip() {
-    const isAuthenticated = useAuth();
-    
-    if (!isAuthenticated) return null;
-    
     const {
         tripName,
         tripNameLength,
@@ -53,6 +49,19 @@ export default function CreateNewTrip() {
         companionIds,
         handleRemoveCompanion
     } = useCreateNewTrips();
+
+    const router = useRouter();
+
+    useEffect(() => {
+        // Check if token exists in localStorage
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+        } else {
+            router.push('/signin'); // Redirect to login page
+        }
+    }, [router]);
+
     const [usersData] = useState<Array<{ userId: string; name: string; profileImage: string; }>>(mockUsers);
 
     const filteredResults = usersData.filter((item) =>
@@ -76,9 +85,7 @@ export default function CreateNewTrip() {
                             value={tripName}
                             onChange={handleChangeTripName}
                             placeholder="e.g., Summer in Phuket w/ my gang"
-                            className={
-                                "mt-1 block w-full h-[50px] rounded-xl border-2 border-hurricane bg-transparent py-1.5 px-3 focus:outline-none focus:ring-0"
-                            }
+                            className={ "mt-1 block w-full h-[50px] rounded-xl border-2 border-hurricane bg-transparent py-1.5 px-3 focus:outline-none focus:ring-0" }
                         /> 
                         <label className='flex justify-end text-base text-hurricane'> {tripNameLength}/50 max characters </label>
                     </div>
@@ -139,8 +146,7 @@ export default function CreateNewTrip() {
                                                         className="cursor-pointer relative group"
                                                     >
                                                         <div className="w-[50px] h-[50px] absolute flex items-center justify-center rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <TrashIcon className="w-[25px] text-white" />                                                            
-                                                        </div>   
+                                                            <TrashIcon className="w-[25px] text-white" />                                                             </div>   
                                                                                                              
                                                         <Image
                                                             key={user.userId}
@@ -152,10 +158,9 @@ export default function CreateNewTrip() {
                                                             className="rounded-full aspect-square object-cover mr-2"
                                                         />        
                                                         <div className="pr-2 flex w-full justify-center itmes-center absolute left-0 right-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            {user.name}                                                            
-                                                        </div>                                                  
+                                                            {user.name}                                                             </div>                                                    
                                                     </div>                                                                                                  
-                                                ))}
+                                                ))} 
                                             {usersData.filter((user) => companionIds.includes(user.userId)).length > 2 && (
                                                 <Popover className="relative">
                                                     <PopoverButton>
@@ -166,11 +171,9 @@ export default function CreateNewTrip() {
                                                     <PopoverPanel 
                                                         anchor="bottom" 
                                                         transition
-                                                        className="
-                                                            w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0
-                                                        "
+                                                        className="w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
                                                     >
-                                                        <div className="absolute -top-2 left-4 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white"></div>                                                                                                                
+                                                        <div className="absolute -top-2 left-4 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white"></div>                                                                                                                 
                                                         <div className="flex flex-col gap-2">
                                                             {usersData
                                                                 .filter((user) => companionIds.includes(user.userId))
@@ -183,10 +186,10 @@ export default function CreateNewTrip() {
                                                                         onClick={() => handleRemoveCompanion(user.userId)}    
                                                                     />
                                                                 </div>
-                                                            ))}
-                                                        </div>                                                        
+                                                            ))} 
+                                                        </div>                                                         
                                                     </PopoverPanel>
-                                                </Popover>                                                
+                                                </Popover>                                                 
                                             )}
                                         </div>
                                     )}

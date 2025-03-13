@@ -7,8 +7,6 @@ import { createNewTrip } from "@/app/fetcher/create-new-trip";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-// const tripMockData = {};
-
 export const useCreateNewTrips = () => {
     const [tripName, setTripName] = useState('');
     const [tripNameLength, setTripNameLength] = useState(0);
@@ -26,6 +24,7 @@ export const useCreateNewTrips = () => {
 
     const router = useRouter();
 
+    // Fetch place details
     const fetchPlaceDetails = async (placeId: string) => {
         try {
             const res = await axios.get(`http://localhost:8000/api/discover-place-details/?dest_id=${placeId}`);
@@ -34,20 +33,23 @@ export const useCreateNewTrips = () => {
             console.log("Fetched Place Data:", data);
 
             setPlaceName(data.destName);
-            setPlaceId(data.destID)
+            setPlaceId(data.destID);
         } catch (error) {
             console.error("Failed to fetch place details", error);
         }
     };
 
+    // Handle trip name change
     const handleChangeTripName = (e: any) => {
         setTripName(e.target.value);
     };
 
+    // Handle companion name change
     const handleChangeCompanions = (e: any) => {
         setCompanionName(e.target.value);
     };
 
+    // Select a companion
     const handleSelectCompanion = (item: any) => {
         setCompanionIds((prev) => {
             if (!prev.includes(item.userId)) {
@@ -58,10 +60,12 @@ export const useCreateNewTrips = () => {
         setCompanionName('');
     };
 
+    // Remove a companion
     const handleRemoveCompanion = (userId: string) => {
         setCompanionIds((prevIds) => prevIds.filter((id) => id !== userId));
     };
 
+    // Start planning the trip
     const handleClickStartPlanning = () => {
         if (tripName !== '' && placeId !== '' && placeName !== '') {
             const body: CreateNewTripBodyInterface = {
@@ -80,15 +84,17 @@ export const useCreateNewTrips = () => {
             createNewTrip(body);
         }
 
+        // Mocked response after creating a new trip
         const res = { message: "Mocked response from creating a new trip.", trip_id: '001' };
-
         router.push(`/planning/${res.trip_id}`);
     };
 
+    // Update trip name length when tripName changes
     useEffect(() => {
         setTripNameLength(tripName.length);
     }, [tripName]);
 
+    // Ensure tripName is not longer than 50 characters
     useEffect(() => {
         if (tripName.length > 50) {
             setTripName(tripName.slice(0, 50));
@@ -112,6 +118,6 @@ export const useCreateNewTrips = () => {
         handleSelectCompanion,
         fetchPlaceDetails,
         handleClickStartPlanning,
-        handleRemoveCompanion
+        handleRemoveCompanion,
     };
 };
