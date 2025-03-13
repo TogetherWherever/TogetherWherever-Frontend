@@ -83,12 +83,22 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
 
                                 return (
                                     <div key={periodKey} className="rounded-lg p-2 pt-0 pb-0 pr-4">
-                                        <div className="flex ml-14 gap-4">
-                                            {periodKey === "morning" && <SunIcon className="w-6 h-6 text-yellow" />}
-                                            {periodKey === "afternoon" && <CloudIcon className="w-6 h-6 text-blue" />}
-                                            {periodKey === "night" && <MoonIcon className="w-6 h-6 text-gray" />}
-                                            <label className="text-xl font-bold capitalize">{periodKey}</label>
-                                        </div>
+                                        {periodKey === "morning" && (
+                                            <div className="flex ml-14 gap-4">
+                                                <SunIcon className="w-6 h-6 text-yellow" />
+                                                <label className="text-xl font-bold capitalize">{periodKey}</label>
+                                            </div>
+                                        )}
+                                        {(periodKey === "afternoon" || periodKey === "night") && (
+                                            <div className="flex items-center gap-4">
+                                                <div className="flex items-center justify-center w-[40px] pl-[1px]">
+                                                    <div className="w-[2px] h-7 bg-black"></div>
+                                                </div>
+                                                {periodKey === "afternoon" && <CloudIcon className="w-6 h-6 text-blue" />}
+                                                {periodKey === "night" && <MoonIcon className="w-6 h-6 text-gray" />}
+                                                <label className="text-xl font-bold capitalize">{periodKey}</label>
+                                            </div>
+                                        )}
                                         <div className="flex flex-col justify-between">
                                             {period.map((dest: any, index: number) => {
                                                 const distanceInfo = tripDay.distance.find(
