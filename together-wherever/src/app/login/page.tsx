@@ -31,7 +31,7 @@ export default function LoginPage() {
 
     return (
         <div className="flex flex-col items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-4">
+            <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-6 space-y-4">
                 <h2 className="text-2xl font-bold text-center text-earth-yellow">Login</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input type="text" name="username" placeholder="Username" onChange={handleChange} required className="w-full p-2 border rounded-lg focus:outline-moonstone-blue" />
