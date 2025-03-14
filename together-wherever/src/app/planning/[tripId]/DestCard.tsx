@@ -51,42 +51,40 @@ export default function DestCard({
             ? destinationIndex === orderedDestinations[periodKey]?.length - 1
             : false;
 
+    const getAvailableTimeSections = (openTime: string, closeTime: string) => {
+        const sections = {
+            "morning": { start: "06:00", end: "12:00" },
+            "afternoon": { start: "12:00", end: "18:00" },
+            "night": { start: "18:00", end: "23:59" } // Avoids next day
+        };
+
+        const parseTime = (timeStr: string) => {
+            return new Date(`1970-01-01T${timeStr}:00`);
+        }
+
+        const openDate = parseTime(openTime);
+        const closeDate = parseTime(closeTime);
+        let availableSections = [];
+
+        for (const [section, { start, end }] of Object.entries(sections)) {
+            const sectionStart = parseTime(start);
+            const sectionEnd = parseTime(end);
+
+            // Check if the open-close time overlaps with the section
+            if (openDate < sectionEnd && closeDate > sectionStart) {
+                availableSections.push(section);
+            }
+        }
+
+        return availableSections;
+    }
+
     const isWithinTimeRange = (open: string, close: string, period: string) => {
-        // const now = new Date();
-        // const openTime = new Date(now);
-        // openTime.setHours(Number(open.split(":")[0]), Number(open.split(":")[1]), 0, 0);
-
-        // // Define valid time ranges
-        // let validStart, validEnd;
-        // switch (period) {
-        //     case "morning":
-        //         validStart = new Date(now);
-        //         validStart.setHours(6, 0, 0, 0); // 06:00 AM
-        //         validEnd = new Date(now);
-        //         validEnd.setHours(12, 0, 0, 0); // 12:00 PM
-        //         break;
-        //     case "afternoon":
-        //         validStart = new Date(now);
-        //         validStart.setHours(12, 0, 0, 0); // 12:00 PM
-        //         validEnd = new Date(now);
-        //         validEnd.setHours(18, 0, 0, 0); // 06:00 PM
-        //         break;
-        //     case "night":
-        //         validStart = new Date(now);
-        //         validStart.setHours(18, 0, 0, 0); // 06:00 PM
-        //         validEnd = new Date(now);
-        //         validEnd.setHours(23, 59, 59, 999); // 11:59 PM
-        //         break;
-        //     default:
-        //         return false; // Invalid period
-        // }
-
-        // // Check if the destination's opening and closing hours are within the valid time range
-        // if (openTime >= validStart && openTime <= validEnd) {
-        //     return true;
-        // }
-
-        return true;
+        const availableSections = getAvailableTimeSections(open, close);
+        if (availableSections.includes(period)) {
+            return true;
+        }
+        return false;
     };
 
     const handleMoveUp = (index: number, periodKey: string) => {
@@ -157,16 +155,17 @@ export default function DestCard({
                     alt="Logo"
                     width={200}
                     height={200}
-                    className=""
                 />
             </div>
 
             <div className={clsx("flex flex-col justify-between h-full", complete ? "" : "w-2/3")}>
                 <div className="flex items-center gap-2 text-2xl">
                     <label>{destData.destName} </label>
-                    <div className='text-lg'>
-                        (Open: {todayOpeningClosingHours.open} | Close: {todayOpeningClosingHours.close})
-                    </div>
+                    {complete && (
+                        <div className={'text-lg'}>
+                            (Open: {todayOpeningClosingHours.open} | Close: {todayOpeningClosingHours.close})
+                        </div>
+                    )}
                 </div>
                 <div className="overflow-hidden text-ellipsis line-clamp-3 text-lg">
                     {destData.desc}

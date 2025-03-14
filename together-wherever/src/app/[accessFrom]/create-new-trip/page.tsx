@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { Input } from '@headlessui/react';
 import PlaceSearchBox from "@/app/components/PlaceSearchBox";
 import DateRangeInput from '@/app/components/DateRangeInput';
@@ -10,6 +10,7 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { useCreateNewTrips } from "@/app/hooks/useCreateNewTrip";
 import { useRouter } from "next/navigation";
+import DialogBox from "@/app/components/Dialog";
 
 const mockUsers = [
     {
@@ -51,6 +52,7 @@ export default function CreateNewTrip() {
     } = useCreateNewTrips();
 
     const router = useRouter();
+    let [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
         // Check if token exists in localStorage
@@ -198,7 +200,7 @@ export default function CreateNewTrip() {
                             <div className="mt-auto flex justify-center w-full">
                                 <BaseButton 
                                     buttonTxt="Start Planning" 
-                                    onClick={handleClickStartPlanning}
+                                    onClick={() => setIsOpen(true)}
                                     className="!px-10"
                                 />
                             </div>
@@ -206,6 +208,9 @@ export default function CreateNewTrip() {
                     </div>
                 </form>
             </div>
+            <DialogBox 
+                isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={handleClickStartPlanning} 
+            />
         </div>
     );
 }
