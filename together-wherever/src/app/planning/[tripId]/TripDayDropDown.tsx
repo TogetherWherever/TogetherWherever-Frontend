@@ -1,8 +1,9 @@
 'use client';
 
-import { ChevronDownIcon, ChevronRightIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
-import { SunIcon, MoonIcon, CloudIcon } from "@heroicons/react/24/solid";import { useRouter } from "next/navigation";
+import { ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, MapPinIcon } from "@heroicons/react/24/solid";
+import { useEffect, useState } from "react";
+import { SunIcon, MoonIcon, CloudIcon } from "@heroicons/react/24/solid";
+import { useRouter, useParams } from "next/navigation";
 import { format } from "date-fns";
 import DestCard from "./DestCard";
 import clsx from "clsx";
@@ -17,7 +18,10 @@ interface TripDateDropdownPropsInterface {
 export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDropdownPropsInterface) {
     const formattedDate = format(tripDate, "EEEE, MMMM dd");
     const [showDestination, setShowDestination] = useState<boolean>(false);
+    const [orderedDestinations, setOrderedDestinations] = useState(tripDay.voted_dests);
     const [isVoted] = useState<boolean>(false); // tbd
+    const router = useRouter();
+    const { tripId } = useParams();
 
     // Function to toggle showing destinations
     const showContent = () => {
@@ -26,6 +30,10 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
         } else {
             setShowDestination(prevState => !prevState); // Toggle state
         }
+    };
+
+    const navigateToVotingPage = () => {
+        router.push(`/planning/${tripId}/vote`);
     };
 
     return (
@@ -59,7 +67,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
                                     leftIconCustomization="w-[15px] h-[15px]"
                                     onClick={(event: any) => {
                                         event.stopPropagation(); // Prevents triggering showContent
-                                        alert("Navigate to voting page.");
+                                        navigateToVotingPage();
                                     }}
                                 />
                             </div>
@@ -73,9 +81,9 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
                 className={`overflow-hidden transition-all duration-300 ${showDestination ? "h-auto" : "h-0"}`}
             >
                 <div className={clsx(
-                    "flex border-b-2 border-black/50 ml-16 pb-4 pt-2", 
-                        tripDay.status === "complete" ? "flex-col justify-center overflow-y-auto" : "items-center overflow-x-auto pb-4"
-                    )}>
+                    "flex border-b-2 border-black/50 ml-16 pb-4 pt-2",
+                    tripDay.status === "complete" ? "flex-col justify-center overflow-y-auto" : "items-center overflow-x-auto pb-4"
+                )}>
                     {tripDay.status === "complete" && (
                         <div className="flex flex-col">
                             {Object.keys(tripDay.voted_dests).map((periodKey: string) => {
@@ -87,6 +95,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
                                             <div className="flex ml-14 gap-4">
                                                 <SunIcon className="w-6 h-6 text-yellow" />
                                                 <label className="text-xl font-bold capitalize">{periodKey}</label>
+                                                <label className="text-xl font-bold capitalize">(6:00 - 12:00) o'clock </label>
                                             </div>
                                         )}
                                         {(periodKey === "afternoon" || periodKey === "night") && (
@@ -97,6 +106,12 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
                                                 {periodKey === "afternoon" && <CloudIcon className="w-6 h-6 text-blue" />}
                                                 {periodKey === "night" && <MoonIcon className="w-6 h-6 text-gray" />}
                                                 <label className="text-xl font-bold capitalize">{periodKey}</label>
+                                                {periodKey === "afternoon" && (
+                                                    <label className="text-xl font-bold capitalize">(12:00 - 18:00) o'clock </label>
+                                                )}
+                                                {periodKey === "night" && (
+                                                    <label className="text-xl font-bold capitalize">(18:00 - 00:00) o'clock </label>
+                                                )}
                                             </div>
                                         )}
                                         <div className="flex flex-col justify-between">
@@ -104,7 +119,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
                                                 const distanceInfo = tripDay.distance.find(
                                                     (d: any) => d.fromID === dest.destID
                                                 );
-                                                
+
                                                 return (
                                                     <div key={`${periodKey}-${index}`} className="flex flex-col">
                                                         {/* Destination */}
@@ -113,8 +128,8 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
                                                                 <MapPinIcon width={40} height={40} fill="red" />
                                                                 {distanceInfo && (
                                                                     <div className="flex flex-col items-center justify-center w-[40px] text-center pl-[1px]">
-                                                                        <div className="w-[2px] h-7 bg-black"></div>                                                    
-                                                                        <p className="py-2"> {distanceInfo.distance_km} km</p> 
+                                                                        <div className="w-[2px] h-7 bg-black"></div>
+                                                                        <p className="py-2"> {distanceInfo.distance_km} km</p>
                                                                         <div className="w-[2px] h-7 bg-black"></div>
                                                                     </div>
                                                                 )}
@@ -126,22 +141,34 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
                                                                     </div>
                                                                 )}
                                                             </div>
-                                                            
-                                                            <DestCard key={dest.destID} destData={dest} complete={true} period={periodKey}/>
-                                                        </div>                                                        
+                                                            {period.length > 0 ? (
+                                                                <DestCard
+                                                                    key={dest.destID}
+                                                                    destData={dest}
+                                                                    complete={true}
+                                                                    period={periodKey}
+                                                                    orderedDestinations={tripDay.voted_dests}
+                                                                    setOrderedDestinations={setOrderedDestinations}
+                                                                />
+                                                            ) : (
+                                                                <div className="h-[50px]"></div>
+                                                            )
+                                                            }
+
+                                                        </div>
                                                     </div>
                                                 );
                                             })}
                                         </div>
                                     </div>
                                 );
-                            })}                            
-                        </div>                        
+                            })}
+                        </div>
                     )}
                     {tripDay.status === "voting" && (
                         <div className="flex items-center gap-8 min-w-max">
                             {tripDay.suitableDests.map((dest: any) => (
-                                <DestCard key={dest.destID} destData={dest} />
+                                <DestCard key={dest.destID} destData={dest} tripDate={tripDate} />
                             ))}
                         </div>
                     )}

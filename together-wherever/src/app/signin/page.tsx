@@ -29,6 +29,7 @@ export default function AuthPage() {
                     username: formData.username,
                     password: formData.password
                 }));
+                console.log(res)
                 localStorage.setItem('token', res.data.access_token);
                 router.push('/');
             } else {
