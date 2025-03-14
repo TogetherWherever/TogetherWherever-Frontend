@@ -20,7 +20,7 @@ export default function NavBar() {
     ];
 
     const handleNavigateToSignInPage = () => {
-        router.push("/signin");
+        router.push("/login");
     };
 
     const handleNavigateToProfilePage = () => {
