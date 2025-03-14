@@ -6,11 +6,13 @@ import Image from 'next/image';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { ShareIcon } from '@heroicons/react/24/solid';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { addDays, format } from "date-fns";
 import TripDayDropDown from './TripDayDropDown';
 import { mockTripDetailData } from "./mockTripData";
+import ToastNotification from '@/app/components/ToastNotification';
+import { toast } from 'react-toastify';
 
 type TripDay = {
     day: number;
@@ -27,11 +29,14 @@ type TripDay = {
 
 export default function Planning() {
     const router = useRouter();
-    
+    const showToast = () => {
+        toast.error("You aren't allowed to open this until the current vote status is complete.");
+    };
+
     useEffect(() => {
         // Check if token exists in localStorage
         const token = localStorage.getItem('token');
-        
+
         if (token) {
         } else {
             router.push('/signin'); // Redirect to login page
@@ -46,17 +51,17 @@ export default function Planning() {
     //     lng: dest.lng,
     // }));
 
-    const renderTripDayDropDown = (duration: number, startDate: Date, tripDetailData: { trip_day: TripDay[] }) => {        
-        return Array.from({ length: duration }, (_, index) => {          
+    const renderTripDayDropDown = (duration: number, startDate: Date, tripDetailData: { trip_day: TripDay[] }) => {
+        return Array.from({ length: duration }, (_, index) => {
             const tripDate = addDays(startDate, index);
             const tripDay = tripDetailData?.trip_day?.find(day => day.day === index + 1); // Adjust index for 1-based day
-        
+
             // If tripDay is not found, return null (or handle accordingly)
             if (!tripDay) {
-                return null; 
+                return null;
             }
 
-            return <TripDayDropDown key={index} tripDate={tripDate} tripDay={tripDay}/>;
+            return <TripDayDropDown key={index} tripDate={tripDate} tripDay={tripDay} showToast={showToast} />;
         });
     };
 
@@ -162,7 +167,7 @@ export default function Planning() {
                     </div>
                 </div>
             </div>
-
+            <ToastNotification />
             {/* Right Panel: Map View */}
             <div className="w-1/3">
                 <MapView lat={destDetails.lat} lng={destDetails.lng} />

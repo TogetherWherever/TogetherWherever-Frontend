@@ -13,9 +13,10 @@ interface TripDateDropdownPropsInterface {
     key: any;
     tripDate: Date;
     tripDay: any;
+    showToast: () => void;
 };
 
-export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDropdownPropsInterface) {
+export default function TripDayDropDown({ key, tripDate, tripDay, showToast }: TripDateDropdownPropsInterface) {
     const formattedDate = format(tripDate, "EEEE, MMMM dd");
     const [showDestination, setShowDestination] = useState<boolean>(false);
     const [orderedDestinations, setOrderedDestinations] = useState(tripDay.voted_dests);
@@ -27,6 +28,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay }: TripDateDrop
     const showContent = () => {
         if (tripDay.status === "pending") {
             setShowDestination(false);
+            showToast();
         } else {
             setShowDestination(prevState => !prevState); // Toggle state
         }
