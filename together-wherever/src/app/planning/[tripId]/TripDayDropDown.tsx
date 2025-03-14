@@ -24,6 +24,10 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast }: T
     const router = useRouter();
     const { tripId } = useParams();
 
+    const numOfAvailableDest = tripDay.voted
+        ? Object.values(tripDay.voted_dests).reduce((acc, dests: any) => acc + dests.length, 0)
+        : tripDay.suitableDests?.length || 0;
+
     // Function to toggle showing destinations
     const showContent = () => {
         if (tripDay.status === "pending") {
@@ -75,8 +79,13 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast }: T
                             </div>
                         )}
                     </div>
-                    <label
-                        className="text-xl border-b-2 border-black/50 w-full cursor-pointer pb-6">  </label>
+                    <label className={clsx("border-b-2 border-black/50 w-full cursor-pointer", tripDay.status === "pending" ? "pb-6" : "pb-4")}>
+                        {(tripDay.status === "complete" || tripDay.status === "voting") && (
+                            <label className="">
+                                { numOfAvailableDest } Places Available
+                            </label>
+                        )}
+                    </label>
                 </div>
             </div>
             <div
@@ -96,8 +105,8 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast }: T
                                         {periodKey === "morning" && (
                                             <div className="flex ml-14 gap-4">
                                                 <SunIcon className="w-6 h-6 text-yellow" />
-                                                <label className="text-xl font-bold capitalize">{periodKey}</label>
-                                                <label className="text-xl font-bold capitalize">(6:00 - 12:00) o'clock </label>
+                                                <label className="text-xl capitalize">{periodKey}</label>
+                                                <label className="text-xl capitalize">(6:00 - 12:00) o'clock </label>
                                             </div>
                                         )}
                                         {(periodKey === "afternoon" || periodKey === "night") && (
@@ -107,12 +116,12 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast }: T
                                                 </div>
                                                 {periodKey === "afternoon" && <CloudIcon className="w-6 h-6 text-blue" />}
                                                 {periodKey === "night" && <MoonIcon className="w-6 h-6 text-gray" />}
-                                                <label className="text-xl font-bold capitalize">{periodKey}</label>
+                                                <label className="text-xl capitalize">{periodKey}</label>
                                                 {periodKey === "afternoon" && (
-                                                    <label className="text-xl font-bold capitalize">(12:00 - 18:00) o'clock </label>
+                                                    <label className="text-xl capitalize">(12:00 - 18:00) o'clock </label>
                                                 )}
                                                 {periodKey === "night" && (
-                                                    <label className="text-xl font-bold capitalize">(18:00 - 00:00) o'clock </label>
+                                                    <label className="text-xl capitalize">(18:00 - 00:00) o'clock </label>
                                                 )}
                                             </div>
                                         )}

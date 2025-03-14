@@ -46,10 +46,17 @@ export default function Planning() {
     const [destDetails] = useState(mockTripDetailData); // using mock data
     const tripDuration = (destDetails.lastDate.getTime() - destDetails.startDate.getTime()) / (1000 * 3600 * 24) + 1;
 
-    // const markers = destDetails.trip_day.map((dest) => ({
-    //     lat: dest.lat,
-    //     lng: dest.lng,
-    // }));
+    const markers = destDetails.trip_day.flatMap(day => 
+        day.status === "complete"
+            ? Object.values(day.voted_dests || {}).flat()
+            : day.suitableDests || []
+    ).map(dest => ({
+        lat: dest.lat,
+        lng: dest.lng,
+        name: dest.destName
+    }));
+
+    console.log(markers);
 
     const renderTripDayDropDown = (duration: number, startDate: Date, tripDetailData: { trip_day: TripDay[] }) => {
         return Array.from({ length: duration }, (_, index) => {
@@ -170,7 +177,7 @@ export default function Planning() {
             <ToastNotification />
             {/* Right Panel: Map View */}
             <div className="w-1/3">
-                <MapView lat={destDetails.lat} lng={destDetails.lng} />
+                <MapView lat={destDetails.lat} lng={destDetails.lng} makers={markers}/>
             </div>
         </div>
     );

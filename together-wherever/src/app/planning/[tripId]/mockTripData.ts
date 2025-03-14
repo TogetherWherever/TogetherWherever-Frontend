@@ -151,9 +151,26 @@ export const mockTripDetailData = {
             total_members: 6,
             suitableDests: [
                 {
-                    destID: "ChIJOSmXz2AvUDARXCxlBBs7y38",
-                    destName: "The Big Buddha",
-                    photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB8R2-W1BiFfDus87rupQ4oqmeYm7XYeph3c5rYizfqwxBoRB3WTe_E_fd7STBdNwy-xnbtaK2FqzLXBWMxoj2NhD4BX8fF9fWNdYK6JzYAlSZ1PfiAuUFbfAiwx6HEIpUdxYQhfwA=w353-h256-k-no",
+                    destID: "ChIJMVGAs1g3UDARyLMbAwlTF_c",
+                    destName: "Green Elephant Sanctuary Park",
+                    photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB_oFKGw9GI96bU-bhk8IcwvPuPco862AWpJ0SAGrrOxZuIhWj0tA2oCPd8LXt5J5wGd1xrF8O7m_DYThLNhVVaz_nchtVDpkVlD1mk_64qNxqstqvr4MGciN1EHd4ziWzgu-3g=s294-w294-h220-k-no",
+                    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
+                    openingHours: {
+                        "Sunday": { open: "08:00", close: "17:00" },
+                        "Monday": { open: "08:00", close: "17:00" },
+                        "Tuesday": { open: "08:00", close: "17:00" },
+                        "Wednesday": { open: "08:00", close: "17:00" },
+                        "Thursday": { open: "08:00", close: "17:00" },
+                        "Friday": { open: "08:00", close: "17:00" },
+                        "Saturday": { open: "08:00", close: "17:00" },
+                    },
+                    lat: 7.979018511838991, 
+                    lng: 98.30935934232788
+                },
+                {
+                    destID: "ChIJezyyaqM6UDARyh5o4",
+                    destName: "Jungceylon",
+                    photo: "https://lh5.googleusercontent.com/p/AF1QipMxMKiMG02JxvEBiNAwc29Wzc1Ftg4oQuVI_m5r=w408-h544-k-no",
                     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
                     openingHours: {
                         "Sunday": { open: "06:30", close: "18:30" },
@@ -164,42 +181,42 @@ export const mockTripDetailData = {
                         "Friday": { open: "06:30", close: "18:30" },
                         "Saturday": { open: "06:30", close: "18:30" },
                     },
-                    lat: 7.827868593792716,
-                    lng: 98.31278865581969
+                    lat: 7.892776675289952,
+                    lng: 98.29863635767211
                 },
                 {
                     destID: "ChIJOSmXz2AvUDARXCxlBBs7y38",
-                    destName: "The Big Buddha",
-                    photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB8R2-W1BiFfDus87rupQ4oqmeYm7XYeph3c5rYizfqwxBoRB3WTe_E_fd7STBdNwy-xnbtaK2FqzLXBWMxoj2NhD4BX8fF9fWNdYK6JzYAlSZ1PfiAuUFbfAiwx6HEIpUdxYQhfwA=w353-h256-k-no",
+                    destName: "Kata Beach",
+                    photo: "https://lh3.googleusercontent.com/proxy/_GIB95cWs8RVzVkn3Sppa9GdSMibandtlKXInNfH5QBSP8sgNpySwTgQzpSmWuBKHWJESOvlCLn3Qq2hEaDVoGZY63zLvknMOR6AnGpglKz76qcqvMAMfOkxUTgWZM5TnN9tK-tApnIuwDcj_uQka4gjJ-DSZg=s294-w294-h220-k-no",
                     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
                     openingHours: {
-                        "Sunday": { open: "06:30", close: "18:30" },
-                        "Monday": { open: "06:30", close: "18:30" },
-                        "Tuesday": { open: "06:30", close: "18:30" },
-                        "Wednesday": { open: "06:30", close: "18:30" },
-                        "Thursday": { open: "06:30", close: "18:30" },
-                        "Friday": { open: "06:30", close: "18:30" },
-                        "Saturday": { open: "06:30", close: "18:30" },
+                        "Sunday": { open: "00:00", close: "23:59" },
+                        "Monday": { open: "00:00", close: "23:59" },
+                        "Tuesday": { open: "00:00", close: "23:59" },
+                        "Wednesday": { open: "00:00", close: "23:59" },
+                        "Thursday": { open: "00:00", close: "23:59" },
+                        "Friday": { open: "00:00", close: "23:59" },
+                        "Saturday": { open: "00:00", close: "23:59" },
                     },
-                    lat: 7.827868593792716,
-                    lng: 98.31278865581969
+                    lat: 7.821060644463775, 
+                    lng: 98.29714525265501
                 },
                 {
-                    destID: "ChIJOSmXz2AvUDARXCxlBBs7y38",
-                    destName: "The Big Buddha",
-                    photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB8R2-W1BiFfDus87rupQ4oqmeYm7XYeph3c5rYizfqwxBoRB3WTe_E_fd7STBdNwy-xnbtaK2FqzLXBWMxoj2NhD4BX8fF9fWNdYK6JzYAlSZ1PfiAuUFbfAiwx6HEIpUdxYQhfwA=w353-h256-k-no",
+                    destID: "ChIJ1SemHHIlUDARH2WofLMBaOQ",
+                    destName: "Karon Beach",
+                    photo: "https://lh5.googleusercontent.com/p/AF1QipMlIEmadi1VznA832bVPHV8M2dQSuuOHUTlcjA=w408-h253-k-no",
                     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
                     openingHours: {
-                        "Sunday": { open: "06:30", close: "18:30" },
-                        "Monday": { open: "06:30", close: "18:30" },
-                        "Tuesday": { open: "06:30", close: "18:30" },
-                        "Wednesday": { open: "06:30", close: "18:30" },
-                        "Thursday": { open: "06:30", close: "18:30" },
-                        "Friday": { open: "06:30", close: "18:30" },
-                        "Saturday": { open: "06:30", close: "18:30" },
+                        "Sunday": { open: "00:00", close: "23:59" },
+                        "Monday": { open: "00:00", close: "23:59" },
+                        "Tuesday": { open: "00:00", close: "23:59" },
+                        "Wednesday": { open: "00:00", close: "23:59" },
+                        "Thursday": { open: "00:00", close: "23:59" },
+                        "Friday": { open: "00:00", close: "23:59" },
+                        "Saturday": { open: "00:00", close: "23:59" },
                     },
-                    lat: 7.827868593792716,
-                    lng: 98.31278865581969
+                    lat: 7.844519822157014, 
+                    lng: 98.29362271376951
                 }
             ]
         },

@@ -149,25 +149,25 @@ export default function DestCard({
             )}
             onClick={handleNavigateToDiscoverPageDetail}
         >
-            <div className={clsx("flex items-center", !complete ? "w-[150px]" : "w-[250px]")}>
+            <div className={clsx("relative", !complete ? "w-[250px]" : "w-[400px]")}>
                 <Image
                     src={destData.photo}
-                    alt="Logo"
-                    width={200}
-                    height={200}
+                    alt="Destination Image"
+                    fill
+                    className="object-cover"
                 />
             </div>
 
             <div className={clsx("flex flex-col justify-between h-full", complete ? "" : "w-2/3")}>
                 <div className="flex items-center gap-2 text-2xl">
-                    <label>{destData.destName} </label>
+                    <label className='font-bold cursor-pointer'>{destData.destName} </label>
                     {complete && (
                         <div className={'text-lg'}>
                             (Open: {todayOpeningClosingHours.open} | Close: {todayOpeningClosingHours.close})
                         </div>
                     )}
                 </div>
-                <div className="overflow-hidden text-ellipsis line-clamp-3 text-lg">
+                <div className={clsx("overflow-hidden text-ellipsis text-lg", complete ? "line-clamp-3" : "line-clamp-2")}>
                     {destData.desc}
                 </div>
             </div>

@@ -35,6 +35,11 @@ const mockUsers = [
     }
 ];
 
+const dialogTxt = {
+    topic: "Create New Trip",
+    desc: "Please confirm that you want to create a new trip."
+};
+
 export default function CreateNewTrip() {
     const {
         tripName,
@@ -209,7 +214,10 @@ export default function CreateNewTrip() {
                 </form>
             </div>
             <DialogBox 
-                isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={handleClickStartPlanning} 
+                isOpen={isOpen} 
+                setIsOpen={setIsOpen} 
+                onConfirm={handleClickStartPlanning}
+                dialogTxt={dialogTxt} 
             />
         </div>
     );

@@ -42,3 +42,18 @@ body {
 .pac-item:hover {
     @apply bg-earth-yellow-light;
 }
+
+.marker-label {
+  position: absolute;
+  bottom: 40px; /* Adjust to move label above marker */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
