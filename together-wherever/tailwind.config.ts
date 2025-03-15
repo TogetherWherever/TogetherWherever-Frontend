@@ -14,6 +14,7 @@ const config: Config = {
         'earth-yellow': '#E0A458',
         'sunset': '#F5D6AD',
         'faded-orange': '#F0944D',
+        'indian-yellow': "#E3A857",
         'teal-blue': '#008FA5',
         'moonstone-blue': '#009FB7',
         'ball-blue': '#28B1C6',

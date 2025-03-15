@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
-import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { Dispatch } from 'react';
 import { format } from "date-fns";
@@ -33,12 +32,11 @@ export default function DestCard({
     setOrderedDestinations,
     tripDate
 }: DestCardPropsInterface) {
-    const router = useRouter();
     const dayOfWeek = format(tripDate || new Date(), "EEEE");
     const todayOpeningClosingHours = destData.openingHours[dayOfWeek as keyof typeof destData.openingHours];
 
     const handleNavigateToDiscoverPageDetail = () => {
-        router.push(`/discover/${destData.destID}`);
+        window.open(`/discover/${destData.destID}`, '_blank');
     };
 
     // Check if orderedDestinations and period are provided

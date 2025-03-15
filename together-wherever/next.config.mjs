@@ -8,7 +8,8 @@ const nextConfig = {
       'ik.imgkit.net',
       'lh3.googleusercontent.com',
       'wallpapercat.com',
-      'lh5.googleusercontent.com'
+      'lh5.googleusercontent.com',
+      'dynamic-media-cdn.tripadvisor.com'
     ],
   },
 };

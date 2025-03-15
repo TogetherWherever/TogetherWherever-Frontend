@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { BaseButton } from "@/app/components/buttons/BaseButton";
 import { ShareIcon } from '@heroicons/react/24/solid';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { addDays, format } from "date-fns";
 import TripDayDropDown from './TripDayDropDown';
@@ -61,9 +61,7 @@ export default function Planning() {
         lng: dest.lng,
         name: dest.destName
     }));
-
-    console.log(markers);
-
+    
     const renderTripDayDropDown = (duration: number, startDate: Date, tripDetailData: { trip_day: TripDay[] }) => {
         return Array.from({ length: duration }, (_, index) => {
             const tripDate = addDays(startDate, index);
@@ -90,7 +88,7 @@ export default function Planning() {
                     <div className="w-2/3 flex flex-col gap-4">
                         <div className="flex justify-between h-14 items-center pt-5 px-5">
                             <div className="flex w-full h-full items-center gap-2">
-                                <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.back()} />
+                                <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.push("/")} />
                                 <Image src="/logo.png" alt="Logo" width={1000} height={1000} className="h-14 w-auto pr-4" />
                             </div>
                             <div className="flex w-full h-full gap-2 items-center justify-end">
@@ -131,8 +129,8 @@ export default function Planning() {
                                                     anchor="bottom"
                                                     transition
                                                     className="
-                                                w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0
-                                            "
+                                                    w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0
+                                                 "
                                                 >
                                                     <div className="flex flex-col gap-2">
                                                         {destDetails.companion

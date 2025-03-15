@@ -5,7 +5,7 @@ export const mockTripDetailData = {
     tripName: "Trip To: Phuket",
     startDate: new Date(),
     lastDate: addDays(new Date(), 7),
-    photo: "https://lh3.googleusercontent.com/places/ANXAkqEDRzE8jNSwMQEMHh667pTZnFMgvKYmkKLkYYA_km5wVT3kq28gdgDLcCuiFUYchxgsOj018x9n4ZjdMsIlLevCErBxPo7J0UY=s4800-w600-h600",
+    photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/4b/5d/c8/caption.jpg?w=2400&h=1000&s=1&cx=2606&cy=1838&chk=v1_a61182fd4040ed4ecc4e",
     lat: 7.878978,
     lng: 98.398392,
     companion: [
@@ -149,6 +149,7 @@ export const mockTripDetailData = {
             voted: false,
             members_voted: 0,
             total_members: 6,
+            user_voted: false,
             suitableDests: [
                 {
                     destID: "ChIJMVGAs1g3UDARyLMbAwlTF_c",
@@ -168,7 +169,7 @@ export const mockTripDetailData = {
                     lng: 98.30935934232788
                 },
                 {
-                    destID: "ChIJezyyaqM6UDARyh5o4",
+                    destID: "ChIJezyyaqM6UDARyh5o4-SHqkw",
                     destName: "Jungceylon",
                     photo: "https://lh5.googleusercontent.com/p/AF1QipMxMKiMG02JxvEBiNAwc29Wzc1Ftg4oQuVI_m5r=w408-h544-k-no",
                     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
@@ -185,7 +186,7 @@ export const mockTripDetailData = {
                     lng: 98.29863635767211
                 },
                 {
-                    destID: "ChIJOSmXz2AvUDARXCxlBBs7y38",
+                    destID: "ChIJAdUTdI0lUDAR-EN1U6iZIY0",
                     destName: "Kata Beach",
                     photo: "https://lh3.googleusercontent.com/proxy/_GIB95cWs8RVzVkn3Sppa9GdSMibandtlKXInNfH5QBSP8sgNpySwTgQzpSmWuBKHWJESOvlCLn3Qq2hEaDVoGZY63zLvknMOR6AnGpglKz76qcqvMAMfOkxUTgWZM5TnN9tK-tApnIuwDcj_uQka4gjJ-DSZg=s294-w294-h220-k-no",
                     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",

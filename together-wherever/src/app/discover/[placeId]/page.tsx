@@ -68,7 +68,7 @@ export default function DiscoverDetail() {
                     {/* Left Panel: Search and Place Details */}
                     <div className="w-3/5 p-5 flex flex-col space-y-4">
                         <div className="flex w-full items-center gap-2">
-                            <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.back()} />
+                            {/* <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.back()} /> */}
                             <div className="w-full">
                                 <PlaceSearchBox onSelect={fetchPlaceDetails} />
 
