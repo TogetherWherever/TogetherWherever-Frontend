@@ -1,7 +1,7 @@
 'use client';
 
 import axios from "axios";
-import { CreateNewTripBodyInterface } from "@/app/types";
+import { CreateNewTripBodyInterface } from "@/app/utils/types";
 
 
 export const createNewTrip = async (body: CreateNewTripBodyInterface) => {

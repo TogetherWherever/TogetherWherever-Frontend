@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { addDays } from "date-fns";
-import { CreateNewTripBodyInterface, PlaceDetails } from "@/app/types";
+import { CreateNewTripBodyInterface, PlaceDetails } from "@/app/utils/types";
 import { createNewTrip } from "@/app/fetcher/create-new-trip";
 import { useRouter } from "next/navigation";
 import axios from "axios";
