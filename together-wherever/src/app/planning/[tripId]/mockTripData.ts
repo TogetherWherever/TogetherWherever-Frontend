@@ -78,21 +78,21 @@ export const mockTripDetailData = {
                 ],
                 afternoon: [
                     {
-                        destID: "ChIJQSLg8hg6UDARpDYnTS8kgLM",
-                        destName: "Phuket FantaSea",
-                        photo: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB-nZEevBXD7TX3-w1mRY3C7YFuXCHhf4PqrH88xQXdBOE2HbFcXg01EPwqxNrULpfAMWODPDyQc-ZiSVR3QDg9U4PG7zYgt6dmqUECqw-teImfTKn_RUwKeoVrKy-Q1xDIAvr0=s1360-w1360-h1020-rw",
+                        destID: "ChIJW_ZuovoxUDARO9tP_1sCA30",
+                        destName: "Phuket Thai Hua Museum",
+                        photo: "https://lh3.googleusercontent.com/gps-proxy/ALd4DhHf7pmHjCTZEOX01Zh2MAOOpHcp8BldybqOhBEPcK8TwhQNjKgeO90QvIdanXVFBPr1fCWvbVjC_JHcsby8lWJAu7ZzcdIiaZtI4nWJ6-Hk4hUnFDfblGxwgLX3QmdT4h4_5hc7o5SfijgMWtxOyeoyGTo_fQH4IwfS4F0Z8ulUd5flCU9RCKvJWQ=w408-h272-k-no",
                         desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia dolor in augue auctor, at euismod nisl placerat. Fusce ac erat sed felis consequat tempus.",
                         openingHours: {
-                            "Sunday": { open: "17:30", close: "23:30" },
-                            "Monday": { open: null, close: null },
-                            "Tuesday": { open: "17:30", close: "23:30" },
-                            "Wednesday": { open: null, close: null },
-                            "Thursday": { open: null, close: null },
-                            "Friday": { open: "17:30", close: "23:30" },
-                            "Saturday": { open: null, close: null },
+                            "Sunday": { open: "09:00", close: "17:00" },
+                            "Monday": { open: "09:00", close: "17:00" },
+                            "Tuesday": { open: "09:00", close: "17:00" },
+                            "Wednesday": { open: "09:00", close: "17:00" },
+                            "Thursday": { open: "09:00", close: "17:00" },
+                            "Friday": { open: "09:00", close: "17:00" },
+                            "Saturday": { open: "09:00", close: "17:00" },
                         },
-                        lat: 7.956695821596965,
-                        lng: 98.28742629999998
+                        lat: 7.885187032861638,
+                        lng: 98.3867867
                     },
                 ],
                 night: [                    
@@ -128,14 +128,14 @@ export const mockTripDetailData = {
                 {
                     from: "Andamanda Phuket",
                     fromID: "ChIJ_YjQ6uQxUDARHVetUBkoi9k",
-                    to: "huket FantaSea",
-                    toID: "ChIJQSLg8hg6UDARpDYnTS8kgLM",
+                    to: "Phuket Thai Hua Museum",
+                    toID: "ChIJW_ZuovoxUDARO9tP_1sCA30",
                     distance_km: 20.3,
                     duration_min: 24
                 },
                 {
-                    from: "Phuket FantaSea",
-                    fromID: "ChIJQSLg8hg6UDARpDYnTS8kgLM",
+                    from: "Phuket Thai Hua Museum",
+                    fromID: "ChIJW_ZuovoxUDARO9tP_1sCA30",
                     to: "Promthep Cape",
                     toID: "ChIJtZgCJiEmUDARG1q53LLQaAs",
                     distance_km: 18.5,

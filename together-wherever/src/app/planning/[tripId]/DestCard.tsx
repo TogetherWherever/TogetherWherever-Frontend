@@ -22,6 +22,7 @@ interface DestCardPropsInterface {
     orderedDestinations?: { [key: string]: Array<DestDataInterface> }; // Optional prop for ordered destinations
     setOrderedDestinations?: Dispatch<any>; // Function to update orderedDestinations
     tripDate?: Date;
+    showWrongOrder?: () => void;
 }
 
 export default function DestCard({
@@ -30,7 +31,8 @@ export default function DestCard({
     period,
     orderedDestinations,
     setOrderedDestinations,
-    tripDate
+    tripDate,
+    showWrongOrder
 }: DestCardPropsInterface) {
     const dayOfWeek = format(tripDate || new Date(), "EEEE");
     const todayOpeningClosingHours = destData.openingHours[dayOfWeek as keyof typeof destData.openingHours];
@@ -50,93 +52,95 @@ export default function DestCard({
             : false;
 
     const getAvailableTimeSections = (openTime: string, closeTime: string) => {
-        const sections = {
-            "morning": { start: "06:00", end: "12:00" },
-            "afternoon": { start: "12:00", end: "18:00" },
-            "night": { start: "18:00", end: "23:59" } // Avoids next day
-        };
+        // const sections = {
+        //     "morning": { start: "06:00", end: "12:00" },
+        //     "afternoon": { start: "12:00", end: "18:00" },
+        //     "night": { start: "18:00", end: "23:59" } // Avoids next day
+        // };
 
-        const parseTime = (timeStr: string) => {
-            return new Date(`1970-01-01T${timeStr}:00`);
-        }
+        // const parseTime = (timeStr: string) => {
+        //     return new Date(`1970-01-01T${timeStr}:00`);
+        // }
 
-        const openDate = parseTime(openTime);
-        const closeDate = parseTime(closeTime);
-        let availableSections = [];
+        // const openDate = parseTime(openTime);
+        // const closeDate = parseTime(closeTime);
+        // let availableSections = [];
 
-        for (const [section, { start, end }] of Object.entries(sections)) {
-            const sectionStart = parseTime(start);
-            const sectionEnd = parseTime(end);
+        // for (const [section, { start, end }] of Object.entries(sections)) {
+        //     const sectionStart = parseTime(start);
+        //     const sectionEnd = parseTime(end);
 
-            // Check if the open-close time overlaps with the section
-            if (openDate < sectionEnd && closeDate > sectionStart) {
-                availableSections.push(section);
-            }
-        }
+        //     // Check if the open-close time overlaps with the section
+        //     if ((openDate < sectionEnd || openDate > sectionStart) && closeDate > sectionStart) {
+        //         availableSections.push(section);
+        //     } else if (showWrongOrder) { // Ensure showWrongOrder is defined before calling
+        //         showWrongOrder();
+        //     }
+        // }
 
-        return availableSections;
+        // return availableSections;
     }
 
     const isWithinTimeRange = (open: string, close: string, period: string) => {
-        const availableSections = getAvailableTimeSections(open, close);
-        if (availableSections.includes(period)) {
-            return true;
-        }
-        return false;
+        // const availableSections = getAvailableTimeSections(open, close);
+        // if (availableSections.includes(period)) {
+        //     return true;
+        // }
+        // return false;
     };
 
     const handleMoveUp = (index: number, periodKey: string) => {
-        const newDestinations = { ...orderedDestinations };
-        const destinationToMove = newDestinations[periodKey][index];
-        let periodToMove = "";
-        if (index === 0 && periodKey === "afternoon") {
-            periodToMove = "morning"
-            if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "morning")) {
-                newDestinations[periodToMove].push(destinationToMove);
-                newDestinations[periodKey].splice(index, 1);
-                console.log(newDestinations);
-            }
-        }
-        else if (index === 0 && periodKey === "night") {
-            periodToMove = "afternoon"
-            if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "afternoon")) {
-                newDestinations[periodToMove].push(destinationToMove);
-                newDestinations[periodKey].splice(index, 1);
-                console.log(newDestinations);
-            }
-        }
-        else if (index !== 0) {
-            newDestinations[periodKey].splice(index, 1);
-            newDestinations[periodKey].splice(index - 1, 0, destinationToMove);
-            console.log(newDestinations);
-        }
+        // const newDestinations = { ...orderedDestinations };
+        // const destinationToMove = newDestinations[periodKey][index];
+        // let periodToMove = "";
+        // if (index === 0 && periodKey === "afternoon") {
+        //     periodToMove = "morning"
+        //     if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "morning")) {
+        //         newDestinations[periodToMove].push(destinationToMove);
+        //         newDestinations[periodKey].splice(index, 1);
+        //         console.log(newDestinations);
+        //     }
+        // }
+        // else if (index === 0 && periodKey === "night") {
+        //     periodToMove = "afternoon"
+        //     if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "afternoon")) {
+        //         newDestinations[periodToMove].push(destinationToMove);
+        //         newDestinations[periodKey].splice(index, 1);
+        //         console.log(newDestinations);
+        //     }
+        // }
+        // else if (index !== 0) {
+        //     newDestinations[periodKey].splice(index, 1);
+        //     newDestinations[periodKey].splice(index - 1, 0, destinationToMove);
+        //     console.log(newDestinations);
+        // }
     };
 
     const handleMoveDown = (index: number, periodKey: string) => {
-        const newDestinations = { ...orderedDestinations };
-        const destinationToMove = newDestinations[periodKey][index];
-        let periodToMove = "";
-        if (index === newDestinations[periodKey].length - 1 && periodKey === "afternoon") {
-            periodToMove = "night"
-            if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "night")) {
-                newDestinations[periodToMove].unshift(destinationToMove);
-                newDestinations[periodKey].splice(index, 1);
-                console.log(newDestinations);
-            }
-        }
-        else if (index === newDestinations[periodKey].length - 1 && periodKey === "morning") {
-            periodToMove = "afternoon"
-            if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "afternoon")) {
-                newDestinations[periodToMove].unshift(destinationToMove);
-                newDestinations[periodKey].splice(index, 1);
-                console.log(newDestinations);
-            }
-        }
-        else if (index < newDestinations[periodKey].length - 1) {
-            newDestinations[periodKey].splice(index, 1);
-            newDestinations[periodKey].splice(index + 1, 0, destinationToMove);
-            console.log(newDestinations);
-        }
+        // const newDestinations = { ...orderedDestinations };
+        // const destinationToMove = newDestinations[periodKey][index];
+        // let periodToMove = "";
+        // if (index === newDestinations[periodKey].length - 1 && periodKey === "afternoon") {
+        //     periodToMove = "night"
+        //     if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "night")) {
+        //         newDestinations[periodToMove].unshift(destinationToMove);
+        //         newDestinations[periodKey].splice(index, 1);
+        //         console.log(newDestinations);
+        //     }
+        // }
+        // else if (index === newDestinations[periodKey].length - 1 && periodKey === "morning") {
+        //     periodToMove = "afternoon"
+        //     if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "afternoon")) {
+        //         newDestinations[periodToMove].unshift(destinationToMove);
+        //         newDestinations[periodKey].splice(index, 1);
+        //         console.log(newDestinations);
+        //     }
+        // }
+        // else if (index < newDestinations[periodKey].length - 1) {
+        //     newDestinations[periodKey].splice(index, 1);
+        //     newDestinations[periodKey].splice(index + 1, 0, destinationToMove);
+        //     console.log(newDestinations);
+        // }
     };
 
     return (
@@ -159,13 +163,13 @@ export default function DestCard({
             <div className={clsx("flex flex-col justify-between h-full", complete ? "" : "w-2/3")}>
                 <div className="flex items-center gap-2 text-2xl">
                     <label className='font-bold cursor-pointer'>{destData.destName} </label>
-                    {complete && (
-                        <div className={'text-lg'}>
-                            (Open: {todayOpeningClosingHours.open} | Close: {todayOpeningClosingHours.close})
-                        </div>
-                    )}
                 </div>
-                <div className={clsx("overflow-hidden text-ellipsis text-lg", complete ? "line-clamp-3" : "line-clamp-2")}>
+                {complete && (
+                    <div className={'text-md text-gray-600'}>
+                        Open: {todayOpeningClosingHours.open} | Close: {todayOpeningClosingHours.close}
+                    </div>
+                )}
+                <div className={clsx("overflow-hidden text-ellipsis text-lg line-clamp-2")}>
                     {destData.desc}
                 </div>
             </div>

@@ -14,9 +14,10 @@ interface TripDateDropdownPropsInterface {
   tripDate: Date;
   tripDay: any;
   showToast: () => void;
+  showWrongOrder?: () => void;
 };
 
-export default function TripDayDropDown({ key, tripDate, tripDay, showToast }: TripDateDropdownPropsInterface) {
+export default function TripDayDropDown({ key, tripDate, tripDay, showToast, showWrongOrder }: TripDateDropdownPropsInterface) {
   const formattedDate = format(tripDate, "EEEE, MMMM dd");
   const [showDestination, setShowDestination] = useState<boolean>(false);
   const [orderedDestinations, setOrderedDestinations] = useState(tripDay.voted_dests);
@@ -162,6 +163,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast }: T
                                   period={periodKey}
                                   orderedDestinations={tripDay.voted_dests}
                                   setOrderedDestinations={setOrderedDestinations}
+                                  showWrongOrder={showWrongOrder}
                                 />
                               ) : (
                                 <div className="h-[50px]"></div>

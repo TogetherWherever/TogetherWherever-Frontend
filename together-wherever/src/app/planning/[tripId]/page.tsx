@@ -33,6 +33,9 @@ export default function Planning() {
     const showToast = () => {
         toast.error("You aren't allowed to open this until the current vote status is complete.");
     };
+    const showWrongOrder = () => {
+        toast.error("This location is not open during the selected period.");
+    };
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -72,7 +75,13 @@ export default function Planning() {
                 return null;
             }
 
-            return <TripDayDropDown key={index} tripDate={tripDate} tripDay={tripDay} showToast={showToast} />;
+            return <TripDayDropDown 
+                key={index} 
+                tripDate={tripDate} 
+                tripDay={tripDay} 
+                showToast={showToast} 
+                showWrongOrder={showWrongOrder}    
+            />;
         });
     };
 
