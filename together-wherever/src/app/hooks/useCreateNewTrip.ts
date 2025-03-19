@@ -6,6 +6,7 @@ import {CreateNewTripBodyInterface, PlaceDetails} from "@/app/utils/types";
 import {createNewTrip} from "@/app/fetcher/create-new-trip";
 import {useRouter} from "next/navigation";
 import axios from "axios";
+import {jwtDecode} from "jwt-decode";
 
 export const useCreateNewTrips = () => {
     const [tripName, setTripName] = useState('');
@@ -21,6 +22,7 @@ export const useCreateNewTrips = () => {
             key: "selection",
         },
     ]);
+    const [username, setUsername] = useState<string | undefined>('');
 
     const router = useRouter();
 
@@ -69,7 +71,7 @@ export const useCreateNewTrips = () => {
     const handleClickStartPlanning = () => {
         if (tripName !== '' && placeId !== '' && placeName !== '') {
             const body: CreateNewTripBodyInterface = {
-                owner: 'test',  // username (replace with actual user)
+                owner: username?username:"",  // The owner's username (if logged in) or empty string
                 trip_name: tripName,
                 dest_id: placeId || "01", // Use actual placeId
                 dest_name: placeName || "Phuket",
@@ -100,6 +102,15 @@ export const useCreateNewTrips = () => {
             setTripName(tripName.slice(0, 50));
         }
     }, [tripName]);
+
+    // Fetch username from JWT token
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decoded = jwtDecode(token);
+            setUsername(decoded.sub);
+        }
+    }, []);
 
     return {
         tripName,
