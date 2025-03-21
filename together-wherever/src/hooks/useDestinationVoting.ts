@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { DestinationInterface, TripDetailsInterface } from "@/app/utils/voting-page";
-import { fetchVotingPageData } from "@/app/fetcher/voting-page";
+import { DestinationInterface, TripDetailsInterface } from "@/utils/voting-page";
+import { fetchVotingPageData } from "@/fetcher/voting-page";
 
 export function useDestinationVoting() {
     const [tripDetails, setTripDetails] = useState<TripDetailsInterface | null>(null);
@@ -49,7 +49,7 @@ export function useDestinationVoting() {
     useEffect(() => {
         const getVotingPageData = async () => {
           try {
-            // Await the result of fetchVotingPageData to resolve the promise
+            // simulate await the result of fetchVotingPageData
             const { tripDetails, destinations, scores } = await fetchVotingPageData();
     
             setTripDetails(tripDetails);

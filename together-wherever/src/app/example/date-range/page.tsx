@@ -1,6 +1,6 @@
 'use client';
 
-import DateRangeInput from '@/app/components/DateRangeInput'
+import DateRangeInput from '@/components/DateRangeInput'
 import { useState } from 'react';
 import { addDays } from "date-fns";
 

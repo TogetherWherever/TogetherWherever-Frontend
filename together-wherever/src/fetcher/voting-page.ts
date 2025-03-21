@@ -1,6 +1,6 @@
 // import axios from 'axios';
-import { votingPageMockData } from "@/app/mocks/vote";
-import { DestinationInterface, TripDetailsInterface } from "@/app/utils/voting-page";
+import { votingPageMockData } from "@/mocks/vote";
+import { DestinationInterface, TripDetailsInterface } from "@/utils/voting-page";
 
 // Simulate an actual API call
 export const fetchVotingPageData = async (): Promise<{

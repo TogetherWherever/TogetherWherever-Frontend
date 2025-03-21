@@ -4,8 +4,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { preferences } from "@/app/utils/preferences";
-import { formatPreference } from "@/app/utils/formatPreferences";
+import { preferences } from "@/utils/preferences";
+import { formatPreference } from "@/utils/format-preferences";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({

@@ -1,53 +1,21 @@
 'use client';
 
-import { useState, useEffect, SetStateAction } from 'react';
-import { Input } from '@headlessui/react';
-import PlaceSearchBox from "@/app/components/PlaceSearchBox";
-import DateRangeInput from '@/app/components/DateRangeInput';
+// External Libraries
+import { Input, Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import Image from "next/image";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
-import { BaseButton } from "@/app/components/buttons/BaseButton";
-import { useCreateNewTrips } from "@/app/hooks/useCreateNewTrip";
-import { useRouter } from "next/navigation";
-import DialogBox from "@/app/components/Dialog";
 import { ClipLoader } from "react-spinners";
 
-const mockUsers = [
-    {
-        userId: '01',
-        name: 'Christopher',
-        profileImage: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
-    },
-    {
-        userId: '02',
-        name: 'Bob',
-        profileImage: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
-    },
-    {
-        userId: '03',
-        name: 'Susan',
-        profileImage: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
-    },
-    {
-        userId: '04',
-        name: 'Richard',
-        profileImage: "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
-    }
-];
+// Internal Imports
+import PlaceSearchBox from "@/components/PlaceSearchBox";
+import DateRangeInput from '@/components/DateRangeInput';
+import { BaseButton } from "@/components/buttons/BaseButton";
+import DialogBox from "@/components/Dialog";
 
-const dialogTxt = {
-    topic: "Create New Trip",
-    desc: "Please confirm that you want to create a new trip."
-};
+import { useCreateNewTrips } from "@/hooks/useCreateNewTrip";
+import { CREATE_NEW_TRIP_CONFIRMATION_DIALOG } from "@/constants/create-new-trip";
 
 export default function CreateNewTrip() {
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        setTimeout(() => setLoading(false), 1000); // Simulate loading for 3 seconds
-    }, []);
-
     const {
         tripName,
         tripNameLength,
@@ -60,28 +28,14 @@ export default function CreateNewTrip() {
         fetchPlaceDetails,
         handleClickStartPlanning,
         companionIds,
-        handleRemoveCompanion
+        handleRemoveCompanion,
+        usersData,
+        loading,
+        setIsOpen,
+        isOpen,
+        filteredResults
     } = useCreateNewTrips();
-
-    const router = useRouter();
-    let [isOpen, setIsOpen] = useState(false)
-
-    useEffect(() => {
-        // Check if token exists in localStorage
-        const token = localStorage.getItem('token');
-
-        if (token) {
-        } else {
-            router.push('/signin'); // Redirect to login page
-        }
-    }, [router]);
-
-    const [usersData] = useState<Array<{ userId: string; name: string; profileImage: string; }>>(mockUsers);
-
-    const filteredResults = usersData.filter((item) =>
-        item.name.toLowerCase().includes(companionName.toLowerCase())
-    );
-
+    
     return (
         <>
             {loading ? (
@@ -156,7 +110,7 @@ export default function CreateNewTrip() {
                                             )}
                                             {companionIds.length > 0 && (
                                                 <div className="flex items-center mt-2 gap-6">
-                                                    {usersData
+                                                    {(usersData ?? [])
                                                         .filter((user) => companionIds.includes(user.userId)) // Find matching users
                                                         .slice(0, 2) // Show only the first two
                                                         .map((user) => (
@@ -181,11 +135,11 @@ export default function CreateNewTrip() {
                                                                     {user.name}                                                             </div>
                                                             </div>
                                                         ))}
-                                                    {usersData.filter((user) => companionIds.includes(user.userId)).length > 2 && (
+                                                    {(usersData ?? []).filter((user) => companionIds.includes(user.userId)).length > 2 && (
                                                         <Popover className="relative">
                                                             <PopoverButton>
                                                                 <div className="w-[50px] h-[50px] flex items-center justify-center rounded-full bg-gray-300 text-white font-bold text-lg">
-                                                                    +{usersData.filter((user) => companionIds.includes(user.userId)).length - 2}
+                                                                    +{(usersData ?? []).filter((user) => companionIds.includes(user.userId)).length - 2}
                                                                 </div>
                                                             </PopoverButton>
                                                             <PopoverPanel
@@ -195,7 +149,7 @@ export default function CreateNewTrip() {
                                                             >
                                                                 <div className="absolute -top-2 left-4 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white"></div>
                                                                 <div className="flex flex-col gap-2">
-                                                                    {usersData
+                                                                    {(usersData ?? [])
                                                                         .filter((user) => companionIds.includes(user.userId))
                                                                         .slice(2)
                                                                         .map((user) => (
@@ -230,7 +184,7 @@ export default function CreateNewTrip() {
                         isOpen={isOpen}
                         setIsOpen={setIsOpen}
                         onConfirm={handleClickStartPlanning}
-                        dialogTxt={dialogTxt}
+                        dialogTxt={CREATE_NEW_TRIP_CONFIRMATION_DIALOG}
                     />
                 </div>
             )}

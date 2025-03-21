@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from "next/navigation";
-import { BaseButton } from "@/app/components/buttons/BaseButton";
+import { BaseButton } from "@/components/buttons/BaseButton";
 
 export default function Profile() {
     const router = useRouter();

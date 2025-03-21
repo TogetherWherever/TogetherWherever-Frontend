@@ -1,5 +1,5 @@
 'use client';
-import { VerticalLineWrapper, VerticalLineContent } from "@/app/components/vertical-line/VerticalLine";
+import { VerticalLineWrapper, VerticalLineContent } from "@/components/vertical-line/VerticalLine";
 import { addDays, format } from "date-fns";
 import TripDayDropDown from '@/app/planning/[tripId]/TripDayDropDown';
 import { useState, useEffect } from "react";

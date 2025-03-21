@@ -2,12 +2,12 @@
 
 import {useState, useEffect} from "react";
 import {useParams} from "next/navigation";
-import PlaceSearchBox from "@/app/components/PlaceSearchBox";
-import MapView from "@/app/components/Map";
-import {PlaceDetails} from "@/app/utils/types";
+import PlaceSearchBox from "@/components/PlaceSearchBox";
+import MapView from "@/components/Map";
+import {PlaceDetails} from "@/utils/types";
 import axios from "axios";
 import {MapPinIcon, PhoneIcon, StarIcon, CheckIcon} from "@heroicons/react/24/solid";
-import {NearbyCard} from "@/app/components/cards/NearbyCard";
+import {NearbyCard} from "@/components/cards/NearbyCard";
 
 const defaultCenter = {
     lat: 13.736717, // Default to Bangkok, Thailand

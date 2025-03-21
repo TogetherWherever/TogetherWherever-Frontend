@@ -1,6 +1,6 @@
 import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { Dispatch, SetStateAction } from 'react';
-import { BaseButton } from "@/app/components/buttons/BaseButton";
+import { BaseButton } from "@/components/buttons/BaseButton";
 
 interface DialogTxt {
   topic: string;

@@ -1,5 +1,5 @@
-import { BaseCard } from "@/app/components/cards/BaseCard"
-import { NearbyPlaces } from "@/app/utils/types";
+import { BaseCard } from "@/components/cards/BaseCard"
+import { NearbyPlaces } from "@/utils/types";
 
 interface NearbyCardProps {
     place: NearbyPlaces;

@@ -1,17 +1,17 @@
 'use client';
 
-import MapView from "@/app/components/Map";
+import MapView from "@/components/Map";
 import { ArrowLeftIcon, ArrowRightIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import Image from 'next/image';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
-import { BaseButton } from "@/app/components/buttons/BaseButton";
+import { BaseButton } from "@/components/buttons/BaseButton";
 import { ShareIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { addDays, format } from "date-fns";
 import TripDayDropDown from './TripDayDropDown';
 import { mockTripDetailData } from "./mockTripData";
-import ToastNotification from '@/app/components/ToastNotification';
+import ToastNotification from '@/components/ToastNotification';
 import { toast } from 'react-toastify';
 import { ClipLoader } from "react-spinners";
 

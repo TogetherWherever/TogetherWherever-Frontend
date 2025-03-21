@@ -1,6 +1,6 @@
 'use client';
 
-import { BaseButton } from "@/app/components/buttons/BaseButton";
+import { BaseButton } from "@/components/buttons/BaseButton";
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { ShareIcon } from '@heroicons/react/24/solid';
 

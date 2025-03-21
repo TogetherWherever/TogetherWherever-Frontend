@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { BaseCard } from "@/app/components/cards/BaseCard"
+import { BaseCard } from "@/components/cards/BaseCard"
 import { CalendarIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
 interface TripCardPropsInterface {

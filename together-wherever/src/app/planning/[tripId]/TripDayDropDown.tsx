@@ -7,7 +7,7 @@ import { useRouter, useParams } from "next/navigation";
 import { format } from "date-fns";
 import DestCard from "./DestCard";
 import clsx from "clsx";
-import { BaseButton } from "@/app/components/buttons/BaseButton";
+import { BaseButton } from "@/components/buttons/BaseButton";
 
 interface TripDateDropdownPropsInterface {
     key: any;
