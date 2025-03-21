@@ -3,6 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { Dispatch } from 'react';
 import { format } from "date-fns";
+import { updateDestination } from "@/app/fetcher/destination-scheduling";
 
 interface DestDataInterface {
     destID: string;
@@ -18,10 +19,11 @@ interface DestDataInterface {
 interface DestCardPropsInterface {
     destData: DestDataInterface;
     complete?: boolean;
-    period?: string;
+    period?: "morning" | "afternoon" | "night";
     orderedDestinations?: { [key: string]: Array<DestDataInterface> }; // Optional prop for ordered destinations
     setOrderedDestinations?: Dispatch<any>; // Function to update orderedDestinations
-    tripDate?: Date;
+    tripDate: Date;
+    tripId?: string | string[];
     showWrongOrder?: () => void;
 }
 
@@ -32,6 +34,7 @@ export default function DestCard({
     orderedDestinations,
     setOrderedDestinations,
     tripDate,
+    tripId,
     showWrongOrder
 }: DestCardPropsInterface) {
     const dayOfWeek = format(tripDate || new Date(), "EEEE");
@@ -41,8 +44,7 @@ export default function DestCard({
         window.open(`/discover/${destData.destID}`, '_blank');
     };
 
-    // Check if orderedDestinations and period are provided
-    const periodKey = period || ""; // Use destID or another unique key as period key
+    const periodKey = period as "morning" | "afternoon" | "night";
     const destinationIndex = orderedDestinations?.[periodKey]?.findIndex(
         (item) => item.destID === destData.destID
     );
@@ -51,96 +53,70 @@ export default function DestCard({
             ? destinationIndex === orderedDestinations[periodKey]?.length - 1
             : false;
 
-    const getAvailableTimeSections = (openTime: string, closeTime: string) => {
-        // const sections = {
-        //     "morning": { start: "06:00", end: "12:00" },
-        //     "afternoon": { start: "12:00", end: "18:00" },
-        //     "night": { start: "18:00", end: "23:59" } // Avoids next day
-        // };
+    const handleMoveUp = (
+        index: number,
+        periodKey: "morning" | "afternoon" | "night",
+        destinationID: string
+    ) => {
+        const fromCategory = periodKey;
+        let action: "move" | "reorder" = "move";
+        let toCategory: "morning" | "afternoon" | "night" | null = null;
+        let newIndex = null;       
 
-        // const parseTime = (timeStr: string) => {
-        //     return new Date(`1970-01-01T${timeStr}:00`);
-        // }
-
-        // const openDate = parseTime(openTime);
-        // const closeDate = parseTime(closeTime);
-        // let availableSections = [];
-
-        // for (const [section, { start, end }] of Object.entries(sections)) {
-        //     const sectionStart = parseTime(start);
-        //     const sectionEnd = parseTime(end);
-
-        //     // Check if the open-close time overlaps with the section
-        //     if ((openDate < sectionEnd || openDate > sectionStart) && closeDate > sectionStart) {
-        //         availableSections.push(section);
-        //     } else if (showWrongOrder) { // Ensure showWrongOrder is defined before calling
-        //         showWrongOrder();
-        //     }
-        // }
-
-        // return availableSections;
-    }
-
-    const isWithinTimeRange = (open: string, close: string, period: string) => {
-        // const availableSections = getAvailableTimeSections(open, close);
-        // if (availableSections.includes(period)) {
-        //     return true;
-        // }
-        // return false;
+        if (index === 0) {
+            action =  "move";
+            if (period === "afternoon") {
+                toCategory = "morning"
+            } else {
+                toCategory = "afternoon"
+            }
+        } else {
+            action =  "reorder";
+            newIndex = index - 1;
+        }
+        
+        const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
+        if (res !== null) {
+            console.log(`Destination successfully updated.`);
+            console.log(res);
+        } else {
+            console.error(`Failed to update destination.`);
+        }
     };
 
-    const handleMoveUp = (index: number, periodKey: string) => {
-        // const newDestinations = { ...orderedDestinations };
-        // const destinationToMove = newDestinations[periodKey][index];
-        // let periodToMove = "";
-        // if (index === 0 && periodKey === "afternoon") {
-        //     periodToMove = "morning"
-        //     if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "morning")) {
-        //         newDestinations[periodToMove].push(destinationToMove);
-        //         newDestinations[periodKey].splice(index, 1);
-        //         console.log(newDestinations);
-        //     }
-        // }
-        // else if (index === 0 && periodKey === "night") {
-        //     periodToMove = "afternoon"
-        //     if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "afternoon")) {
-        //         newDestinations[periodToMove].push(destinationToMove);
-        //         newDestinations[periodKey].splice(index, 1);
-        //         console.log(newDestinations);
-        //     }
-        // }
-        // else if (index !== 0) {
-        //     newDestinations[periodKey].splice(index, 1);
-        //     newDestinations[periodKey].splice(index - 1, 0, destinationToMove);
-        //     console.log(newDestinations);
-        // }
-    };
+    const handleMoveDown = (
+        index: number,
+        periodKey: "morning" | "afternoon" | "night",
+        destinationID: string
+    ) => {  
+        const fromCategory = periodKey;
+        let action: "move" | "reorder" = "move";
+        let toCategory: "morning" | "afternoon" | "night" | null = null;
+        let newIndex = null;
 
-    const handleMoveDown = (index: number, periodKey: string) => {
-        // const newDestinations = { ...orderedDestinations };
-        // const destinationToMove = newDestinations[periodKey][index];
-        // let periodToMove = "";
-        // if (index === newDestinations[periodKey].length - 1 && periodKey === "afternoon") {
-        //     periodToMove = "night"
-        //     if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "night")) {
-        //         newDestinations[periodToMove].unshift(destinationToMove);
-        //         newDestinations[periodKey].splice(index, 1);
-        //         console.log(newDestinations);
-        //     }
-        // }
-        // else if (index === newDestinations[periodKey].length - 1 && periodKey === "morning") {
-        //     periodToMove = "afternoon"
-        //     if (isWithinTimeRange(todayOpeningClosingHours.open, todayOpeningClosingHours.close, "afternoon")) {
-        //         newDestinations[periodToMove].unshift(destinationToMove);
-        //         newDestinations[periodKey].splice(index, 1);
-        //         console.log(newDestinations);
-        //     }
-        // }
-        // else if (index < newDestinations[periodKey].length - 1) {
-        //     newDestinations[periodKey].splice(index, 1);
-        //     newDestinations[periodKey].splice(index + 1, 0, destinationToMove);
-        //     console.log(newDestinations);
-        // }
+        const newDestinations = { ...orderedDestinations };
+        const periodDestinations = newDestinations[periodKey];
+
+        if (index === periodDestinations?.length - 1) {
+            action =  "move";
+            if (period === "morning") {
+                toCategory = "afternoon"
+            } else {
+                toCategory = "night"
+            }
+        } else {
+            action =  "reorder";
+            newIndex = index + 1;
+        }
+
+        const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
+
+        if (res !== null) {
+            console.log(`Destination successfully updated.`);
+            console.log(res);
+        } else {
+            console.error(`Failed to update destination.`);
+        }
     };
 
     return (
@@ -186,7 +162,11 @@ export default function DestCard({
                             className="opacity-25 hover:opacity-100"
                             onClick={(event: any) => {
                                 event.stopPropagation();
-                                handleMoveUp(destinationIndex, periodKey); // Pass the periodKey here
+                                handleMoveUp(
+                                    destinationIndex,
+                                    periodKey,
+                                    destData.destID,
+                                );
                             }}
                         />
                     )}
@@ -201,7 +181,11 @@ export default function DestCard({
                                 className="opacity-25 hover:opacity-100"
                                 onClick={(event: any) => {
                                     event.stopPropagation();
-                                    handleMoveDown(destinationIndex, periodKey); // Pass the periodKey here
+                                    handleMoveDown(
+                                        destinationIndex,
+                                        periodKey,
+                                        destData.destID,
+                                    );
                                 }}
                             />
                         </div>
