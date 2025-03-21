@@ -31,7 +31,7 @@ export type PlaceDetails = {
 
 export interface DestinationDetailsProps {
     details: PlaceDetails;
-}
+};
 
 export interface CreateNewTripBodyInterface {
     owner: string;
@@ -42,4 +42,23 @@ export interface CreateNewTripBodyInterface {
     end_date: string;
     duration: number;
     companion: string;
-}
+};
+
+export interface DestinationInterface {
+    destID: string;
+    destName: string;
+    photo: string;
+};
+
+export interface TripDetailsInterface {
+    trip_id: string;
+    tripName: string;
+    photo: string;
+    startDate: Date;
+    lastDate: Date;
+    voting_date: Date;
+    members_voted: number;
+    total_members: number;
+    companion: { username: string; profilePic: string }[];
+    destinations: DestinationInterface[];
+};

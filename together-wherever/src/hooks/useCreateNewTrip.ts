@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { addDays } from "date-fns";
+import { useRouter } from "next/navigation";
+
 import { CreateNewTripBodyInterface } from "@/utils/types";
 import { fetchingUsersData, createNewTrip } from "@/fetcher/create-new-trip";
-import { useRouter } from "next/navigation";
 import { fetchPlaceDetails } from "@/fetcher/get-place-details";
 
 export const useCreateNewTrips = () => {
@@ -30,34 +31,6 @@ export const useCreateNewTrips = () => {
             key: "selection",
         },
     ]);
-
-    // Fetch users data when the component mounts
-    useEffect(() => {
-        const getUsersData = async () => {
-            try {
-                const allUsersData = await fetchingUsersData();
-                setUsersData(allUsersData);
-            } catch (err) {
-                console.error("Error loading voting page data:", err);
-                setLoading(false);
-            }
-        };
-
-        getUsersData();
-    }, []);
-
-    // Simulate loading state for 1 second
-    useEffect(() => {
-        setTimeout(() => setLoading(false), 1000);
-    }, []);
-
-    // Check for token in localStorage to enforce login
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            router.push('/login');
-        }
-    }, [router]);
 
     // Handlers for form and trip interactions
     const handleChangeTripName = (e: any) => setTripName(e.target.value);
@@ -97,6 +70,34 @@ export const useCreateNewTrips = () => {
             router.push(`/planning/${res.trip_id}`);
         }
     };
+
+    // Fetch users data when the component mounts
+    useEffect(() => {
+        const getUsersData = async () => {
+            try {
+                const allUsersData = await fetchingUsersData();
+                setUsersData(allUsersData);
+            } catch (err) {
+                console.error("Error loading voting page data:", err);
+                setLoading(false);
+            }
+        };
+
+        getUsersData();
+    }, []);
+
+    // Simulate loading state for 1 second
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 1000);
+    }, []);
+
+    // Check for token in localStorage to enforce login
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/login');
+        }
+    }, [router]);
 
     // Trip name length updates
     useEffect(() => {
