@@ -62,3 +62,63 @@ export interface TripDetailsInterface {
     companion: { username: string; profilePic: string }[];
     destinations: DestinationInterface[];
 };
+
+// planning page
+interface Companion {
+    username: string;
+    profilePic: string;
+}
+
+interface OpeningHours {
+    [day: string]: {
+        open: string;
+        close: string;
+    };
+}
+
+interface Destination {
+    destID: string;
+    destName: string;
+    photo: string;
+    desc: string;
+    openingHours: OpeningHours;
+    lat: number;
+    lng: number;
+}
+
+interface Distance {
+    from: string;
+    fromID: string;
+    to: string;
+    toID: string;
+    distance_km: number;
+    duration_min: number;
+}
+
+export interface TripDay {
+    day: number;
+    status: "complete" | "voting" | "pending";
+    voted: boolean;
+    distance?: Distance[];
+    voted_dests?: {
+        morning: Destination[];
+        afternoon: Destination[];
+        night: Destination[];
+    };
+    suitableDests?: Destination[];
+    members_voted?: number;
+    total_members?: number;
+    user_voted?: boolean;
+}
+
+export interface TripDetail {
+    tripName: string;
+    startDate: Date;
+    lastDate: Date;
+    photo: string;
+    lat: number;
+    lng: number;
+    companion: Companion[];
+    trip_day: TripDay[];
+}
+

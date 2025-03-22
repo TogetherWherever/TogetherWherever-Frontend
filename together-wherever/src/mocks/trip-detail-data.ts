@@ -1,7 +1,8 @@
 
 import { addDays } from "date-fns";
+import { TripDetail } from "@/utils/types";
 
-export const mockTripDetailData = {
+export const mockTripDetailData: TripDetail = {
     tripName: "Trip To: Phuket",
     startDate: new Date(),
     lastDate: addDays(new Date(), 7),

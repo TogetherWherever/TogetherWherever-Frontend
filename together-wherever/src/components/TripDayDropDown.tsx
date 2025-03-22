@@ -5,7 +5,7 @@ import { useState } from "react";
 import { SunIcon, MoonIcon, CloudIcon } from "@heroicons/react/24/solid";
 import { useRouter, useParams } from "next/navigation";
 import { format } from "date-fns";
-import DestCard from "./DestCard";
+import DestCard from "@/components/cards/DestCard";
 import clsx from "clsx";
 import { BaseButton } from "@/components/buttons/BaseButton";
 
