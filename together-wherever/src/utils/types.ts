@@ -34,10 +34,10 @@ export interface DestinationDetailsProps {
 };
 
 export interface CreateNewTripBodyInterface {
-    owner: string;
+    owner: string | undefined;
     trip_name: string;
     dest_id: string;
-    dest_name: string;
+    dest_name: string | undefined;
     start_date: string;
     end_date: string;
     duration: number;

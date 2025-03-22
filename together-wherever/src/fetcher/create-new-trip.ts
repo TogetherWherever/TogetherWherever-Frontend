@@ -29,9 +29,13 @@ export const fetchingUsersData = () => {
 export const createNewTrip = async (body: CreateNewTripBodyInterface) => {
     try {
         const response = await axios.post('http://localhost:8000/api/create-new-trip/', body);
-
-        // Handle successful response
-        alert(`Trip created successfully with ID: ${response.data.trip_id}`);
+        // Handle successful response        
+        if (response.status === 200) {
+            return response.data
+        } else {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }
+        
     } catch (error: any) {
         // Handle error response
         if (error.response) {

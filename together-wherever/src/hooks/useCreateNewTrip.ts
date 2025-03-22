@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { addDays } from "date-fns";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from 'jwt-decode';
 
 import { CreateNewTripBodyInterface } from "@/utils/types";
 import { fetchingUsersData, createNewTrip } from "@/fetcher/create-new-trip";
@@ -14,12 +15,17 @@ export const useCreateNewTrips = () => {
     // States
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+
     const [tripName, setTripName] = useState('');
     const [tripNameLength, setTripNameLength] = useState(0);
+
     const [companionName, setCompanionName] = useState('');
     const [companionIds, setCompanionIds] = useState<Array<string>>([]);
-    const [placeName, setPlaceName] = useState<string | null>(null);
+
+    const [placeName, setPlaceName] = useState<string | undefined>();
     const [placeId, setPlaceId] = useState<string>();
+
+    const [ownerName, setOwnerName] = useState<string | undefined>();
     const [usersData, setUsersData] = useState<Array<{ userId: string; name: string; profileImage: string; }>>();
     const filteredResults = (usersData || []).filter((item) =>
         item.name.toLowerCase().includes(companionName.toLowerCase())
@@ -50,24 +56,45 @@ export const useCreateNewTrips = () => {
         setCompanionIds((prevIds) => prevIds.filter((id) => id !== userId));
     };
 
-    const handleClickStartPlanning = () => {
+    const formatDateToLocal = (date: Date) => {
+        return new Date(date).toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }).split('/').reverse().join('-'); // Convert to "YYYY-MM-DD"
+    };
+
+    const getDuration = (startDate: Date, endDate: Date) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const timeDifference = end.getTime() - start.getTime();
+
+        const daysDifference = Math.round(timeDifference / (1000 * 3600 * 24));
+
+        return daysDifference
+    };
+
+    const handleClickStartPlanning = async() => {
         if (tripName !== '' && placeId !== '' && placeName !== '') {
+            const { startDate, endDate } = range[0];
             const body: CreateNewTripBodyInterface = {
-                owner: 'test',  // Placeholder username (replace with actual user)
+                owner: ownerName,
                 trip_name: tripName,
-                dest_id: placeId || "01",  // Use actual placeId
-                dest_name: placeName || "Phuket",
-                start_date: new Date(range[0].startDate).toISOString().split('T')[0],  // Convert to YYYY-MM-DD
-                end_date: new Date(range[0].endDate).toISOString().split('T')[0],      // Convert to YYYY-MM-DD
-                duration: Math.ceil((range[0].endDate.getTime() - range[0].startDate.getTime()) / (1000 * 3600 * 24) + 1),
+                dest_id: placeId || "01",  // Mock
+                dest_name: placeName ?? "Phuket", // Mock
+                start_date: formatDateToLocal(startDate),
+                end_date: formatDateToLocal(endDate),                
+                duration: getDuration(startDate, endDate),
                 companion: companionIds.join(','),
             };
 
-            createNewTrip(body);
-
-            // Redirect after creating a new trip
-            const res = { message: "Mocked response from creating a new trip.", trip_id: '001' };
-            router.push(`/planning/${res.trip_id}`);
+            try {
+                const res = await createNewTrip(body);    
+                router.push(`/planning/${res.trip_id}`);      
+            } catch (error: any) {
+                throw new Error(error.message)
+            }
         }
     };
 
@@ -110,6 +137,18 @@ export const useCreateNewTrips = () => {
             setTripName(tripName.slice(0, 50));
         }
     }, [tripName]);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                setOwnerName(decoded.sub);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    }, []);
 
     return {
         tripName,
