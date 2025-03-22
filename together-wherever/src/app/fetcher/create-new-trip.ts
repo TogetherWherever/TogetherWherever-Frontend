@@ -10,6 +10,7 @@ export const createNewTrip = async (body: CreateNewTripBodyInterface) => {
 
         // Handle successful response
         alert(`Trip created successfully with ID: ${response.data.trip_id}`);
+        return response.data;
     } catch (error: any) {
         // Handle error response
         if (error.response) {
@@ -22,5 +23,6 @@ export const createNewTrip = async (body: CreateNewTripBodyInterface) => {
             // Something else happened
             alert(`Error: ${error.message}`);
         }
+        throw error;
     }
 };

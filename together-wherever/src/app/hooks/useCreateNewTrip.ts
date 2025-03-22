@@ -15,6 +15,8 @@ export const useCreateNewTrips = () => {
     const [companionIds, setCompanionIds] = useState<Array<string>>([]);
     const [placeName, setPlaceName] = useState<string | null>(null);
     const [placeId, setPlaceId] = useState<string>();
+    const [lat, setLat] = useState<number>();
+    const [lon, setLon] = useState<number>();
     const [range, setRange] = useState([
         {
             startDate: new Date(),
@@ -32,10 +34,10 @@ export const useCreateNewTrips = () => {
             const res = await axios.get(`http://localhost:8000/api/discover-place-details/?dest_id=${placeId}`);
             const data = res.data as PlaceDetails;
 
-            console.log("Fetched Place Data:", data);
-
             setPlaceName(data.destName);
             setPlaceId(data.destID);
+            setLat(data.lat);
+            setLon(data.lon);
         } catch (error) {
             console.error("Failed to fetch place details", error);
         }
@@ -68,27 +70,31 @@ export const useCreateNewTrips = () => {
     };
 
     // Start planning the trip
-    const handleClickStartPlanning = () => {
+    const handleClickStartPlanning = async () => {
         if (tripName !== '' && placeId !== '' && placeName !== '') {
             const body: CreateNewTripBodyInterface = {
                 owner: username?username:"",  // The owner's username (if logged in) or empty string
                 trip_name: tripName,
                 dest_id: placeId || "01", // Use actual placeId
                 dest_name: placeName || "Phuket",
+                dest_lat: lat || 7.8804,
+                dest_lon: lon || 98.3923,
                 start_date: new Date(range[0].startDate).toISOString().split('T')[0], // Convert to YYYY-MM-DD
                 end_date: new Date(range[0].endDate).toISOString().split('T')[0],     // Convert to YYYY-MM-DD
                 duration: Math.ceil(
                     (range[0].endDate.getTime() - range[0].startDate.getTime()) / (1000 * 3600 * 24) + 1
                 ),
                 companion: companionIds.join(','), // Comma-separated companion IDs
-            };
+            }
 
-            createNewTrip(body);
+            const resp = await createNewTrip(body);
+            if (resp) {
+                // Handle successful response
+                alert(`Trip created successfully with ID: ${resp.trip_id}`);
+                router.push(`/planning/${resp.trip_id}`);
+            }
+
         }
-
-        // Mocked response after creating a new trip
-        const res = {message: "Mocked response from creating a new trip.", trip_id: '001'};
-        router.push(`/planning/${res.trip_id}`);
     };
 
     // Update trip name length when tripName changes
