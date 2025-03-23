@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 
 import { CreateNewTripBodyInterface } from "@/utils/types";
 import { fetchingUsersData, createNewTrip } from "@/fetcher/create-new-trip";
-import { fetchPlaceDetails } from "@/fetcher/get-place-details";
+import { fetchPlaceDetails } from "@/fetcher/getPlaceDetails";
 
 export const useCreateNewTrips = () => {
     const router = useRouter();

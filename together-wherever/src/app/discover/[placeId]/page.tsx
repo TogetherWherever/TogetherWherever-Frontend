@@ -31,7 +31,7 @@ export default function DiscoverDetail() {
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
     };
 
-    const fetchPlaceDetails = async (placeId: string) => {
+    const fetchPlaceDetails = async (placeId: string | string[]) => {
         try {
             const res = await axios.get(`http://localhost:8000/api/discover-place-details/?dest_id=${placeId}`);
             const data = res.data as PlaceDetails;

@@ -1,51 +1,25 @@
 'use client';
 
-import {useState} from "react";
+import {MapPinIcon, PhoneIcon, StarIcon, CheckIcon} from "@heroicons/react/24/solid";
+
 import PlaceSearchBox from "@/components/PlaceSearchBox";
 import MapView from "@/components/Map";
-import {PlaceDetails} from "@/utils/types";
-import axios from "axios";
-import {MapPinIcon, PhoneIcon, StarIcon, CheckIcon} from "@heroicons/react/24/solid";
 import {NearbyCard} from "@/components/cards/NearbyCard";
-
-const defaultCenter = {
-    lat: 13.736717, // Default to Bangkok, Thailand
-    lng: 100.523186,
-};
+import { useBaseDiscoverPage } from "@/hooks/discover-page/useBaseDiscoverPage";
 
 export default function DiscoverPage() {
-    const [selectedPlace, setSelectedPlace] = useState(defaultCenter);
-    const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
-
-    // Helper function to format strings
-    const formatString = (str: string) => {
-        return str
-            .replace(/_/g, " ") // Replace underscores with spaces
-            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
-    };
-
-    const fetchPlaceDetails = async (placeId: string) => {
-        try {
-            const res = await axios.get(`http://localhost:8000/api/discover-place-details/?dest_id=${placeId}`);
-            const data = res.data as PlaceDetails;
-
-            console.log("Fetched Place Data:", data);
-
-            const lat = data.lat ?? defaultCenter.lat;
-            const lng = data.lon ?? defaultCenter.lng;
-
-            setPlaceDetails(data);
-            setSelectedPlace({lat, lng});
-        } catch (error) {
-            console.error("Failed to fetch place details", error);
-        }
-    };
+    const {
+        selectedPlace,
+        placeDetails,
+        formatString, 
+        getDiscoverPageDetails
+    } = useBaseDiscoverPage();
 
     return (
         <div className="flex flex-row h-screen">
             {/* Left Panel: Search and Place Details */}
             <div className="w-3/5 p-5 flex flex-col space-y-4">
-                <PlaceSearchBox onSelect={fetchPlaceDetails}/>
+                <PlaceSearchBox onSelect={getDiscoverPageDetails}/>
 
                 {/* Show Place Details if available */}
                 {placeDetails ? (
@@ -116,7 +90,7 @@ export default function DiscoverPage() {
                         <div className="flex flex-col">
                             <div className="grid grid-cols-2 gap-4">
                                 {placeDetails.nearbyPlaces.map((place) => (
-                                    <NearbyCard key={place.destID} place={place} onSelect={fetchPlaceDetails}/>
+                                    <NearbyCard key={place.destID} place={place} onSelect={getDiscoverPageDetails}/>
                                 ))}
                             </div>
                         </div>
