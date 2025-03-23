@@ -10,7 +10,7 @@ import Image from 'next/image';
 // Internal Imports
 import { BaseButton } from "@/components/buttons/BaseButton";
 import DialogBox from "@/components/Dialog";
-import VotingCard from "./VotingCard";
+import VotingCard from "@/components/cards/VotingCard";
 
 import { VOTING_CONFIRMATION_DIALOG } from "@/constants/vote";
 import { useDestinationVoting } from "@/hooks/useDestinationVoting";
