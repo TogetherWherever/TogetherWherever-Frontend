@@ -25,7 +25,7 @@ export default function CreateNewTrip() {
         handleChangeTripName,
         handleChangeCompanions,
         handleSelectCompanion,
-        fetchPlaceDetails,
+        getPlacesData,
         handleClickStartPlanning,
         companionIds,
         handleRemoveCompanion,
@@ -67,7 +67,7 @@ export default function CreateNewTrip() {
                                 <label htmlFor="trip-name" className="text-xl font-bold text-black">
                                     Where to?
                                 </label>
-                                <PlaceSearchBox onSelect={fetchPlaceDetails} />
+                                <PlaceSearchBox onSelect={getPlacesData} />
                             </div>
                             <div className="flex w-full mt-4 gap-4">
                                 <div className="flex flex-col gap-2 w-1/2">

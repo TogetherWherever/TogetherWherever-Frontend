@@ -38,6 +38,8 @@ export interface CreateNewTripBodyInterface {
     trip_name: string;
     dest_id: string;
     dest_name: string | undefined;
+    lat: number;
+    lon: number;
     start_date: string;
     end_date: string;
     duration: number;

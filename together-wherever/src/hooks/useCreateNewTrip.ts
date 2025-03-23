@@ -25,6 +25,9 @@ export const useCreateNewTrips = () => {
     const [placeName, setPlaceName] = useState<string | undefined>();
     const [placeId, setPlaceId] = useState<string>();
 
+    const [lat, setLat] = useState<number>();
+    const [lon, setLon] = useState<number>();
+
     const [ownerName, setOwnerName] = useState<string | undefined>();
     const [usersData, setUsersData] = useState<Array<{ userId: string; name: string; profileImage: string; }>>();
     const filteredResults = (usersData || []).filter((item) =>
@@ -75,23 +78,38 @@ export const useCreateNewTrips = () => {
         return daysDifference
     };
 
-    const handleClickStartPlanning = async() => {
+    const getPlacesData = async (placeId: string) => {
+        try {
+            const data = await fetchPlaceDetails(placeId);
+
+            setPlaceName(data.destName);
+            setPlaceId(data.destID);
+            setLat(data.lat);
+            setLon(data.lon);            
+        } catch (error) {
+            throw error;
+        }    
+    };
+
+    const handleClickStartPlanning = async () => {
         if (tripName !== '' && placeId !== '' && placeName !== '') {
             const { startDate, endDate } = range[0];
             const body: CreateNewTripBodyInterface = {
                 owner: ownerName,
                 trip_name: tripName,
-                dest_id: placeId || "01",  // Mock
+                dest_id: placeId ?? "01",  // Mock
                 dest_name: placeName ?? "Phuket", // Mock
+                lat: lat ?? 0, // Mock
+                lon: lon ?? 0, // Mock
                 start_date: formatDateToLocal(startDate),
-                end_date: formatDateToLocal(endDate),                
+                end_date: formatDateToLocal(endDate),
                 duration: getDuration(startDate, endDate),
                 companion: companionIds.join(','),
             };
 
             try {
-                const res = await createNewTrip(body);    
-                router.push(`/planning/${res.trip_id}`);      
+                const res = await createNewTrip(body);
+                router.push(`/planning/${res.trip_id}`);
             } catch (error: any) {
                 throw new Error(error.message)
             }
@@ -165,7 +183,7 @@ export const useCreateNewTrips = () => {
         handleChangeTripName,
         handleChangeCompanions,
         handleSelectCompanion,
-        fetchPlaceDetails,
+        getPlacesData,
         handleClickStartPlanning,
         handleRemoveCompanion,
         usersData,
