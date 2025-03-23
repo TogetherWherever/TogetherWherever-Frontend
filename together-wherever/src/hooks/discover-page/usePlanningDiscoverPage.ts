@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 
 import { PlaceDetails } from "@/utils/types";
 import { DEFAULT_CENTER } from "@/constants/defaultCenter";
 import { fetchPlaceDetails } from "@/fetcher/getPlaceDetails";
 
-export const useBaseDiscoverPage = () => {
+export const usePlanningDiscoverPage = () => {
+    const params = useParams();
     const [selectedPlace, setSelectedPlace] = useState(DEFAULT_CENTER);
     const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
 
@@ -17,7 +19,7 @@ export const useBaseDiscoverPage = () => {
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
     };
 
-    const getDiscoverPageDetails = async (placeId: string) => {
+    const getDiscoverPageDetails = async (placeId: string | string[]) => {
         try {
             const data = await fetchPlaceDetails(placeId);
 
@@ -28,10 +30,17 @@ export const useBaseDiscoverPage = () => {
 
             setPlaceDetails(data);
             setSelectedPlace({ lat, lng });
+
         } catch (error) {
-            console.log(error);
-        }        
+            throw error;
+        }
     };
+
+    useEffect(() => {
+        if (params?.placeId !== undefined) {            
+            getDiscoverPageDetails(params?.placeId);
+        }
+    }, [params?.placeId]);
 
     return {
         selectedPlace,

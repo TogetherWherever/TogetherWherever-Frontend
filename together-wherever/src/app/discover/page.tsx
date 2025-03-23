@@ -1,10 +1,11 @@
 'use client';
 
-import {MapPinIcon, PhoneIcon, StarIcon, CheckIcon} from "@heroicons/react/24/solid";
+import { MapPinIcon, PhoneIcon, StarIcon, CheckIcon } from "@heroicons/react/24/solid";
 
 import PlaceSearchBox from "@/components/PlaceSearchBox";
 import MapView from "@/components/Map";
-import {NearbyCard} from "@/components/cards/NearbyCard";
+import { NearbyCard } from "@/components/cards/NearbyCard";
+
 import { useBaseDiscoverPage } from "@/hooks/discover-page/useBaseDiscoverPage";
 
 export default function DiscoverPage() {
@@ -12,7 +13,7 @@ export default function DiscoverPage() {
         selectedPlace,
         placeDetails,
         formatString, 
-        getDiscoverPageDetails
+        getDiscoverPageDetails,
     } = useBaseDiscoverPage();
 
     return (
@@ -101,7 +102,7 @@ export default function DiscoverPage() {
             {/* Right Panel: Map View */}
             <div className="w-2/5 h-full">
                 <MapView lat={selectedPlace.lat} lng={selectedPlace.lng}
-                         makers={[{lat: selectedPlace.lat, lng: selectedPlace.lng}]}/>
+                    makers={[{lat: selectedPlace.lat, lng: selectedPlace.lng}]}/>
             </div>
         </div>
     );
