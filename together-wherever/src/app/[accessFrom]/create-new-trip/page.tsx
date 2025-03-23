@@ -13,7 +13,7 @@ import { BaseButton } from "@/components/buttons/BaseButton";
 import DialogBox from "@/components/Dialog";
 
 import { useCreateNewTrips } from "@/hooks/useCreateNewTrip";
-import { CREATE_NEW_TRIP_CONFIRMATION_DIALOG } from "@/constants/create-new-trip";
+import { CREATE_NEW_TRIP_CONFIRMATION_DIALOG } from "@/constants/createNewTripDialog";
 
 export default function CreateNewTrip() {
     const {

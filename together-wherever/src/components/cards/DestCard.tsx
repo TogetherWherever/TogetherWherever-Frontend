@@ -3,7 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { Dispatch } from 'react';
 import { format } from "date-fns";
-import { updateDestination } from "@/fetcher/destination-scheduling";
+import { updateDestination } from "@/fetcher/destinationScheduling";
 
 interface DestDataInterface {
     destID: string;

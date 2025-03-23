@@ -1,33 +1,17 @@
 "use client";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+
 import Link from "next/link";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
+import { useLogin } from "@/hooks/useLogin";
+
 export default function LoginPage() {
-    const [formData, setFormData] = useState({ username: "", password: "" });
-    const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            const res = await axios.post("http://localhost:8000/api/auth/login/token", new URLSearchParams({
-                username: formData.username,
-                password: formData.password
-            }));
-            localStorage.setItem("token", res.data.access_token);
-            router.push("/");
-        } catch (error: any) {
-            alert(error.response?.data?.detail || "Login failed");
-        }
-    };
+    const {
+        showPassword,
+        setShowPassword,
+        handleChange,
+        handleSubmit
+    } = useLogin();
 
     return (
         <div className="flex flex-col items-center justify-center p-4">

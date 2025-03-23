@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 import { DestinationInterface, TripDetailsInterface } from "@/utils/types";
-import { fetchVotingPageData } from "@/fetcher/voting-page";
+import { fetchVotingPageData } from "@/fetcher/votingPage";
 
 export function useDestinationVoting() {
     const [tripDetails, setTripDetails] = useState<TripDetailsInterface | null>(null);

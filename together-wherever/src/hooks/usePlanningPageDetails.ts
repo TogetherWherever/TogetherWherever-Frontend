@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "react-toastify";
 
-import { fetchTripDetail } from "@/fetcher/get-trip-details";
+import { fetchTripDetail } from "@/fetcher/getTripDetails";
 import { TripDetail } from "@/utils/types";
 
 export const useTripDetails = () => {
