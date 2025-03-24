@@ -11,6 +11,7 @@ import PlaceSearchBox from "@/components/PlaceSearchBox";
 import DateRangeInput from '@/components/DateRangeInput';
 import { BaseButton } from "@/components/buttons/BaseButton";
 import DialogBox from "@/components/Dialog";
+import ToastNotification from '@/components/ToastNotification';
 
 import { useCreateNewTrips } from "@/hooks/useCreateNewTrip";
 import { CREATE_NEW_TRIP_CONFIRMATION_DIALOG } from "@/constants/createNewTripDialog";
@@ -33,7 +34,7 @@ export default function CreateNewTrip() {
         loading,
         setIsOpen,
         isOpen,
-        filteredResults
+        filteredResults,
     } = useCreateNewTrips();
     
     return (
@@ -44,6 +45,7 @@ export default function CreateNewTrip() {
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center gap-4 p-12">
+                    <ToastNotification />
                     <div className="flex justify-center font-bold text-4xl">
                         Plan a Trip
                     </div>
@@ -116,7 +118,7 @@ export default function CreateNewTrip() {
                                                         .map((user) => (
                                                             <div
                                                                 key={user.userId}
-                                                                onClick={() => handleRemoveCompanion(user.userId)}
+                                                                onClick={() => handleRemoveCompanion(user.name)}
                                                                 className="cursor-pointer relative group"
                                                             >
                                                                 <div className="w-[50px] h-[50px] absolute flex items-center justify-center rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -124,7 +126,7 @@ export default function CreateNewTrip() {
 
                                                                 <Image
                                                                     key={user.userId}
-                                                                    src={user.profileImage}
+                                                                    src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
                                                                     alt={user.name}
                                                                     width={50}
                                                                     height={50}

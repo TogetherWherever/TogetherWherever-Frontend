@@ -2,24 +2,16 @@
 
 import axios from "axios";
 import { CreateNewTripBodyInterface } from "@/utils/types";
-import { mockUsersData } from "@/mocks/createNewTripMockData";
 
 // simulate fetching users data
-export const fetchingUsersData = () => {
+export const fetchingUsersData = async (ownerName: string | undefined) => {
     try {
-
-        // const response = await axios.get('/api/getUsersData');
-        // if (response.status === 200) {
-        //     const { usersData } = response.data;
-        //     return usersData;
-        // } else {
-        //     throw new Error(`Unexpected response status: ${response.status}`);
-        // }
-
-        const allUsersData = mockUsersData;
-
-        return allUsersData;
-
+        const response = await axios.get(`http://localhost:8000/api/get-users-data/?username=${ownerName}`);
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }        
     } catch (error) {
         console.error("Error fetching voting page data:", error);
         throw error;
