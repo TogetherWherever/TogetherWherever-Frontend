@@ -80,7 +80,7 @@ export const useCreateNewTrips = () => {
 
         const daysDifference = Math.round(timeDifference / (1000 * 3600 * 24));
 
-        return daysDifference
+        return daysDifference + 1
     };
 
     const getPlacesData = async (placeId: string) => {

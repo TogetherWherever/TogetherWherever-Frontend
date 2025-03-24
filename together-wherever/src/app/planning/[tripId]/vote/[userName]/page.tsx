@@ -27,7 +27,7 @@ export default function VotingPage() {
         isOpen,
         setIsOpen
     } = useDestinationVoting();
-    
+
     return (
         <>
             {loading ? (
@@ -53,7 +53,7 @@ export default function VotingPage() {
                                                 <div key={user.username} className="flex flex-col group items-center">
                                                     <div className="w-[40px] h-[40px]">
                                                         <Image
-                                                            src={user.profilePic}
+                                                            src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
                                                             alt={user.username}
                                                             width={40}
                                                             height={40}
@@ -80,7 +80,7 @@ export default function VotingPage() {
                                                         {tripDetails?.companion.slice(4).map((user: any) => (
                                                             <div key={user.username} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
                                                                 <Image
-                                                                    src={user.profilePic}
+                                                                    src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
                                                                     alt={user.username}
                                                                     width={30}
                                                                     height={30}
@@ -108,13 +108,29 @@ export default function VotingPage() {
                     {/* Trip Image Section */}
                     <div
                         className="h-[200px] w-full bg-cover bg-center relative flex flex-col justify-between py-6 pl-4"
-                        style={{ backgroundImage: `url(${tripDetails?.photo ?? ""})` }}
                     >
-                        <label className="text-6xl text-white"> {tripDetails?.tripName ?? "Trip"} </label>
-                        <div className="flex w-1/4 justify-center bg-black bg-opacity-50 px-2 py-1 rounded-lg gap-4">
-                            <label className="text-white text-2xl"> {tripDetails?.startDate ? format(tripDetails.startDate, 'MM/dd/yy') : "N/A"} </label>
-                            <ArrowRightIcon className="w-[20px] text-white" />
-                            <label className="text-white text-2xl"> {tripDetails?.lastDate ? format(tripDetails.lastDate, 'MM/dd/yy') : "N/A"} </label>
+                        <div className="absolute top-0 left-0 w-full h-full">
+                            {tripDetails ? (
+                                <div className="absolute top-0 left-0 w-full h-full">
+                                    <Image
+                                        src={tripDetails.photo}
+                                        alt="Background"
+                                        layout="fill"
+                                        objectFit="cover"
+                                        quality={75}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="text-center text-gray-500">Loading...</div>
+                            )}
+                        </div>
+                        <div className="z-10 h-full flex flex-col justify-between">
+                            <label className="text-6xl text-white"> {tripDetails?.tripName ?? "Trip"} </label>
+                            <div className="flex w-1/4 justify-center bg-black bg-opacity-50 px-2 py-1 rounded-lg gap-4">
+                                <label className="text-white text-2xl"> {tripDetails?.startDate ? format(tripDetails.startDate, 'MM/dd/yy') : "N/A"} </label>
+                                <ArrowRightIcon className="w-[20px] text-white" />
+                                <label className="text-white text-2xl"> {tripDetails?.lastDate ? format(tripDetails.lastDate, 'MM/dd/yy') : "N/A"} </label>
+                            </div>
                         </div>
                     </div>
 

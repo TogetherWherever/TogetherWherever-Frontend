@@ -15,13 +15,7 @@ export const useTripDetails = () => {
     const [loading, setLoading] = useState(true);
 
     // Calculate trip duration, with a safety check for details
-
     const tripDuration = details ? (new Date(details.lastDate).getTime() - new Date(details.startDate).getTime()) / (1000 * 3600 * 24) + 1 : 0; // Difference in milliseconds
-    // const tripDuration = durationInMilliseconds / (1000 * 60 * 60 * 24); // Convert milliseconds to days
-
-
-    // const tripDuration =
-    //     details ? (details.lastDate.getTime() - details.startDate.getTime()) / (1000 * 3600 * 24) + 1 : 0;
 
     // Create markers for map, with a safety check for details
     const markers = details

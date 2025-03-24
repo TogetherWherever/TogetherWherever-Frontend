@@ -1,44 +1,33 @@
-// import axios from 'axios';
-import { votingPageMockData } from "@/mocks/votingMockData";
+import axios from 'axios';
 import { DestinationInterface, TripDetailsInterface } from "@/utils/types";
 
 // Simulate an actual API call
-export const fetchVotingPageData = async (): Promise<{
-    tripDetails: TripDetailsInterface | null;
+export const fetchVotingPageData = async (tripId: string | string[], day: string | null, username: string | string[]): Promise<{
+    tripDetails: TripDetailsInterface;
     destinations: DestinationInterface[];
     scores: Record<string, number>;
 }> => {
     try {
 
-        // const response = await axios.get('/api/votingPageData');
-        // if (response.status === 200) {
-        //     const { tripDetails, destinations } = response.data;
+        const response = await axios.get(`http://localhost:8000/api/vote/vote-details?trip_id=${tripId}&day_number=${day}&username=${username}`);
+        if (response.status === 200) {
+            const data = response.data;
+            const tripDetails = data;
+            const destinations = data.destinations
 
-        //     // Initialize scores for each destination
-        //     const scores = Object.fromEntries(
-        //         destinations.map((dest: { destID: number }) => [dest.destID, 0])
-        //     );
+            // Initialize scores for each destination
+            const scores = Object.fromEntries(
+                destinations.map((dest: { destID: number }) => [dest.destID, 0])
+            );
 
-        //     return {
-        //         tripDetails,
-        //         destinations,
-        //         scores
-        //     };
-        // } else {
-        //     throw new Error(`Unexpected response status: ${response.status}`);
-        // }
-
-        // using mock data
-        const tripDetails = votingPageMockData;
-        const destinations = votingPageMockData.destinations;
-        const scores = Object.fromEntries(votingPageMockData.destinations.map((dest) => [dest.destID, 0]));
-
-        return {
-            tripDetails,
-            destinations,
-            scores
-        };
-
+            return {
+                tripDetails,
+                destinations,
+                scores
+            };
+        } else {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }        
     } catch (error) {
         console.error("Error fetching voting page data:", error);
         throw error;

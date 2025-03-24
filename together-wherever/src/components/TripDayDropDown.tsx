@@ -39,13 +39,13 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
         }
     };
 
-    const navigateToVotingPage = () => {
+    const navigateToVotingPage = (day: string) => {
         const token = localStorage.getItem('token');
         if (token) {
             const decoded = jwtDecode(token);
             const userName = decoded.sub;  // Assuming 'sub' is now the username
             if (tripId && userName) {
-                router.push(`/planning/${tripId}/vote/${userName}`);
+                router.push(`/planning/${tripId}/vote/${userName}?day=${day}`);
             } else {
                 console.error("Trip ID or User Name is missing");
             }
@@ -83,7 +83,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                                     leftIconCustomization="w-[15px] h-[15px]"
                                     onClick={(event: any) => {
                                         event.stopPropagation(); // Prevents triggering showContent
-                                        navigateToVotingPage();
+                                        navigateToVotingPage(tripDay.day);
                                     }}
                                     disabled={tripDay.user_voted}
                                 />

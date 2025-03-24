@@ -1,19 +1,21 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams  } from "next/navigation";
 
 import { DestinationInterface, TripDetailsInterface } from "@/utils/types";
 import { fetchVotingPageData } from "@/fetcher/votingPage";
 
 export function useDestinationVoting() {
-    const [tripDetails, setTripDetails] = useState<TripDetailsInterface | null>(null);
+    const [tripDetails, setTripDetails] = useState<TripDetailsInterface>();
     const [destinations, setDestinations] = useState<DestinationInterface[]>([]);
     const [scores, setScores] = useState<Record<string, number>>({});
     const [loading, setLoading] = useState(true);
     let [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
     const { tripId, userName } = useParams();
+    const searchParams = useSearchParams();
+    const day = searchParams.get('day');
 
     const handleScoreChange = (destID: number, newScore: number) => {
         setScores((prevScores) => ({
@@ -51,7 +53,7 @@ export function useDestinationVoting() {
         const getVotingPageData = async () => {
           try {
             // simulate await the result of fetchVotingPageData
-            const { tripDetails, destinations, scores } = await fetchVotingPageData();
+            const { tripDetails, destinations, scores } = await fetchVotingPageData(tripId, day, userName);
     
             setTripDetails(tripDetails);
             setDestinations(destinations);
