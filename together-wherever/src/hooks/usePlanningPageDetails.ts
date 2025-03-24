@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import { fetchTripDetail } from "@/fetcher/getTripDetails";
 import { TripDetail } from "@/utils/types";
+import { jwtDecode } from "jwt-decode";
 
 export const useTripDetails = () => {
     const router = useRouter();
@@ -14,20 +15,25 @@ export const useTripDetails = () => {
     const [loading, setLoading] = useState(true);
 
     // Calculate trip duration, with a safety check for details
-    const tripDuration =
-        details ? (details.lastDate.getTime() - details.startDate.getTime()) / (1000 * 3600 * 24) + 1 : 0;
+
+    const tripDuration = details ? (new Date(details.lastDate).getTime() - new Date(details.startDate).getTime()) / (1000 * 3600 * 24) + 1 : 0; // Difference in milliseconds
+    // const tripDuration = durationInMilliseconds / (1000 * 60 * 60 * 24); // Convert milliseconds to days
+
+
+    // const tripDuration =
+    //     details ? (details.lastDate.getTime() - details.startDate.getTime()) / (1000 * 3600 * 24) + 1 : 0;
 
     // Create markers for map, with a safety check for details
     const markers = details
         ? details.trip_day.flatMap((day) =>
-              day.status === "complete"
-                  ? Object.values(day.voted_dests || {}).flat()
-                  : day.suitableDests || []
-          ).map((dest) => ({
-              lat: dest.lat,
-              lng: dest.lng,
-              name: dest.destName,
-          }))
+            day.status === "complete"
+                ? Object.values(day.voted_dests || {}).flat()
+                : day.suitableDests || []
+        ).map((dest) => ({
+            lat: dest.lat,
+            lng: dest.lon,
+            name: dest.destName,
+        }))
         : [];
 
     // Toast messages
@@ -54,8 +60,12 @@ export const useTripDetails = () => {
     useEffect(() => {
         const getTripDetails = async () => {
             try {
-                const tripDetails = await fetchTripDetail(params.tripId);
-                setDetails(tripDetails);
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const decoded = jwtDecode(token);
+                    const tripDetails = await fetchTripDetail(params.tripId, decoded.sub);
+                    setDetails(tripDetails);
+                }
             } catch (error) {
                 throw error
             }

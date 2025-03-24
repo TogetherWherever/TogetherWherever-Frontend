@@ -5,7 +5,6 @@ import { addDays } from "date-fns";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from 'jwt-decode';
 import { toast } from "react-toastify";
-import axios from "axios";
 
 import { CreateNewTripBodyInterface } from "@/utils/types";
 import { fetchingUsersData, createNewTrip } from "@/fetcher/createNewTrip";

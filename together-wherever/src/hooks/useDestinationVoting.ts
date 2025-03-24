@@ -13,7 +13,7 @@ export function useDestinationVoting() {
     const [loading, setLoading] = useState(true);
     let [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
-    const { tripId, userId } = useParams();
+    const { tripId, userName } = useParams();
 
     const handleScoreChange = (destID: number, newScore: number) => {
         setScores((prevScores) => ({
@@ -26,7 +26,7 @@ export function useDestinationVoting() {
         setIsOpen(false);
         const body = {
             trip_id: tripId,
-            voted_person: userId,
+            voted_person: userName,
             scores: scores
         };
         console.log(body);

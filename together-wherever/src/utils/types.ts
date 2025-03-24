@@ -85,7 +85,7 @@ interface Destination {
     desc: string;
     openingHours: OpeningHours;
     lat: number;
-    lng: number;
+    lon: number;
 }
 
 interface Distance {
@@ -118,7 +118,7 @@ export interface TripDetail {
     lastDate: Date;
     photo: string;
     lat: number;
-    lng: number;
+    lon: number;
     companion: Companion[];
     trip_day: TripDay[];
 }

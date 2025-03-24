@@ -1,19 +1,14 @@
-// import axios from 'axios';
+import axios from 'axios';
 
-import { mockTripDetailData } from "@/mocks/tripDetailMockData";
-
-export const fetchTripDetail = async(tripId: string | string[]) => {
+export const fetchTripDetail = async(tripId: string | string[], username: string | undefined) => {
     try {
-        // const response = await axios.get(`/api/get-trip-details/${tripId}`);
-        // if (response.status === 200) {
-        //     const { tripDetails } = response.data;
-
-        //     return tripDetails;
-        // } else {
-        //     throw new Error(`Unexpected response status: ${response.status}`);
-        // }
-
-        return mockTripDetailData;
+        const response = await axios.get(`http://localhost:8000/api/planning-details/?trip_id=${tripId}&username=${username}`);
+        if (response.status === 200) {
+    
+            return response.data;
+        } else {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }
     } catch (error) {
         throw error;
     }

@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import DestCard from "@/components/cards/DestCard";
 import clsx from "clsx";
 import { BaseButton } from "@/components/buttons/BaseButton";
+import { jwtDecode } from 'jwt-decode';
 
 interface TripDateDropdownPropsInterface {
     key: any;
@@ -39,9 +40,16 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
     };
 
     const navigateToVotingPage = () => {
-        // mock user id
-        const userId = "01";
-        router.push(`/planning/${tripId}/vote/${userId}`);
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decoded = jwtDecode(token);
+            const userName = decoded.sub;  // Assuming 'sub' is now the username
+            if (tripId && userName) {
+                router.push(`/planning/${tripId}/vote/${userName}`);
+            } else {
+                console.error("Trip ID or User Name is missing");
+            }
+        }
     };
 
     return (

@@ -138,7 +138,7 @@ export default function DestCard({
 
             <div className={clsx("flex flex-col justify-between h-full", complete ? "" : "w-2/3")}>
                 <div className="flex items-center gap-2 text-2xl">
-                    <label className='font-bold cursor-pointer'>{destData.destName} </label>
+                    <label className='font-bold cursor-pointer line-clamp-2'>{destData.destName} </label>
                 </div>
                 {complete && (
                     <div className={'text-md text-gray-600'}>
@@ -146,7 +146,7 @@ export default function DestCard({
                     </div>
                 )}
                 <div className={clsx("overflow-hidden text-ellipsis text-lg line-clamp-2")}>
-                    {destData.desc}
+                    {destData.desc !== "" ? destData.desc : "No description provided"}
                 </div>
             </div>
 
