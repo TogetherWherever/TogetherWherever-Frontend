@@ -1,5 +1,5 @@
 // import axios from 'axios';
-import { votingPageMockData } from "@/mocks/vote";
+import { votingPageMockData } from "@/mocks/votingMockData";
 import { DestinationInterface, TripDetailsInterface } from "@/utils/types";
 
 // Simulate an actual API call

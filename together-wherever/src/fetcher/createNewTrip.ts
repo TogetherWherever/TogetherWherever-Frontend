@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { CreateNewTripBodyInterface } from "@/utils/types";
-import { mockUsersData } from "@/mocks/create-new-trip";
+import { mockUsersData } from "@/mocks/createNewTripMockData";
 
 // simulate fetching users data
 export const fetchingUsersData = () => {

@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-import { mockTripDetailData } from "@/mocks/trip-detail-data";
+import { mockTripDetailData } from "@/mocks/tripDetailMockData";
 
 export const fetchTripDetail = async(tripId: string | string[]) => {
     try {

@@ -100,7 +100,6 @@ interface Distance {
 export interface TripDay {
     day: number;
     status: "complete" | "voting" | "pending";
-    voted: boolean;
     distance?: Distance[];
     voted_dests?: {
         morning: Destination[];

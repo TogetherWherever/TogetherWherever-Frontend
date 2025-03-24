@@ -39,7 +39,6 @@ export const mockTripDetailData: TripDetail = {
         {
             day: 1,
             status: "complete",
-            voted: true,
             voted_dests: {
                 morning: [
                     {
@@ -147,7 +146,6 @@ export const mockTripDetailData: TripDetail = {
         {
             day: 2,
             status: "voting",
-            voted: false,
             members_voted: 0,
             total_members: 6,
             user_voted: false,
@@ -225,32 +223,26 @@ export const mockTripDetailData: TripDetail = {
         {
             day: 3,
             status: "pending",
-            voted: false
         },
         {
             day: 4,
             status: "pending",
-            voted: false
         },
         {
             day: 5,
             status: "pending",
-            voted: false
         },
         {
             day: 6,
             status: "pending",
-            voted: false
         },
         {
             day: 7,
             status: "pending",
-            voted: false
         },
         {
             day: 8,
             status: "pending",
-            voted: false
         },
     ]
 };

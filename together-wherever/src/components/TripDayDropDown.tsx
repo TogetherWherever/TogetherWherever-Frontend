@@ -24,7 +24,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
     const router = useRouter();
     const { tripId } = useParams();
 
-    const numOfAvailableDest = tripDay.voted
+    const numOfAvailableDest = tripDay.status === "complete"
         ? Object.values(tripDay.voted_dests).reduce((acc, dests: any) => acc + dests.length, 0)
         : tripDay.suitableDests?.length || 0;
 
