@@ -20,6 +20,7 @@ export const preferences = [
     "night_club",
     "park",
     "playground",
+    "point_of_interest",
     "pub",
     "shopping_mall",
     "ski_resort",
