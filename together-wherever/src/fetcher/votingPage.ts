@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DestinationInterface, TripDetailsInterface } from "@/utils/types";
+import { DestinationInterface, TripDetailsInterface, VotingSubmitBody } from "@/utils/types";
 
 // Simulate an actual API call
 export const fetchVotingPageData = async (tripId: string | string[], day: string | null, username: string | string[]): Promise<{
@@ -28,6 +28,21 @@ export const fetchVotingPageData = async (tripId: string | string[], day: string
         } else {
             throw new Error(`Unexpected response status: ${response.status}`);
         }        
+    } catch (error) {
+        console.error("Error fetching voting page data:", error);
+        throw error;
+    }
+};
+
+export const votingSubmit = async (body: VotingSubmitBody) => {
+    try {
+        const response = await axios.patch("http://localhost:8000/api/vote/submit-vote", body);
+
+        if (response.status === 200) {
+            return response.status;
+        } else {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }
     } catch (error) {
         console.error("Error fetching voting page data:", error);
         throw error;

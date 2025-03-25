@@ -121,5 +121,12 @@ export interface TripDetail {
     lon: number;
     companion: Companion[];
     trip_day: TripDay[];
-}
+};
 
+// voting submit body
+export type VotingSubmitBody = {
+    trip_id: string | string[];
+    trip_day_number: number | null;
+    voted_person: string | string[];
+    scores: Record<string, number>;
+};

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams, useSearchParams  } from "next/navigation";
 
 import { DestinationInterface, TripDetailsInterface } from "@/utils/types";
-import { fetchVotingPageData } from "@/fetcher/votingPage";
+import { fetchVotingPageData, votingSubmit } from "@/fetcher/votingPage";
 
 export function useDestinationVoting() {
     const [tripDetails, setTripDetails] = useState<TripDetailsInterface>();
@@ -24,15 +24,19 @@ export function useDestinationVoting() {
         }));
     };
 
-    const handleCompleteVote = () => {
+    const handleCompleteVote = async () => {
         setIsOpen(false);
         const body = {
             trip_id: tripId,
+            trip_day_number: Number(day),
             voted_person: userName,
             scores: scores
         };
-        console.log(body);
-        router.push(`/planning/${tripId}`);
+        const response = await votingSubmit(body);
+
+        if (response === 200) {
+            router.push(`/planning/${tripId}`);
+        }
     };
 
     const handleClickBackButton = () => {
