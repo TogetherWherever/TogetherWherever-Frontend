@@ -32,7 +32,7 @@ export default function VotingPage() {
         <>
             {loading ? (
                 <div className="fixed inset-0 flex items-center justify-center">
-                    <div className="text-center text-gray-500">Loading...</div>
+                    <ClipLoader size={50} color={"#60993E"} loading={loading} />
                 </div>
             ) : (
                 <div className="flex flex-col w-full h-full">

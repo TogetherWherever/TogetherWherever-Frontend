@@ -47,7 +47,7 @@ export default function Planning() {
         });
     };
 
-    if (loading || !details) {
+    if (loading) {
         return (
             <div className="fixed inset-0 flex items-center justify-center">
                 <ClipLoader size={50} color={"#60993E"} loading={loading} />
@@ -72,8 +72,8 @@ export default function Planning() {
                                     <div className="flex items-center">
                                         {details.companion.slice(0, 4).map((user) => (
                                             <div className="flex flex-col group items-center" key={user.username}>
-                                                <div className="w-[40px] h-[40px]">                                                    
-                                                    <ProfileIcon username={user.username} width={40} height={40}/>
+                                                <div className="w-[40px] h-[40px]">
+                                                    <ProfileIcon username={user.username} width={40} height={40} />
                                                 </div>
 
                                                 <div className="absolute mt-[40px] flex text-xs opacity-0 group-hover:opacity-100 transition-opacity">
@@ -99,8 +99,8 @@ export default function Planning() {
                                                     <div className="flex flex-col gap-2">
                                                         {details.companion.slice(4).map((user) => (
                                                             <div key={user.username}
-                                                                className="flex justify-between items-center block rounded-lg py-1 px-2 transition">                                                                
-                                                                <ProfileIcon username={user.username} width={30} height={30}/>
+                                                                className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
+                                                                <ProfileIcon username={user.username} width={30} height={30} />
                                                                 <span className="text-black text-base">{user.username}</span>
                                                             </div>
                                                         ))}
@@ -154,7 +154,9 @@ export default function Planning() {
                     </div>
                 </div>
             </>) : (
-                <div className="flex justify-center items-center text-center text-gray-500">Loading...</div>
+                <div className="fixed inset-0 flex items-center justify-center">
+                    <div className="text-center text-gray-500">Loading...</div>
+                </div>
             )}
         </>
     );
