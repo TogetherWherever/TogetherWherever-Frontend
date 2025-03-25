@@ -8,11 +8,12 @@ import { fetchTripDetail } from "@/fetcher/getTripDetails";
 import { TripDetail } from "@/utils/types";
 import { jwtDecode } from "jwt-decode";
 
-export const useTripDetails = () => {
+export const usePlanningPageDetails = () => {
     const router = useRouter();
     const params = useParams();
     const [details, setDetails] = useState<TripDetail | undefined>(); // using mock data
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);    
+    const [userName, setUserName] = useState<string>();
 
     // Calculate trip duration, with a safety check for details
     const tripDuration = details ? (new Date(details.lastDate).getTime() - new Date(details.startDate).getTime()) / (1000 * 3600 * 24) + 1 : 0; // Difference in milliseconds
@@ -57,6 +58,7 @@ export const useTripDetails = () => {
                 const token = localStorage.getItem('token');
                 if (token) {
                     const decoded = jwtDecode(token);
+                    setUserName(decoded.sub);
                     const tripDetails = await fetchTripDetail(params.tripId, decoded.sub);
                     setDetails(tripDetails);
                 }
@@ -76,5 +78,6 @@ export const useTripDetails = () => {
         showToast,
         showWrongOrder,
         details,
+        userName
     };
 };

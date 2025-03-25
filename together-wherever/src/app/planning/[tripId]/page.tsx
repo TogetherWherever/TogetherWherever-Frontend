@@ -10,8 +10,9 @@ import MapView from "@/components/Map";
 import { BaseButton } from "@/components/buttons/BaseButton";
 import TripDayDropDown from '@/components/TripDayDropDown';
 import ToastNotification from '@/components/ToastNotification';
+import ProfileIcon from "@/components/ProfileIcon";
 
-import { useTripDetails } from "@/hooks/usePlanningPageDetails";
+import { usePlanningPageDetails } from "@/hooks/usePlanningPageDetails";
 import { TripDay } from "@/utils/types";
 
 export default function Planning() {
@@ -23,7 +24,8 @@ export default function Planning() {
         showToast,
         showWrongOrder,
         details,
-    } = useTripDetails()
+        userName
+    } = usePlanningPageDetails()
 
     const renderTripDayDropDown = (duration: number, startDate: Date, tripDetailData: { trip_day: TripDay[] }) => {
         return Array.from({ length: duration }, (_, index) => {
@@ -70,16 +72,8 @@ export default function Planning() {
                                     <div className="flex items-center">
                                         {details.companion.slice(0, 4).map((user) => (
                                             <div className="flex flex-col group items-center" key={user.username}>
-                                                <div className="w-[40px] h-[40px]">
-                                                    {/* mock */}
-                                                    <Image
-                                                        src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
-                                                        alt={user.username}
-                                                        width={40}
-                                                        height={40}
-                                                        objectFit="cover"
-                                                        className="rounded-full aspect-square object-cover"
-                                                    />
+                                                <div className="w-[40px] h-[40px]">                                                    
+                                                    <ProfileIcon username={user.username} width={40} height={40}/>
                                                 </div>
 
                                                 <div className="absolute mt-[40px] flex text-xs opacity-0 group-hover:opacity-100 transition-opacity">
@@ -105,16 +99,8 @@ export default function Planning() {
                                                     <div className="flex flex-col gap-2">
                                                         {details.companion.slice(4).map((user) => (
                                                             <div key={user.username}
-                                                                className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
-                                                                {/* mock */}
-                                                                <Image
-                                                                    src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
-                                                                    alt={user.username}
-                                                                    width={30}
-                                                                    height={30}
-                                                                    objectFit="cover"
-                                                                    className="rounded-full aspect-square object-cover"
-                                                                />
+                                                                className="flex justify-between items-center block rounded-lg py-1 px-2 transition">                                                                
+                                                                <ProfileIcon username={user.username} width={30} height={30}/>
                                                                 <span className="text-black text-base">{user.username}</span>
                                                             </div>
                                                         ))}
