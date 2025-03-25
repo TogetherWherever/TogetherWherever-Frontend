@@ -3,7 +3,7 @@ import { Dispatch } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import '@/app/custom-date-range.css';
+import '../styles/custom-date-range.css';
 
 interface DateRangeInterface {
     startDate: Date;

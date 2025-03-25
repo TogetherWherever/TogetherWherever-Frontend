@@ -5,7 +5,7 @@ import {usePathname} from 'next/navigation';
 import {useEffect, useState} from "react";
 import Image from 'next/image';
 import {useRouter} from "next/navigation";
-import {BaseButton} from "@/app/components/buttons/BaseButton";
+import {BaseButton} from "@/components/buttons/BaseButton";
 import {jwtDecode} from 'jwt-decode';
 
 export default function NavBar() {

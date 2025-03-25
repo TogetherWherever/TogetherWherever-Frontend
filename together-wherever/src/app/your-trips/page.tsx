@@ -1,10 +1,10 @@
 'use client';
 
 import { usePathname, useRouter } from "next/navigation";
-import { BaseButton } from "@/app/components/buttons/BaseButton";
+import { BaseButton } from "@/components/buttons/BaseButton";
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useState } from "react";
-import { TripCard } from "@/app/components/cards/TripCard"
+import { TripCard } from "@/components/cards/TripCard"
 
 const handleClick = () => {
     alert("Click!");

@@ -4,13 +4,15 @@ import { useRef } from "react";
 import { useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
+const libraries: ("places")[] = ["places"];
+
 export default function PlaceSearchBox({ onSelect }: { onSelect: (placeId: string) => void }) {
     const inputRef = useRef<google.maps.places.SearchBox | null>(null);
 
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string, // Use env variable
-        libraries: ["places"],
+        libraries,
     });
 
     const handleOnPlacesChanged = () => {

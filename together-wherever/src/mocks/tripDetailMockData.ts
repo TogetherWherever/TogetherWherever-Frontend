@@ -1,13 +1,14 @@
 
 import { addDays } from "date-fns";
+import { TripDetail } from "@/utils/types";
 
-export const mockTripDetailData = {
+export const mockTripDetailData: TripDetail = {
     tripName: "Trip To: Phuket",
     startDate: new Date(),
     lastDate: addDays(new Date(), 7),
     photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/4b/5d/c8/caption.jpg?w=2400&h=1000&s=1&cx=2606&cy=1838&chk=v1_a61182fd4040ed4ecc4e",
     lat: 7.878978,
-    lng: 98.398392,
+    lon: 98.398392,
     companion: [
         {
             username: "Christopher",
@@ -38,7 +39,6 @@ export const mockTripDetailData = {
         {
             day: 1,
             status: "complete",
-            voted: true,
             voted_dests: {
                 morning: [
                     {
@@ -56,7 +56,7 @@ export const mockTripDetailData = {
                             "Saturday": { open: "06:30", close: "18:30" },
                         },
                         lat: 7.827868593792716,
-                        lng: 98.31278865581969
+                        lon: 98.31278865581969
                     },
                     {
                         destID: "ChIJ_YjQ6uQxUDARHVetUBkoi9k",
@@ -73,7 +73,7 @@ export const mockTripDetailData = {
                             "Saturday": { open: "10:00", close: "19:00" },
                         },
                         lat: 7.904687851358944,
-                        lng: 98.36365107116391
+                        lon: 98.36365107116391
                     },
                 ],
                 afternoon: [
@@ -92,7 +92,7 @@ export const mockTripDetailData = {
                             "Saturday": { open: "09:00", close: "17:00" },
                         },
                         lat: 7.885187032861638,
-                        lng: 98.3867867
+                        lon: 98.3867867
                     },
                 ],
                 night: [                    
@@ -112,7 +112,7 @@ export const mockTripDetailData = {
                             "Saturday": { open: "00:00", close: "23:59" },
                         },
                         lat: 7.762023064920043,
-                        lng: 98.30535942883606
+                        lon: 98.30535942883606
                     },
                 ],
             },
@@ -146,7 +146,6 @@ export const mockTripDetailData = {
         {
             day: 2,
             status: "voting",
-            voted: false,
             members_voted: 0,
             total_members: 6,
             user_voted: false,
@@ -166,7 +165,7 @@ export const mockTripDetailData = {
                         "Saturday": { open: "08:00", close: "17:00" },
                     },
                     lat: 7.979018511838991, 
-                    lng: 98.30935934232788
+                    lon: 98.30935934232788
                 },
                 {
                     destID: "ChIJezyyaqM6UDARyh5o4-SHqkw",
@@ -183,7 +182,7 @@ export const mockTripDetailData = {
                         "Saturday": { open: "06:30", close: "18:30" },
                     },
                     lat: 7.892776675289952,
-                    lng: 98.29863635767211
+                    lon: 98.29863635767211
                 },
                 {
                     destID: "ChIJAdUTdI0lUDAR-EN1U6iZIY0",
@@ -200,7 +199,7 @@ export const mockTripDetailData = {
                         "Saturday": { open: "00:00", close: "23:59" },
                     },
                     lat: 7.821060644463775, 
-                    lng: 98.29714525265501
+                    lon: 98.29714525265501
                 },
                 {
                     destID: "ChIJ1SemHHIlUDARH2WofLMBaOQ",
@@ -217,39 +216,33 @@ export const mockTripDetailData = {
                         "Saturday": { open: "00:00", close: "23:59" },
                     },
                     lat: 7.844519822157014, 
-                    lng: 98.29362271376951
+                    lon: 98.29362271376951
                 }
             ]
         },
         {
             day: 3,
             status: "pending",
-            voted: false
         },
         {
             day: 4,
             status: "pending",
-            voted: false
         },
         {
             day: 5,
             status: "pending",
-            voted: false
         },
         {
             day: 6,
             status: "pending",
-            voted: false
         },
         {
             day: 7,
             status: "pending",
-            voted: false
         },
         {
             day: 8,
             status: "pending",
-            voted: false
         },
     ]
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { BaseCard } from "@/app/components/cards/BaseCard"
+import { BaseCard } from "@/components/cards/BaseCard"
 import { useState } from 'react';
 import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid';
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline';

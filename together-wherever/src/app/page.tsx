@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { BaseButton } from "@/app/components/buttons/BaseButton";
-import { TripCard } from "@/app/components/cards/TripCard"
-import { ReviewCard } from "@/app/components/cards/ReviewCard"
+import { BaseButton } from "@/components/buttons/BaseButton";
+import { TripCard } from "@/components/cards/TripCard"
+import { ReviewCard } from "@/components/cards/ReviewCard"
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { ClipLoader } from "react-spinners";
 

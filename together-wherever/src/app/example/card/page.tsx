@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from "react";
-import { TripCard } from "@/app/components/cards/TripCard"
-import { ReviewCard } from "@/app/components/cards/ReviewCard"
+import { TripCard } from "@/components/cards/TripCard"
+import { ReviewCard } from "@/components/cards/ReviewCard"
 
 
 export default function ExampleButton() {
