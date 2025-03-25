@@ -76,10 +76,10 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                         )}
                         {tripDay.status === "voting" && (
                             <div className="flex justify-center items-center gap-4">
-                                <label className="text-xl"> Total vote: {tripDay.members_voted} / {tripDay.total_members}, </label>
+                                <div className="text-xl"> Total vote: {tripDay.members_voted} / {tripDay.total_members}, </div>
                                 <BaseButton
-                                    buttonTxt="Vote"
-                                    className="text-sm"
+                                    buttonTxt={tripDay.user_voted ? "Voted" :"Vote"}
+                                    className={clsx("text-sm", tripDay.user_voted ? "!bg-gray-200 text-gray-400" : "")}
                                     leftIconCustomization="w-[15px] h-[15px]"
                                     onClick={(event: any) => {
                                         event.stopPropagation(); // Prevents triggering showContent
