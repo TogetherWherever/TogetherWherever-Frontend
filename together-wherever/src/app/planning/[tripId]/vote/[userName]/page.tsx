@@ -138,8 +138,12 @@ export default function VotingPage() {
 
                             {/* Voting Section */}
                             <div className="py-8 px-4 w-full">
-                                <div className="flex gap-4 justify-between items-end py-4 border-b-2 border-black/50">
+                                <label className='text-2xl text-gray-500'>
+                                    Vote for the main Destination on:
+                                </label>
+                                <div className="flex gap-4 justify-between items-end pt-2 pb-4 border-b-2 border-black/50">
                                     <div className="flex items-end gap-4">
+
                                         <label className="text-4xl">
                                             {tripDetails?.voting_date ? format(tripDetails.voting_date, "EEEE, MMMM dd") : "Voting Date"}
                                         </label>

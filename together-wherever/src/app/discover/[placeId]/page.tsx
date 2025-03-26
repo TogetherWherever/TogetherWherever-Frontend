@@ -32,13 +32,15 @@ export default function DiscoverDetail() {
                         <div className="flex flex-col pt-5 divide-y-2 divide-bistre">
                             <div>
                                 <h2 className="text-3xl font-bold text-asparagus-green">{placeDetails.destName}</h2>
-                                {placeDetails.destType && (
-                                    <span className="py-2 flex flex-row">
-                                        {placeDetails.destType.map((type, index) => (
-                                            <p key={index} className="">{formatString(type)} |&nbsp;</p>
-                                        ))}
-                                    </span>
-                                )}
+                                <div className="py-2 flex flex-row divide-x-2 divide-bistre">
+                                    {placeDetails.destType && (
+                                        <>
+                                            {placeDetails.destType.map((type, index) => (
+                                                <p key={index} className="px-1">{formatString(type)}</p>
+                                            ))}
+                                        </>
+                                    )}
+                                </div>
                             </div>
                             <div className="flex flex-col space-y-2 pt-2">
                                 <p>{placeDetails.desc || ""}</p>
