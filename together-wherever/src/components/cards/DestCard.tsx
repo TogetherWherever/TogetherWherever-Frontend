@@ -25,6 +25,7 @@ interface DestCardPropsInterface {
     tripId?: string | string[];
     showWrongOrder?: () => void;
     index?: number;
+    tripDay?: string;
 }
 
 export default function DestCard({
@@ -35,6 +36,7 @@ export default function DestCard({
     tripDate,
     tripId,
     index,
+    tripDay,
     showWrongOrder
 }: DestCardPropsInterface) {
     const dayOfWeek = format(tripDate || new Date(), "EEEE");
@@ -44,74 +46,39 @@ export default function DestCard({
         window.open(`/discover/${destData.destID}`, '_blank');
     };
 
-    // const periodKey = period as "morning" | "afternoon" | "night";    
-    // const isLastDestination =
-    //     periodKey === "night" && orderedDestinations?.[periodKey]?.length
-    //         ? destinationIndex === orderedDestinations[periodKey]?.length - 1
-    //         : false;
-
-    const handleMoveUp = (
-        index: number,
+    const handleMoveUp = async (
+        index: number | undefined,
         destinationID: string
     ) => {
-        // const fromCategory = periodKey;
-        // let action: "move" | "reorder" = "move";
-        // let toCategory: "morning" | "afternoon" | "night" | null = null;
-        // let newIndex = null;       
+        const action = "move-up";
+        const oldOrder = index
+        const newOrder = index !== undefined ? index - 1 : 0;
 
-        // if (index === 0) {
-        //     action =  "move";
-        //     if (period === "afternoon") {
-        //         toCategory = "morning"
-        //     } else {
-        //         toCategory = "afternoon"
-        //     }
-        // } else {
-        //     action =  "reorder";
-        //     newIndex = index - 1;
-        // }
-
-        // const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
-        // if (res !== null) {
-        //     console.log(`Destination successfully updated.`);
-        //     console.log(res);
-        // } else {
-        //     console.error(`Failed to update destination.`);
-        // }
+        const res = await updateDestination({ destinationID, action, tripDay, tripId, oldOrder, newOrder });
+        if (res !== null) {
+            console.log(`Destination successfully updated.`);
+            console.log(res);
+        } else {
+            console.error(`Failed to update destination.`);
+        }
     };
 
-    const handleMoveDown = (
-        index: number,
+    const handleMoveDown = async (
+        index: number | undefined,
         destinationID: string
     ) => {
-        // const fromCategory = periodKey;
-        // let action: "move" | "reorder" = "move";
-        // let toCategory: "morning" | "afternoon" | "night" | null = null;
-        // let newIndex = null;
+        const action = "move-down";
+        const oldOrder = index
+        const newOrder = index !== undefined ? index + 1 : 0;
 
-        // const newDestinations = { ...orderedDestinations };
-        // const periodDestinations = newDestinations[periodKey];
+        const res = await updateDestination({ destinationID, action, tripDay, tripId, oldOrder, newOrder });
 
-        // if (index === periodDestinations?.length - 1) {
-        //     action =  "move";
-        //     if (period === "morning") {
-        //         toCategory = "afternoon"
-        //     } else {
-        //         toCategory = "night"
-        //     }
-        // } else {
-        //     action =  "reorder";
-        //     newIndex = index + 1;
-        // }
-
-        // const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
-
-        // if (res !== null) {
-        //     console.log(`Destination successfully updated.`);
-        //     console.log(res);
-        // } else {
-        //     console.error(`Failed to update destination.`);
-        // }
+        if (res !== null) {
+            console.log(`Destination successfully updated.`);
+            console.log(res);
+        } else {
+            console.error(`Failed to update destination.`);
+        }
     };
 
     return (
@@ -134,13 +101,8 @@ export default function DestCard({
             <div className={clsx("flex flex-col justify-between h-full w-2/3")}>
                 <div className="flex items-center gap-2 text-2xl">
                     <div className='flex gap-2 font-bold cursor-pointer '>
-                        {complete && (
-                            <label className="font-normal">
-                                ({index !== undefined ? index + 1 : 'N/A'})
-                            </label>
-                        )}
                         <label className={"line-clamp-2 cursor-pointer"}>
-                            {destData.destName}
+                            {complete && (index !== undefined ? `(${index + 1})` : 'N/A')} {destData.destName}
                         </label>
                     </div>
                 </div>
@@ -166,11 +128,10 @@ export default function DestCard({
                                 className="opacity-25 hover:opacity-100"
                                 onClick={(event: any) => {
                                     event.stopPropagation();
-                                    // handleMoveUp(
-                                    //     destinationIndex,
-                                    //     periodKey,
-                                    //     destData.destID,
-                                    // );
+                                    handleMoveUp(
+                                        index,
+                                        destData.destID,
+                                    );
                                 }}
                             />
                         )}
@@ -184,11 +145,10 @@ export default function DestCard({
                                     className="opacity-25 hover:opacity-100"
                                     onClick={(event: any) => {
                                         event.stopPropagation();
-                                        // handleMoveDown(
-                                        //     destinationIndex,
-                                        //     periodKey,
-                                        //     destData.destID,
-                                        // );
+                                        handleMoveDown(
+                                            index,
+                                            destData.destID,
+                                        );
                                     }}
                                 />
                             </div>

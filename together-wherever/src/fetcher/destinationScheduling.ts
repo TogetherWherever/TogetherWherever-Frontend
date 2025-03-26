@@ -3,34 +3,31 @@
 // import axios from "axios";
 
 interface UpdateDestinationParams {
-    action: "move" | "reorder";
     destinationID: string;
-    fromCategory: "morning" | "afternoon" | "night";
-    toCategory?: "morning" | "afternoon" | "night" | null;
-    newIndex?: number | null;
-    tripDate: Date;
+    action: string;
+    tripDay: string | undefined;
     tripId: string | string[] | undefined;
+    oldOrder: number | undefined;
+    newOrder: number | undefined;
 }
 
 export async function updateDestination({
-    action,
     destinationID,
-    fromCategory,
-    toCategory = null,
-    newIndex = null,
-    tripDate,
-    tripId
+    action,
+    tripDay,
+    tripId,
+    oldOrder,
+    newOrder
 }: UpdateDestinationParams) {
     try {
         // Prepare the request body
         const body = JSON.stringify({
-            tripDate,
+            tripDay,
             tripId,
-            action,
             destinationID,
-            fromCategory,
-            toCategory,
-            newIndex
+            action,
+            oldOrder,
+            newOrder
         });
 
         // Uncomment when connecting to a real API
@@ -39,13 +36,12 @@ export async function updateDestination({
 
         // Simulating the update response as a log
         const updatedDestinations = {
-            tripDate,
+            tripDay,
             tripId,
-            action,
             destinationID,
-            fromCategory,
-            toCategory,
-            newIndex
+            action,
+            oldOrder,
+            newOrder
         };
 
         return updatedDestinations;

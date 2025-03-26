@@ -188,7 +188,7 @@ export default function VotingPage() {
                         </>
                     ) : (
                         <div className="fixed inset-0 flex items-center justify-center">
-                            <div className="text-center text-gray-500">Loading...</div>
+                            <label className="text-center text-gray-500">Loading...</label>
                         </div>
                     )}
                 </div>

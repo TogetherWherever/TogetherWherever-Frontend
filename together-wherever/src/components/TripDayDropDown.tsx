@@ -110,8 +110,6 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                             return d.fromID === dest.destID && index === distanceIndex;
                         });
 
-                        console.log(tripDay.distance)
-
                         return (
                             <div key={dest.destID} className="rounded-lg p-2 pt-0 pb-0 pr-4">
                                 <div className="flex flex-col justify-between">
@@ -145,6 +143,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                                         </div>
                                         <DestCard
                                             key={dest.destID}
+                                            tripDay={tripDay.day}
                                             destData={dest}
                                             complete={true}
                                             orderedDestinations={tripDay.voted_dests}
