@@ -19,22 +19,22 @@ interface DestDataInterface {
 interface DestCardPropsInterface {
     destData: DestDataInterface;
     complete?: boolean;
-    period?: "morning" | "afternoon" | "night";
-    orderedDestinations?: { [key: string]: Array<DestDataInterface> }; // Optional prop for ordered destinations
+    orderedDestinations?: Array<DestDataInterface>; // Optional prop for ordered destinations
     setOrderedDestinations?: Dispatch<any>; // Function to update orderedDestinations
     tripDate: Date;
     tripId?: string | string[];
     showWrongOrder?: () => void;
+    index?: number;
 }
 
 export default function DestCard({
     destData,
     complete,
-    period,
     orderedDestinations,
     setOrderedDestinations,
     tripDate,
     tripId,
+    index,
     showWrongOrder
 }: DestCardPropsInterface) {
     const dayOfWeek = format(tripDate || new Date(), "EEEE");
@@ -44,79 +44,74 @@ export default function DestCard({
         window.open(`/discover/${destData.destID}`, '_blank');
     };
 
-    const periodKey = period as "morning" | "afternoon" | "night";
-    const destinationIndex = orderedDestinations?.[periodKey]?.findIndex(
-        (item) => item.destID === destData.destID
-    );
-    const isLastDestination =
-        periodKey === "night" && orderedDestinations?.[periodKey]?.length
-            ? destinationIndex === orderedDestinations[periodKey]?.length - 1
-            : false;
+    // const periodKey = period as "morning" | "afternoon" | "night";    
+    // const isLastDestination =
+    //     periodKey === "night" && orderedDestinations?.[periodKey]?.length
+    //         ? destinationIndex === orderedDestinations[periodKey]?.length - 1
+    //         : false;
 
     const handleMoveUp = (
         index: number,
-        periodKey: "morning" | "afternoon" | "night",
         destinationID: string
     ) => {
-        const fromCategory = periodKey;
-        let action: "move" | "reorder" = "move";
-        let toCategory: "morning" | "afternoon" | "night" | null = null;
-        let newIndex = null;       
+        // const fromCategory = periodKey;
+        // let action: "move" | "reorder" = "move";
+        // let toCategory: "morning" | "afternoon" | "night" | null = null;
+        // let newIndex = null;       
 
-        if (index === 0) {
-            action =  "move";
-            if (period === "afternoon") {
-                toCategory = "morning"
-            } else {
-                toCategory = "afternoon"
-            }
-        } else {
-            action =  "reorder";
-            newIndex = index - 1;
-        }
-        
-        const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
-        if (res !== null) {
-            console.log(`Destination successfully updated.`);
-            console.log(res);
-        } else {
-            console.error(`Failed to update destination.`);
-        }
+        // if (index === 0) {
+        //     action =  "move";
+        //     if (period === "afternoon") {
+        //         toCategory = "morning"
+        //     } else {
+        //         toCategory = "afternoon"
+        //     }
+        // } else {
+        //     action =  "reorder";
+        //     newIndex = index - 1;
+        // }
+
+        // const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
+        // if (res !== null) {
+        //     console.log(`Destination successfully updated.`);
+        //     console.log(res);
+        // } else {
+        //     console.error(`Failed to update destination.`);
+        // }
     };
 
     const handleMoveDown = (
         index: number,
-        periodKey: "morning" | "afternoon" | "night",
         destinationID: string
-    ) => {  
-        const fromCategory = periodKey;
-        let action: "move" | "reorder" = "move";
-        let toCategory: "morning" | "afternoon" | "night" | null = null;
-        let newIndex = null;
+    ) => {
+        // const fromCategory = periodKey;
+        // let action: "move" | "reorder" = "move";
+        // let toCategory: "morning" | "afternoon" | "night" | null = null;
+        // let newIndex = null;
 
-        const newDestinations = { ...orderedDestinations };
-        const periodDestinations = newDestinations[periodKey];
+        // const newDestinations = { ...orderedDestinations };
+        // const periodDestinations = newDestinations[periodKey];
 
-        if (index === periodDestinations?.length - 1) {
-            action =  "move";
-            if (period === "morning") {
-                toCategory = "afternoon"
-            } else {
-                toCategory = "night"
-            }
-        } else {
-            action =  "reorder";
-            newIndex = index + 1;
-        }
+        // if (index === periodDestinations?.length - 1) {
+        //     action =  "move";
+        //     if (period === "morning") {
+        //         toCategory = "afternoon"
+        //     } else {
+        //         toCategory = "night"
+        //     }
+        // } else {
+        //     action =  "reorder";
+        //     newIndex = index + 1;
+        // }
 
-        const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
+        // const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
 
-        if (res !== null) {
-            console.log(`Destination successfully updated.`);
-            console.log(res);
-        } else {
-            console.error(`Failed to update destination.`);
-        }
+        // if (res !== null) {
+        //     console.log(`Destination successfully updated.`);
+        //     console.log(res);
+        // } else {
+        //     console.error(`Failed to update destination.`);
+        // }
     };
 
     return (
@@ -138,7 +133,16 @@ export default function DestCard({
 
             <div className={clsx("flex flex-col justify-between h-full w-2/3")}>
                 <div className="flex items-center gap-2 text-2xl">
-                    <label className='font-bold cursor-pointer line-clamp-2'>{destData.destName} </label>
+                    <div className='flex gap-2 font-bold cursor-pointer '>
+                        {complete && (
+                            <label className="font-normal">
+                                ({index !== undefined ? index + 1 : 'N/A'})
+                            </label>
+                        )}
+                        <label className={"line-clamp-2 cursor-pointer"}>
+                            {destData.destName}
+                        </label>
+                    </div>
                 </div>
                 {complete && (
                     <div className={'text-md text-gray-600'}>
@@ -146,50 +150,52 @@ export default function DestCard({
                     </div>
                 )}
                 <div className={clsx("overflow-hidden text-ellipsis text-lg line-clamp-2")}>
-                    {destData.desc !== "" ? destData.desc : "No description provided"}
+                    {destData.desc !== "" ? destData.desc : "<No description provided>"}
                 </div>
             </div>
 
-            {/* {complete && destinationIndex !== undefined && (
-                <div className="flex flex-col justify-between">
-                    {destinationIndex === 0 && period === "morning" ? (
-                        <></>
-                    ) : (
-                        <ChevronUpIcon
-                            width={40}
-                            height={40}
-                            className="opacity-25 hover:opacity-100"
-                            onClick={(event: any) => {
-                                event.stopPropagation();
-                                handleMoveUp(
-                                    destinationIndex,
-                                    periodKey,
-                                    destData.destID,
-                                );
-                            }}
-                        />
-                    )}
-                    {isLastDestination && period === "night" ? (
-                        <></>
-                    ) : (
-                        <div className={clsx(period === "morning" && destinationIndex === 0 ? "flex flex-col justify-end h-full" : "")}>
-                            <ChevronDownIcon
+            {complete && (
+                <div className='flex justify-end w-1/5'>
+                    <div className="flex flex-col justify-between">
+                        {index === 0 ? (
+                            <></>
+                        ) : (
+                            <ChevronUpIcon
                                 width={40}
                                 height={40}
                                 className="opacity-25 hover:opacity-100"
                                 onClick={(event: any) => {
                                     event.stopPropagation();
-                                    handleMoveDown(
-                                        destinationIndex,
-                                        periodKey,
-                                        destData.destID,
-                                    );
+                                    // handleMoveUp(
+                                    //     destinationIndex,
+                                    //     periodKey,
+                                    //     destData.destID,
+                                    // );
                                 }}
                             />
-                        </div>
-                    )}
+                        )}
+                        {index === (orderedDestinations?.length ?? 0) - 1 ? (
+                            <></>
+                        ) : (
+                            <div className={clsx(index === 0 ? "flex flex-col justify-end h-full" : "")}>
+                                <ChevronDownIcon
+                                    width={40}
+                                    height={40}
+                                    className="opacity-25 hover:opacity-100"
+                                    onClick={(event: any) => {
+                                        event.stopPropagation();
+                                        // handleMoveDown(
+                                        //     destinationIndex,
+                                        //     periodKey,
+                                        //     destData.destID,
+                                        // );
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
-            )} */}
+            )}
         </div>
     );
 }

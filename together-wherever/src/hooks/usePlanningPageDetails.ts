@@ -24,10 +24,10 @@ export const usePlanningPageDetails = () => {
             day.status === "complete"
                 ? Object.values(day.voted_dests || {}).flat()
                 : day.suitableDests || []
-        ).map((dest) => ({
+        ).map((dest, index) => ({
             lat: dest.lat,
             lng: dest.lon,
-            name: dest.destName,
+            name: `(${index + 1}) ${dest.destName}`,
         }))
         : [];
 

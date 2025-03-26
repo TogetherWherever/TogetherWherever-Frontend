@@ -2,7 +2,6 @@
 
 import { ChevronDownIcon, ChevronRightIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { SunIcon, MoonIcon, CloudIcon } from "@heroicons/react/24/solid";
 import { useRouter, useParams } from "next/navigation";
 import { format } from "date-fns";
 import DestCard from "@/components/cards/DestCard";
@@ -26,7 +25,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
     const { tripId } = useParams();
 
     const numOfAvailableDest = tripDay.status === "complete"
-        ? Object.values(tripDay.voted_dests).reduce((acc, dests: any) => acc + dests.length, 0)
+        ? tripDay.voted_dests?.length
         : tripDay.suitableDests?.length || 0;
 
     // Function to toggle showing destinations
@@ -78,7 +77,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                             <div className="flex justify-center items-center gap-4">
                                 <div className="text-xl"> Total vote: {tripDay.members_voted} / {tripDay.total_members}, </div>
                                 <BaseButton
-                                    buttonTxt={tripDay.user_voted ? "Voted" :"Vote"}
+                                    buttonTxt={tripDay.user_voted ? "Voted" : "Vote"}
                                     className={clsx("text-sm", tripDay.user_voted ? "!bg-gray-200 text-gray-400" : "")}
                                     leftIconCustomization="w-[15px] h-[15px]"
                                     onClick={(event: any) => {
@@ -106,89 +105,60 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                     "flex border-b-2 border-black/50 ml-16 pb-4 pt-2",
                     tripDay.status === "complete" ? "flex-col justify-center overflow-y-auto" : "items-center overflow-x-auto pb-4"
                 )}>
-                    {tripDay.status === "complete" && (
-                        <div className="flex flex-col">
-                            {Object.keys(tripDay.voted_dests).map((periodKey: string) => {
-                                const period = tripDay.voted_dests[periodKey]; // Get list of destinations
+                    {tripDay.status === "complete" && tripDay.voted_dests?.map((dest: any, index: number) => {
+                        const distanceInfo = tripDay.distance.find((d: any, distanceIndex: number) => {
+                            return d.fromID === dest.destID && index === distanceIndex;
+                        });
 
-                                return (
-                                    <div key={periodKey} className="rounded-lg p-2 pt-0 pb-0 pr-4">
-                                        {/* {periodKey === "morning" && (
-                                            <div className="flex ml-14 gap-4">
-                                                <SunIcon className="w-6 h-6 text-yellow" />
-                                                <label className="text-xl capitalize">{periodKey}</label>
-                                                <label className="text-xl capitalize">(6:00 - 12:00) o'clock </label>
-                                            </div>
-                                        )}
-                                        {(periodKey === "afternoon" || periodKey === "night") && (
-                                            <div className="flex items-center gap-4">
-                                                <div className="flex items-center justify-center w-[40px] pl-[1px]">
+                        console.log(tripDay.distance)
+
+                        return (
+                            <div key={dest.destID} className="rounded-lg p-2 pt-0 pb-0 pr-4">
+                                <div className="flex flex-col justify-between">
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex flex-col h-full">
+                                            <MapPinIcon width={40} height={40} fill="red" />
+                                            {distanceInfo && (
+                                                <div className="flex flex-col items-center justify-center w-[40px] text-center pl-[1px]">
+                                                    <div className="w-[2px] h-7 bg-black"></div>
+                                                    <p className="py-2">
+                                                        {distanceInfo.distance_km < 1 ? (
+                                                            <>
+                                                                {distanceInfo.distance_km * 1000} m
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                {distanceInfo.distance_km} km
+                                                            </>
+                                                        )}
+                                                    </p>
                                                     <div className="w-[2px] h-7 bg-black"></div>
                                                 </div>
-                                                {periodKey === "afternoon" && <CloudIcon className="w-6 h-6 text-blue" />}
-                                                {periodKey === "night" && <MoonIcon className="w-6 h-6 text-gray" />}
-                                                <label className="text-xl capitalize">{periodKey}</label>
-                                                {periodKey === "afternoon" && (
-                                                    <label className="text-xl capitalize">(12:00 - 18:00) o'clock </label>
-                                                )}
-                                                {periodKey === "night" && (
-                                                    <label className="text-xl capitalize">(18:00 - 00:00) o'clock </label>
-                                                )}
-                                            </div>
-                                        )} */}
-                                        <div className="flex flex-col justify-between">
-                                            {period.map((dest: any, index: number) => {
-                                                const distanceInfo = tripDay.distance.find(
-                                                    (d: any) => d.fromID === dest.destID
-                                                );
-
-                                                return (
-                                                    <div key={`${periodKey}-${index}`} className="flex flex-col">
-                                                        {/* Destination */}
-                                                        <div className="flex items-center gap-4">
-                                                            <div className="flex flex-col h-full"> {/* Set minimum height */}
-                                                                <MapPinIcon width={40} height={40} fill="red" />
-                                                                {distanceInfo && (
-                                                                    <div className="flex flex-col items-center justify-center w-[40px] text-center pl-[1px]">
-                                                                        <div className="w-[2px] h-7 bg-black"></div>
-                                                                        <p className="py-2"> {distanceInfo.distance_km} km</p>
-                                                                        <div className="w-[2px] h-7 bg-black"></div>
-                                                                    </div>
-                                                                )}
-                                                                {!distanceInfo && (
-                                                                    <div className="flex flex-col justify-center items-center">
-                                                                        <div className="w-[2px] h-11 bg-transparent"></div>
-                                                                        <p className="text-lg text-transparent h-7 py-2"> </p>
-                                                                        <div className="w-[2px] h-11 bg-transparent"></div>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            {period.length > 0 ? (
-                                                                <DestCard
-                                                                    key={dest.destID}
-                                                                    destData={dest}
-                                                                    complete={true}
-                                                                    period={periodKey as "morning" | "afternoon" | "night"}
-                                                                    orderedDestinations={tripDay.voted_dests}
-                                                                    setOrderedDestinations={setOrderedDestinations}
-                                                                    showWrongOrder={showWrongOrder}
-                                                                    tripDate={tripDate}
-                                                                    tripId={tripId}
-                                                                />
-                                                            ) : (
-                                                                <div className="h-[50px]"></div>
-                                                            )
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
+                                            )}
+                                            {!distanceInfo && (
+                                                <div className="flex flex-col justify-center items-center">
+                                                    <div className="w-[2px] h-11 bg-transparent"></div>
+                                                    <p className="text-lg text-transparent h-7 py-2"> </p>
+                                                    <div className="w-[2px] h-11 bg-transparent"></div>
+                                                </div>
+                                            )}
                                         </div>
+                                        <DestCard
+                                            key={dest.destID}
+                                            destData={dest}
+                                            complete={true}
+                                            orderedDestinations={tripDay.voted_dests}
+                                            setOrderedDestinations={setOrderedDestinations}
+                                            showWrongOrder={showWrongOrder}
+                                            tripDate={tripDate}
+                                            tripId={tripId}
+                                            index={index}
+                                        />
                                     </div>
-                                );
-                            })}
-                        </div>
-                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
                     {tripDay.status === "voting" && (
                         <div className="flex items-center gap-8 min-w-max">
                             {tripDay.suitableDests.map((dest: any) => (
