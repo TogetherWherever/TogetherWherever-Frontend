@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { BaseButton } from "@/components/buttons/BaseButton";
 import DialogBox from "@/components/Dialog";
 import VotingCard from "@/components/cards/VotingCard";
+import ProfileIcon from "@/components/ProfileIcon";
 
 import { VOTING_CONFIRMATION_DIALOG } from "@/constants/vote";
 import { useDestinationVoting } from "@/hooks/useDestinationVoting";
@@ -54,13 +55,14 @@ export default function VotingPage() {
                                                     .map((user: any) => (
                                                         <div key={user.username} className="flex flex-col group items-center">
                                                             <div className="w-[40px] h-[40px]">
-                                                                <Image
+                                                                {/* <Image
                                                                     src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
                                                                     alt={user.username}
                                                                     width={40}
                                                                     height={40}
                                                                     className="rounded-full aspect-square object-cover"
-                                                                />
+                                                                /> */}
+                                                                <ProfileIcon username={user.username} width={40} height={40} />
                                                             </div>
 
                                                             <div className="absolute mt-[40px] flex text-xs opacity-0 group-hover:opacity-100 transition-opacity">
@@ -81,13 +83,15 @@ export default function VotingPage() {
                                                             <div className="flex flex-col gap-2">
                                                                 {tripDetails?.companion.slice(4).map((user: any) => (
                                                                     <div key={user.username} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
-                                                                        <Image
+                                                                        {/* <Image
                                                                             src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
                                                                             alt={user.username}
                                                                             width={30}
                                                                             height={30}
                                                                             className="rounded-full aspect-square object-cover"
-                                                                        />
+                                                                        /> */}
+                                                                        <ProfileIcon username={user.username} width={30} height={30} />
+
                                                                         <span className="text-black text-base">{user.username}</span>
                                                                     </div>
                                                                 ))}

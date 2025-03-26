@@ -1,6 +1,7 @@
 'use client';
 
 import { MapPinIcon, PhoneIcon, StarIcon, CheckIcon } from "@heroicons/react/24/solid";
+import Image from 'next/image';
 
 import PlaceSearchBox from "@/components/PlaceSearchBox";
 import MapView from "@/components/Map";
@@ -83,8 +84,16 @@ export default function DiscoverDetail() {
                                 {placeDetails.photos && placeDetails.photos.length > 0 && (
                                     <div className="mt-3 flex overflow-x-auto space-x-3">
                                         {placeDetails.photos.map((photoUrl, index) => (
-                                            <img key={index} src={photoUrl} alt="Destination"
-                                                className="h-32 rounded-md object-cover" />
+                                            // <img key={index} src={photoUrl} alt="Destination"
+                                            //     className="h-32 rounded-md object-cover" />
+
+                                            <Image
+                                                src={photoUrl}
+                                                alt={"Destination"}
+                                                width={300}
+                                                height={300}
+                                                className="h-32 rounded-md object-cover"
+                                            />
                                         ))}
                                     </div>
                                 )}

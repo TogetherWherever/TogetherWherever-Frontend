@@ -113,7 +113,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
 
                                 return (
                                     <div key={periodKey} className="rounded-lg p-2 pt-0 pb-0 pr-4">
-                                        {periodKey === "morning" && (
+                                        {/* {periodKey === "morning" && (
                                             <div className="flex ml-14 gap-4">
                                                 <SunIcon className="w-6 h-6 text-yellow" />
                                                 <label className="text-xl capitalize">{periodKey}</label>
@@ -135,7 +135,7 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                                                     <label className="text-xl capitalize">(18:00 - 00:00) o'clock </label>
                                                 )}
                                             </div>
-                                        )}
+                                        )} */}
                                         <div className="flex flex-col justify-between">
                                             {period.map((dest: any, index: number) => {
                                                 const distanceInfo = tripDay.distance.find(

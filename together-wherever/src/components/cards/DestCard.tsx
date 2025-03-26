@@ -127,7 +127,7 @@ export default function DestCard({
             )}
             onClick={handleNavigateToDiscoverPageDetail}
         >
-            <div className={clsx("relative", !complete ? "w-[250px]" : "w-[400px]")}>
+            <div className={clsx("relative", !complete ? "w-[250px]" : "w-[250px]")}>
                 <Image
                     src={destData.photo}
                     alt="Destination Image"
@@ -136,7 +136,7 @@ export default function DestCard({
                 />
             </div>
 
-            <div className={clsx("flex flex-col justify-between h-full", complete ? "" : "w-2/3")}>
+            <div className={clsx("flex flex-col justify-between h-full w-2/3")}>
                 <div className="flex items-center gap-2 text-2xl">
                     <label className='font-bold cursor-pointer line-clamp-2'>{destData.destName} </label>
                 </div>
@@ -150,9 +150,8 @@ export default function DestCard({
                 </div>
             </div>
 
-            {complete && destinationIndex !== undefined && (
+            {/* {complete && destinationIndex !== undefined && (
                 <div className="flex flex-col justify-between">
-                    {/* Hide ChevronUpIcon if first destination in morning */}
                     {destinationIndex === 0 && period === "morning" ? (
                         <></>
                     ) : (
@@ -170,7 +169,6 @@ export default function DestCard({
                             }}
                         />
                     )}
-                    {/* Hide ChevronDownIcon if last destination in night */}
                     {isLastDestination && period === "night" ? (
                         <></>
                     ) : (
@@ -191,7 +189,7 @@ export default function DestCard({
                         </div>
                     )}
                 </div>
-            )}
+            )} */}
         </div>
     );
 }
