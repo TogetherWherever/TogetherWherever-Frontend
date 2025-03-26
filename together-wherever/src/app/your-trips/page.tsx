@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { BaseButton } from "@/components/buttons/BaseButton";
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TripCard } from "@/components/cards/TripCard"
 
 const handleClick = () => {
@@ -21,6 +21,14 @@ export default function YourTrips() {
     const handleNavigateTripPlanningPage = () => {
         router.push(`${pathName}/create-new-trip`)
     };
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            router.push("/login"); // Redirect to login page if no token is found
+        }
+    }, [router]);
+
 
     return (
         <div className="px-[150px] pt-[50px]">
