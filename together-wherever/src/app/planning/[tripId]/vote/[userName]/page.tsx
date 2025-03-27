@@ -73,25 +73,21 @@ export default function VotingPage() {
                                                 {tripDetails?.companion?.length > 4 && (
                                                     <Popover className="relative">
                                                         <PopoverButton>
-                                                            <div className="w-[40px] h-[40px] flex items-center justify-center rounded-full bg-gray-300 text-white font-bold text-lg">
+                                                            <div
+                                                                className="w-[40px] h-[40px] flex items-center justify-center rounded-full bg-gray-300 text-white font-bold text-lg">
                                                                 <EllipsisHorizontalIcon className="h-[30px] w-[30px]" />
                                                             </div>
                                                         </PopoverButton>
                                                         <PopoverPanel
-                                                            className="w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out"
+                                                            anchor="bottom"
+                                                            transition
+                                                            className="w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
                                                         >
                                                             <div className="flex flex-col gap-2">
-                                                                {tripDetails?.companion.slice(4).map((user: any) => (
-                                                                    <div key={user.username} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
-                                                                        {/* <Image
-                                                                            src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
-                                                                            alt={user.username}
-                                                                            width={30}
-                                                                            height={30}
-                                                                            className="rounded-full aspect-square object-cover"
-                                                                        /> */}
+                                                                {tripDetails?.companion.slice(4).map((user) => (
+                                                                    <div key={user.username}
+                                                                        className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
                                                                         <ProfileIcon username={user.username} width={30} height={30} />
-
                                                                         <span className="text-black text-base">{user.username}</span>
                                                                     </div>
                                                                 ))}

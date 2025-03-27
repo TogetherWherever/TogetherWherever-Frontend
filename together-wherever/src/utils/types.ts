@@ -94,18 +94,13 @@ interface Distance {
     to: string;
     toID: string;
     distance_km: number;
-    duration_min: number;
 }
 
 export interface TripDay {
     day: number;
     status: "complete" | "voting" | "pending";
     distance?: Distance[];
-    voted_dests?: {
-        morning: Destination[];
-        afternoon: Destination[];
-        night: Destination[];
-    };
+    voted_dests?: Destination[];
     suitableDests?: Destination[];
     members_voted?: number;
     total_members?: number;
