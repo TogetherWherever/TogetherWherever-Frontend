@@ -1,3 +1,5 @@
+'use client';
+
 import { fetchGetYourTripsData } from "@/fetcher/getYourTripData";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";

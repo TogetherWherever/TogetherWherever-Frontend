@@ -148,3 +148,14 @@ export type YourTripDara = {
     destinationsNumber: number,
     photo: string,
 };
+
+// profile page
+export type UserProfileDataType = {
+    username: string | undefined;
+    email: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    preferences: string[] | undefined;
+    tripsCount: number | undefined;
+    setIsLogout: any;
+};

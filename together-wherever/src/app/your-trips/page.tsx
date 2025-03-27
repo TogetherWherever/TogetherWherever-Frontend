@@ -85,7 +85,7 @@ export default function YourTrips() {
                                     onClick={handleNavigateTripPlanningPage}
                                 />
                             </div>
-                            <div className="grid grid-cols-3 gap-x-2 mt-2 justify-items-center">
+                            <div className="grid grid-cols-3 gap-y-4 gap-x-2 mt-2 justify-items-center">
                                 {yoryTripData?.map((item: YourTripDara, index: number) => (
                                     <div
                                         key={item.tripId}

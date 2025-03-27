@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BaseButton } from "@/components/buttons/BaseButton";
 import { TripCard } from "@/components/cards/TripCard";
-import { PlusIcon, MapPinIcon, GlobeAsiaAustraliaIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, MapPinIcon, GlobeAsiaAustraliaIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { ClipLoader } from "react-spinners";
 import { useGetRecentlyViewData } from "@/hooks/useGetRecentlyViewData";
 import { RecentlyViewData } from "@/utils/types";
@@ -65,6 +65,8 @@ export default function Home() {
                                 className="bg-asparagus-green"
                                 color="earth-yellow"
                                 buttonTxt="Explore Attractions"
+                                leftIcon={MagnifyingGlassIcon}
+                                leftIconCustomization="w-[25px] h-[25px]"
                                 onClick={handleNavigateToDiscoverPage}
                             />
                             <label className="text-xl text-center px-24">
@@ -101,8 +103,8 @@ export default function Home() {
                                     <div
                                         key={item.viewTripId}
                                         className={`w-[400px] ${index % 3 === 0 ? "justify-self-start" :
-                                                index % 3 === 1 ? "justify-self-center" :
-                                                    "justify-self-end"
+                                            index % 3 === 1 ? "justify-self-center" :
+                                                "justify-self-end"
                                             }`}
                                     >
                                         <TripCard
