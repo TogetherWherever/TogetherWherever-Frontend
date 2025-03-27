@@ -137,3 +137,14 @@ export type RecentlyViewData = {
     photo: string,
     viewDateTime: Date
 };
+
+// your trip
+export type YourTripDara = {
+    owner: string;
+    tripId: number,
+    tripName: string,
+    startDate: string,
+    endDate: string,
+    destinationsNumber: number,
+    photo: string,
+};

@@ -7,7 +7,7 @@ import ProfileIcon from "@/components/ProfileIcon";
 interface TripCardPropsInterface {
     key?: number;
     tripId?: number;
-    owner: string;
+    owner?: string;
     image: string;
     startDate: Date;
     endDate: Date;
@@ -61,8 +61,8 @@ export const TripCard = ({ key, owner, image, startDate, endDate, destinationsNu
                     </h2>
                 </div>
             </div>
-            <div className="mt-3 flex justify-between items-center">                
-                <div className="flex flex-col group items-center" key={owner}>
+            <div className="mt-3 flex justify-between items-center">
+                {owner && (<div className="flex flex-col group items-center" key={owner}>
                     <div className="w-[40px] h-[40px]">
                         <ProfileIcon username={owner} width={40} height={40} />
                     </div>
@@ -70,7 +70,7 @@ export const TripCard = ({ key, owner, image, startDate, endDate, destinationsNu
                     <div className="absolute mt-[40px] flex text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                         {owner}
                     </div>
-                </div>
+                </div>)}
                 <div className={"flex"}>
                     <CalendarIcon className="w-[25px] h-[25px]" />
                     <div className="mx-2 text-xl"> {formatDateRange(startDate, endDate)} </div>

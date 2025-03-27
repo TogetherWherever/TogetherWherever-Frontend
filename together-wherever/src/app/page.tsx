@@ -4,17 +4,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BaseButton } from "@/components/buttons/BaseButton";
 import { TripCard } from "@/components/cards/TripCard";
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, MapPinIcon, GlobeAsiaAustraliaIcon } from '@heroicons/react/24/solid';
 import { ClipLoader } from "react-spinners";
 import { useGetRecentlyViewData } from "@/hooks/useGetRecentlyViewData";
 import { RecentlyViewData } from "@/utils/types";
-import { MapPinIcon, GlobeAsiaAustraliaIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
-    const recentlyViewData = useGetRecentlyViewData();
+    const { recentlyViewData, loading } = useGetRecentlyViewData();
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem("token");
+    const [token, setToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        setToken(localStorage.getItem("token")); // Ensure token is tracked in state
+    }, []);
 
     const handleNavigateTripPlanningPage = () => {
         router.push('home/create-new-trip');
@@ -24,17 +26,13 @@ export default function Home() {
         router.push('/discover');
     };
 
-    useEffect(() => {
-        setTimeout(() => setLoading(false), 1000); // Simulate loading for 1 second
-    }, []);
-
     return (
         <>
             {loading ? (
                 <div className="fixed inset-0 flex items-center justify-center">
                     <ClipLoader size={50} color={"#60993E"} loading={loading} />
                 </div>
-            ) : recentlyViewData?.length === 0 || !token ? (
+            ) : !token || recentlyViewData?.length === 0 ? (
                 <div className="flex flex-col justify-between px-12 pt-[50px] pb-6 gap-24">
                     <div className="flex flex-col gap-6">
                         <label className={"text-5xl font-bold text-asparagus-green"}>
@@ -67,8 +65,6 @@ export default function Home() {
                                 className="bg-asparagus-green"
                                 color="earth-yellow"
                                 buttonTxt="Explore Attractions"
-                                // leftIcon={PlusIcon}
-                                // leftIconCustomization="w-[25px] h-[25px]"
                                 onClick={handleNavigateToDiscoverPage}
                             />
                             <label className="text-xl text-center px-24">
@@ -82,7 +78,14 @@ export default function Home() {
                     <div className="flex flex-col py-2">
                         <div>
                             <div className="flex justify-between items-center">
-                                <div className="text-extrabold text-4xl mb-4"> Recently viewed </div>
+                                <div className="flex flex-col gap-6">
+                                    <label className={"text-5xl font-bold text-asparagus-green"}>
+                                        Plan Your Perfect Trip
+                                    </label>
+                                    <label className={"text-2xl"}>
+                                        Whether traveling with friends or on your own, your next adventure starts here!
+                                    </label>
+                                </div>
                                 <BaseButton
                                     className="bg-moonstone-blue"
                                     color="earth-yellow"
@@ -92,19 +95,27 @@ export default function Home() {
                                     onClick={handleNavigateTripPlanningPage}
                                 />
                             </div>
-                            <div className="flex gap-y-8 gap-x-2 mt-2 flex-wrap"> {/* ✅ Fix: Added flex-wrap */}
-                                {recentlyViewData?.map((item: RecentlyViewData) => (
-                                    <TripCard
-                                        key={item.viewTripId} // ✅ React uses this for list rendering
-                                        tripId={item.viewTripId}
-                                        owner={item.username}
-                                        cardName={item.tripName}
-                                        image={item.photo}
-                                        startDate={new Date(item.startDate)}
-                                        endDate={new Date(item.endDate)}
-                                        destinationsNumber={item.destinationsNumber}
-                                        onClick={() => router.push(`/planning/${item.viewTripId}`)}
-                                    />
+                            <div className="text-extrabold text-4xl mt-12 mb-4"> Recently viewed </div>
+                            <div className="grid grid-cols-3 gap-x-2 mt-2 justify-items-center">
+                                {recentlyViewData?.map((item: RecentlyViewData, index: number) => (
+                                    <div
+                                        key={item.viewTripId}
+                                        className={`w-[400px] ${index % 3 === 0 ? "justify-self-start" :
+                                                index % 3 === 1 ? "justify-self-center" :
+                                                    "justify-self-end"
+                                            }`}
+                                    >
+                                        <TripCard
+                                            tripId={item.viewTripId}
+                                            owner={item.username}
+                                            cardName={item.tripName}
+                                            image={item.photo}
+                                            startDate={new Date(item.startDate)}
+                                            endDate={new Date(item.endDate)}
+                                            destinationsNumber={item.destinationsNumber}
+                                            onClick={() => router.push(`/planning/${item.viewTripId}`)}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -114,3 +125,4 @@ export default function Home() {
         </>
     );
 }
+
