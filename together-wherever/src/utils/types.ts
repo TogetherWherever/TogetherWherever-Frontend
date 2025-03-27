@@ -125,3 +125,15 @@ export type VotingSubmitBody = {
     voted_person: string | string[];
     scores: Record<string, number>;
 };
+
+// recently view
+export type RecentlyViewData = {
+    username: string,
+    viewTripId: number,
+    tripName: string,
+    startDate: string,
+    endDate: string,
+    destinationsNumber: number,
+    photo: string,
+    viewDateTime: Date
+};
