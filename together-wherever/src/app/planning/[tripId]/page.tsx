@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
 import { ArrowLeftIcon, ArrowRightIcon, EllipsisHorizontalIcon, ShareIcon } from "@heroicons/react/24/solid";
 import Image from 'next/image';
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { addDays, format } from "date-fns";
 import { ClipLoader } from "react-spinners";
 
@@ -14,20 +14,23 @@ import ProfileIcon from "@/components/ProfileIcon";
 
 import { usePlanningPageDetails } from "@/hooks/usePlanningPageDetails";
 import { TripDay } from "@/utils/types";
+import { useMemo, useState } from "react";
 
 export default function Planning() {
     const {
         router,
         loading,
         tripDuration,
-        markers,
         showToast,
         showWrongOrder,
         details,
-        userName
+        marker,
+        setMarker
     } = usePlanningPageDetails()
 
-    const renderTripDayDropDown = (duration: number, startDate: Date, tripDetailData: { trip_day: TripDay[] }) => {
+    const [selectedDay, setSelectedDay] = useState<string | null>(null);
+
+    const renderTripDayDropDown = useMemo(() => (duration: number, startDate: Date, tripDetailData: { trip_day: TripDay[] }) => {
         return Array.from({ length: duration }, (_, index) => {
             const tripDate = addDays(startDate, index);
             const tripDay = tripDetailData?.trip_day?.find(day => day.day === index + 1); // Adjust index for 1-based day
@@ -43,11 +46,14 @@ export default function Planning() {
                 tripDay={tripDay}
                 showToast={showToast}
                 showWrongOrder={showWrongOrder}
+                setMarker={setMarker}
+                selectedDay={selectedDay}
+                setSelectedDay={setSelectedDay}
             />;
         });
-    };
+    }, [showToast, showWrongOrder]);
 
-    if (loading) {
+    if (loading || !details) {
         return (
             <div className="fixed inset-0 flex items-center justify-center">
                 <ClipLoader size={50} color={"#60993E"} loading={loading} />
@@ -57,7 +63,7 @@ export default function Planning() {
 
     return (
         <>
-            {details ? (<>
+            {details && (
                 <div className="flex flex-row w-full h-full">
                     {/* Left Panel: Search and Place Details */}
                     <div className="w-2/3 flex flex-col gap-4">
@@ -92,14 +98,11 @@ export default function Planning() {
                                                 <PopoverPanel
                                                     anchor="bottom"
                                                     transition
-                                                    className="
-                                            w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0
-                                         "
+                                                    className="w-[10%] mt-4 rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
                                                 >
                                                     <div className="flex flex-col gap-2">
                                                         {details.companion.slice(4).map((user) => (
-                                                            <div key={user.username}
-                                                                className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
+                                                            <div key={user.username} className="flex justify-between items-center block rounded-lg py-1 px-2 transition">
                                                                 <ProfileIcon username={user.username} width={30} height={30} />
                                                                 <span className="text-black text-base">{user.username}</span>
                                                             </div>
@@ -121,9 +124,7 @@ export default function Planning() {
                             </div>
                         </div>
                         <div className="w-full mt-1 h-full">
-                            <div
-                                className="h-[300px] w-full bg-cover bg-center relative flex flex-col justify-between py-6 pl-4"
-                            >
+                            <div className="h-[300px] w-full bg-cover bg-center relative flex flex-col justify-between py-6 pl-4">
                                 <div className="absolute top-0 left-0 w-full h-full">
                                     <Image
                                         src={details.photo}
@@ -131,6 +132,7 @@ export default function Planning() {
                                         layout="fill"
                                         objectFit="cover"
                                         quality={75}
+                                        loading="lazy" // Lazy load the image
                                     />
                                 </div>
                                 <div className="z-10 h-full flex flex-col justify-between">
@@ -142,7 +144,7 @@ export default function Planning() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-full pt-12 py-6 pt-4 pr-12 px-4 flex flex-col gap-6">
+                            <div className="w-full pt-12 py-6 pt-6 pr-12 px-4 flex flex-col gap-12">
                                 {renderTripDayDropDown(tripDuration, details.startDate, details)}
                             </div>
                         </div>
@@ -150,12 +152,8 @@ export default function Planning() {
                     <ToastNotification />
                     {/* Right Panel: Map View */}
                     <div className="w-1/3">
-                        <MapView lat={details.lat} lng={details.lon} makers={markers} />
+                        <MapView lat={details.lat} lng={details.lon} makers={marker} />
                     </div>
-                </div>
-            </>) : (
-                <div className="fixed inset-0 flex items-center justify-center">
-                    <label className="text-center text-gray-500">Loading...</label>
                 </div>
             )}
         </>

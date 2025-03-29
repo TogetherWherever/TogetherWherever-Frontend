@@ -25,7 +25,7 @@ export default function RootLayout({
                 {/* Favicon link */}
                 <link rel="icon" href="/favicon.ico" />
             </head>
-            <body className={poppins.variable}>
+            <body className={`${poppins.variable}`}>
                 <NavBar />
                 <div>
                     {children}

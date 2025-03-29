@@ -1,12 +1,12 @@
 'use client';
 
-// import axios from "axios";
+import axios from "axios";
 
 interface UpdateDestinationParams {
     destinationID: string;
     action: string;
-    tripDay: string | undefined;
-    tripId: string | string[] | undefined;
+    tripDay: number | undefined;
+    tripId: number | number[] | undefined;
     oldOrder: number | undefined;
     newOrder: number | undefined;
 }
@@ -21,31 +21,26 @@ export async function updateDestination({
 }: UpdateDestinationParams) {
     try {
         // Prepare the request body
-        const body = JSON.stringify({
+        const body = {
             tripDay,
             tripId,
             destinationID,
             action,
             oldOrder,
             newOrder
-        });
+        }
+        
+        console.log(body);
 
-        // Uncomment when connecting to a real API
-        // const response = await axios.patch("end-point", body);
-        // const updatedDestinations = await response.data;
+        const response = await axios.patch("http://localhost:8000/api/planning-details/move-activities", body);
 
-        // Simulating the update response as a log
-        const updatedDestinations = {
-            tripDay,
-            tripId,
-            destinationID,
-            action,
-            oldOrder,
-            newOrder
-        };
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                console.log("something wrong");
+            }
 
-        return updatedDestinations;
     } catch (error: any) {
-        return null;
+        return console.log(error);
     }
 };

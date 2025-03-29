@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type NearbyPlaces = {
     destID: string;
     destName: string;
@@ -158,4 +160,23 @@ export type UserProfileDataType = {
     preferences: string[] | undefined;
     tripsCount: number | undefined;
     setIsLogout: any;
+};
+
+// marker
+export type MarkerDestination = { 
+    lat: number;
+    lng: number;
+    name?: string; 
+};
+
+// tripdaydropdown
+export interface TripDateDropdownPropsInterface {
+    key: any;
+    tripDate: Date;
+    tripDay: any;
+    showToast: () => void;
+    showWrongOrder?: () => void;
+    setMarker?: Dispatch<SetStateAction<MarkerDestination[]>>;
+    selectedDay?: string | null;
+    setSelectedDay?: Dispatch<SetStateAction<string | null>>
 };

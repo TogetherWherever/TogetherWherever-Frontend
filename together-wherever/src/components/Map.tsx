@@ -11,9 +11,8 @@ interface MapProps {
         lat: number;
         lng: number;
         name?: string;
-        status?: string;
     }[];
-}
+};
 
 const mapContainerStyle = {
     width: "100%",
@@ -42,7 +41,7 @@ export default function MapView({ lat, lng, makers }: MapProps) {
                             position={{ lat: maker.lat, lng: maker.lng }}
                             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                         >
-                            <div className={clsx("text-white font-bold", isDiscoverPage ? "" : "marker-label", maker.status === "complete" ? "complete" : "voting")}>{maker.name}</div>
+                            <div className={clsx("text-white font-bold", isDiscoverPage ? "" : "marker-label")}>{maker.name}</div>
                         </OverlayView>
                     </div>
                 ))}

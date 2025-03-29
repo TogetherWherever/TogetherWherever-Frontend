@@ -1,8 +1,10 @@
-'use client';
+"use client";
 
 import { MapPinIcon, PhoneIcon, StarIcon, CheckIcon } from "@heroicons/react/24/solid";
 import Image from 'next/image';
+import { useState, useEffect } from "react";
 
+import { ClipLoader } from "react-spinners";
 import PlaceSearchBox from "@/components/PlaceSearchBox";
 import MapView from "@/components/Map";
 import { NearbyCard } from "@/components/cards/NearbyCard";
@@ -15,13 +17,34 @@ export default function DiscoverPage() {
         placeDetails,
         formatString,
         getDiscoverPageDetails,
+        loading,
     } = useBaseDiscoverPage();
+
+    const [isPageLoaded, setIsPageLoaded] = useState(false);
+
+    // Simulate a delay to show loading spinner (useful for showing spinner during initial loading)
+    useEffect(() => {
+        setTimeout(() => setIsPageLoaded(true), 1000); // You can adjust the timeout or remove this if not needed
+    }, []);
+
+    // If the page is still loading or data is being fetched, show the loader
+    if (!isPageLoaded) {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center">
+                <ClipLoader size={50} color={"#60993E"} loading={true} />
+            </div>
+        );
+    }
+
+
 
     return (
         <div className="flex flex-row h-screen">
             {/* Left Panel: Search and Place Details */}
             <div className="w-3/5 p-5 flex flex-col space-y-4">
-                <PlaceSearchBox onSelect={getDiscoverPageDetails} />
+                <div style={{ pointerEvents: loading ? "none" : "auto" }}>
+                    <PlaceSearchBox onSelect={getDiscoverPageDetails} />
+                </div>
 
                 {/* Show Place Details if available */}
                 {placeDetails ? (
@@ -102,11 +125,15 @@ export default function DiscoverPage() {
                             </div>
                         </div>
                     </div>
+                ) : loading ? (
+                    <div className="flex items-center justify-center h-full">
+                        <ClipLoader size={50} color={"#60993E"} loading={true} />
+                    </div>
                 ) : null}
             </div>
 
             {/* Right Panel: Map View */}
-            <div className="w-2/5 h-full">
+            <div className="w-2/5 h-full" style={{ pointerEvents: loading ? "none" : "auto" }}>
                 <MapView lat={selectedPlace.lat} lng={selectedPlace.lng}
                     makers={[{ lat: selectedPlace.lat, lng: selectedPlace.lng }]} />
             </div>

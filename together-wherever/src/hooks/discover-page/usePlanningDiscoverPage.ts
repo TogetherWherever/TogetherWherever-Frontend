@@ -11,6 +11,7 @@ export const usePlanningDiscoverPage = () => {
     const params = useParams();
     const [selectedPlace, setSelectedPlace] = useState(DEFAULT_CENTER);
     const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
+    const [loading, setLoading] = useState(false); // Loading state to manage async status
 
     // Helper function to format strings
     const formatString = (str: string) => {
@@ -20,6 +21,9 @@ export const usePlanningDiscoverPage = () => {
     };
 
     const getDiscoverPageDetails = async (placeId: string | string[]) => {
+        setLoading(true);
+        setPlaceDetails(null);
+
         try {
             const data = await fetchPlaceDetails(placeId);
 
@@ -32,7 +36,9 @@ export const usePlanningDiscoverPage = () => {
             setSelectedPlace({ lat, lng });
 
         } catch (error) {
-            throw error;
+            console.log(error);
+        } finally {
+            setLoading(false); // Hide loading spinner
         }
     };
 
@@ -47,5 +53,6 @@ export const usePlanningDiscoverPage = () => {
         placeDetails,
         formatString,
         getDiscoverPageDetails,
+        loading
     };
 };

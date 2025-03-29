@@ -2,6 +2,8 @@
 
 import { MapPinIcon, PhoneIcon, StarIcon, CheckIcon } from "@heroicons/react/24/solid";
 import Image from 'next/image';
+import { useState, useEffect } from "react";
+import { ClipLoader } from "react-spinners";
 
 import PlaceSearchBox from "@/components/PlaceSearchBox";
 import MapView from "@/components/Map";
@@ -15,13 +17,29 @@ export default function DiscoverDetail() {
         placeDetails,
         formatString,
         getDiscoverPageDetails,
+        loading,
     } = usePlanningDiscoverPage();
+
+    const [isPageLoaded, setIsPageLoaded] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => setIsPageLoaded(true), 1000); // You can adjust the timeout or remove this if not needed
+    }, []);
+
+    // If the page is still loading or data is being fetched, show the loader
+    if (!isPageLoaded) {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center">
+                <ClipLoader size={50} color={"#60993E"} loading={true} />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-row h-screen">
             <div className="w-3/5 p-5 flex flex-col space-y-4">
                 <div className="flex w-full items-center gap-2">
-                    <div className="w-full">
+                    <div className="w-full" style={{ pointerEvents: loading ? "none" : "auto" }}>
                         <PlaceSearchBox onSelect={getDiscoverPageDetails} />
                     </div>
                 </div>
@@ -110,11 +128,15 @@ export default function DiscoverDetail() {
                             </div>
                         </div>
                     </div>
+                ) : loading ? (
+                    <div className="flex items-center justify-center h-full">
+                        <ClipLoader size={50} color={"#60993E"} loading={true} />
+                    </div>
                 ) : null}
             </div>
 
             {/* Right Panel: Map View */}
-            <div className="w-2/5 h-full">
+            <div className="w-2/5 h-full" style={{ pointerEvents: loading ? "none" : "auto" }}>
                 <MapView lat={selectedPlace.lat} lng={selectedPlace.lng}
                     makers={[{ lat: selectedPlace.lat, lng: selectedPlace.lng }]} />
             </div>

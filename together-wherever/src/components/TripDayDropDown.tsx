@@ -1,42 +1,54 @@
 'use client';
 
 import { ChevronDownIcon, ChevronRightIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { format } from "date-fns";
 import DestCard from "@/components/cards/DestCard";
 import clsx from "clsx";
 import { BaseButton } from "@/components/buttons/BaseButton";
 import { jwtDecode } from 'jwt-decode';
+import { TripDateDropdownPropsInterface } from "@/utils/types"
 
-interface TripDateDropdownPropsInterface {
-    key: any;
-    tripDate: Date;
-    tripDay: any;
-    showToast: () => void;
-    showWrongOrder?: () => void;
-};
-
-export default function TripDayDropDown({ key, tripDate, tripDay, showToast, showWrongOrder }: TripDateDropdownPropsInterface) {
+const TripDayDropDown = ({ key, tripDate, tripDay, showToast, showWrongOrder, setMarker, selectedDay, setSelectedDay }: TripDateDropdownPropsInterface) => {
     const formattedDate = format(tripDate, "EEEE, MMMM dd");
-    const [showDestination, setShowDestination] = useState<boolean>(false);
-    const [orderedDestinations, setOrderedDestinations] = useState(tripDay.voted_dests);
+    const isOpen = selectedDay === tripDay.day;
     const router = useRouter();
     const { tripId } = useParams();
+    const [destinations, setDestinations] = useState(tripDay.voted_dests || []);
 
-    const numOfAvailableDest = tripDay.status === "complete"
-        ? tripDay.voted_dests?.length
-        : tripDay.suitableDests?.length || 0;
+    // Memoizing calculation of number of available destinations
+    const numOfAvailableDest = useMemo(() => {
+        return tripDay.status === "complete"
+            ? tripDay.voted_dests?.length
+            : tripDay.suitableDests?.length || 0;
+    }, [tripDay]);
 
     // Function to toggle showing destinations
     const showContent = () => {
         if (tripDay.status === "pending") {
-            setShowDestination(false);
+            setSelectedDay?.(null);
             showToast();
-        } else {
-            setShowDestination(prevState => !prevState); // Toggle state
+            return;
+        }
+
+        setSelectedDay?.(isOpen ? null : tripDay.day); // Close if already open, otherwise open
+
+        if (setMarker) {
+            if (!isOpen) {
+                const destinations = tripDay.status === "complete" ? tripDay.voted_dests : tripDay.suitableDests;
+                const markers = destinations?.map((dest: any, index: number) => ({
+                    lat: dest.lat,
+                    lng: dest.lon,
+                    name: tripDay.status === "complete" ? `(${index + 1}) ${dest.destName}` : dest.destName
+                })) || [];
+                setMarker(markers);
+            } else {
+                setMarker([]); // Clear markers when hiding destinations
+            }
         }
     };
+
 
     const navigateToVotingPage = (day: string) => {
         const token = localStorage.getItem('token');
@@ -51,14 +63,18 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
         }
     };
 
+    // Memoize distance calculation
+    const getDistanceInfo = (dest: any, index: number) => {
+        return useMemo(() => {
+            return tripDay.distance.find((d: any, distanceIndex: number) => d.fromID === dest.destID && index === distanceIndex);
+        }, [tripDay.distance, dest.destID, index]);
+    };
+
     return (
         <div className="flex flex-col bg-transparent w-full">
             {/* Clickable Icon for toggling */}
-            <div
-                onClick={showContent} // Fix: Call the function to toggle state
-                className="flex items-center gap-4"
-            >
-                {showDestination ? (
+            <div onClick={showContent} className="flex items-center gap-4">
+                {isOpen ? (
                     <ChevronDownIcon className="w-12 h-12 cursor-pointer" />
                 ) : (
                     <ChevronRightIcon className="w-12 h-12 cursor-pointer" />
@@ -99,16 +115,14 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                 </div>
             </div>
             <div
-                className={`overflow-hidden transition-all duration-300 ${showDestination ? "h-auto" : "h-0"}`}
+                className={`overflow-hidden transition-all duration-300 ${isOpen ? "h-auto" : "h-0"}`}
             >
                 <div className={clsx(
                     "flex border-b-2 border-black/50 ml-16 pb-4 pt-2",
                     tripDay.status === "complete" ? "flex-col justify-center overflow-y-auto" : "items-center overflow-x-auto pb-4"
                 )}>
-                    {tripDay.status === "complete" && tripDay.voted_dests?.map((dest: any, index: number) => {
-                        const distanceInfo = tripDay.distance.find((d: any, distanceIndex: number) => {
-                            return d.fromID === dest.destID && index === distanceIndex;
-                        });
+                    {tripDay.status === "complete" && destinations?.map((dest: any, index: number) => {
+                        const distanceInfo = getDistanceInfo(dest, index);                        
 
                         return (
                             <div key={dest.destID} className="rounded-lg p-2 pt-0 pb-0 pr-4">
@@ -147,7 +161,6 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                                             destData={dest}
                                             complete={true}
                                             orderedDestinations={tripDay.voted_dests}
-                                            setOrderedDestinations={setOrderedDestinations}
                                             showWrongOrder={showWrongOrder}
                                             tripDate={tripDate}
                                             tripId={tripId}
@@ -169,4 +182,6 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
             </div>
         </div>
     );
-}
+};
+
+export default TripDayDropDown;
