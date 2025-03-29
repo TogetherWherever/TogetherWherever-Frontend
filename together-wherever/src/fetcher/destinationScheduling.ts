@@ -30,8 +30,6 @@ export async function updateDestination({
             newOrder
         }
         
-        console.log(body);
-
         const response = await axios.patch("http://localhost:8000/api/planning-details/move-activities", body);
 
             if (response.status === 200) {
