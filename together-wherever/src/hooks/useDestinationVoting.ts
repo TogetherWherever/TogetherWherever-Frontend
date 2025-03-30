@@ -1,80 +1,75 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter, useParams, useSearchParams  } from "next/navigation";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 
 import { DestinationInterface, TripDetailsInterface } from "@/utils/types";
 import { fetchVotingPageData, votingSubmit } from "@/fetcher/votingPage";
 
 export function useDestinationVoting() {
-    const [tripDetails, setTripDetails] = useState<TripDetailsInterface>();
+    const [tripDetails, setTripDetails] = useState<TripDetailsInterface | null>(null);
     const [destinations, setDestinations] = useState<DestinationInterface[]>([]);
     const [scores, setScores] = useState<Record<string, number>>({});
     const [loading, setLoading] = useState(true);
-    let [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    
     const router = useRouter();
     const { tripId, userName } = useParams();
     const searchParams = useSearchParams();
     const day = searchParams.get('day');
 
-    const handleScoreChange = (destID: number, newScore: number) => {
-        setScores((prevScores) => ({
-            ...prevScores,
-            [destID]: newScore,
-        }));
-    };
+    const handleScoreChange = useCallback((destID: number, newScore: number) => {
+        setScores(prevScores => 
+            prevScores[destID] === newScore ? prevScores : { ...prevScores, [destID]: newScore }
+        );
+    }, []);
 
-    const handleCompleteVote = async () => {
+    const handleCompleteVote = useCallback(async () => {
         setIsOpen(false);
-        const body = {
-            trip_id: tripId,
-            trip_day_number: Number(day),
-            voted_person: userName,
-            scores: scores
-        };
-        const response = await votingSubmit(body);
+        try {
+            const response = await votingSubmit({
+                trip_id: tripId,
+                trip_day_number: Number(day),
+                voted_person: userName,
+                scores
+            });
 
-        if (response === 200) {
-            router.push(`/planning/${tripId}`);
+            if (response === 200) {
+                router.push(`/planning/${tripId}`);
+            }
+        } catch (error) {
+            console.error("Voting submission failed:", error);
         }
-    };
+    }, [tripId, day, userName, scores, router]);
 
-    const handleClickBackButton = () => {
-        router.push(`/planning/${tripId}`)
-    };
+    const handleClickBackButton = useCallback(() => {
+        router.push(`/planning/${tripId}`);
+    }, [tripId, router]);
 
     useEffect(() => {
-        // Check if token exists in localStorage
-        const token = localStorage.getItem('token');
-
-        if (token) {
-        } else {
-            router.push('/login'); // Redirect to login page
+        if (!localStorage.getItem('token')) {
+            router.replace('/login');
         }
     }, [router]);
 
     useEffect(() => {
         const getVotingPageData = async () => {
-          try {
-            // simulate await the result of fetchVotingPageData
-            const { tripDetails, destinations, scores } = await fetchVotingPageData(tripId, day, userName);
-    
-            setTripDetails(tripDetails);
-            setDestinations(destinations);
-            setScores(scores);
-            setLoading(false);
-          } catch (err) {
-            console.error("Error loading voting page data:", err);
-            setLoading(false);
-          }
-        };
-    
-        getVotingPageData();
-      }, []);
+            setLoading(true);
+            try {
+                const { tripDetails, destinations, scores } = await fetchVotingPageData(tripId, day, userName);
 
-    useEffect(() => {
-        setTimeout(() => setLoading(false), 1000); // Simulate loading for 3 seconds
-    }, []);
+                setTripDetails(prev => prev ?? tripDetails);
+                setDestinations(prev => (prev.length === 0 ? destinations : prev));
+                setScores(prev => (Object.keys(prev).length === 0 ? scores : prev));
+            } catch (err) {
+                console.error("Error loading voting page data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getVotingPageData();
+    }, [tripId, day, userName]);
 
     return {
         tripDetails,
@@ -87,4 +82,4 @@ export function useDestinationVoting() {
         isOpen,
         setIsOpen
     };
-}
+};

@@ -11,7 +11,7 @@ import {jwtDecode} from 'jwt-decode';
 export default function NavBar() {
     const pathname = usePathname();
     const router = useRouter();
-    const [username, setUsername] = useState<string | undefined>('');
+    const [username, setUsername] = useState<string | null>(null);
 
     const links = [
         {href: '/', label: 'Home'},
@@ -81,7 +81,7 @@ export default function NavBar() {
                     {link.label}
                 </Link>
             ))}
-            {username ? (
+            {username === null ? null : username ? (
                 <div
                     className="flex flex-row ml-auto text-lg font-semibold text-asparagus-green cursor-pointer"
                     onClick={handleNavigateToProfilePage}

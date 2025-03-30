@@ -45,7 +45,7 @@ body {
 
 .marker-label {
   position: absolute;
-  bottom: 40px; /* Adjust to move label above marker */
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   background-color: white;
@@ -56,4 +56,18 @@ body {
   border-radius: 3px;
   white-space: nowrap;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.marker-label.complete {
+  background-color: #60993E;
+  color: white;
+}
+
+.marker-label.voting {
+  background-color: #E0A458;
+  color: white;
 }

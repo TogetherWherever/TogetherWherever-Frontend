@@ -26,7 +26,9 @@ const config: Config = {
         'dorado': '#6B5755',
         'hurricane': '#877C7B',
         'satin-linen': '#ECE2D7',
-        'red': '#ff0000'
+        'red': '#ff0000',
+        'pinkish-grey': '#cea69c',
+        'white-smoke': '#F5F5F5'
       },
     },
   },

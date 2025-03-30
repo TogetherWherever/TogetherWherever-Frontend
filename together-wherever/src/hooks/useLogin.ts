@@ -4,11 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { login } from "@/fetcher/login";
+import { toast } from "react-toastify";
 
 export const useLogin = () => {
     const [formData, setFormData] = useState({ username: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
+
+    const showError = () => {
+        toast.error("Login failed, please try again.");
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -22,7 +27,7 @@ export const useLogin = () => {
             localStorage.setItem("token", res.data.access_token);
             router.push("/");
         } catch (error: any) {
-            alert(error.response?.data?.detail || "Login failed");
+            showError();
         }
     };
 

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import { Dispatch } from 'react';
+import { Dispatch, useCallback, memo, useState } from 'react';
 import { format } from "date-fns";
 import { updateDestination } from "@/fetcher/destinationScheduling";
 
@@ -10,8 +10,8 @@ interface DestDataInterface {
     destName: string;
     photo: string;
     desc: string;
-    openDays: Array<string>;
-    openingHours: any;
+    openDays: string[];
+    openingHours: Record<string, { open: string; close: string }>;
     lat: number;
     lng: number;
 }
@@ -19,179 +19,142 @@ interface DestDataInterface {
 interface DestCardPropsInterface {
     destData: DestDataInterface;
     complete?: boolean;
-    period?: "morning" | "afternoon" | "night";
-    orderedDestinations?: { [key: string]: Array<DestDataInterface> }; // Optional prop for ordered destinations
-    setOrderedDestinations?: Dispatch<any>; // Function to update orderedDestinations
+    orderedDestinations?: DestDataInterface[];
+    setDestinations?: Dispatch<any>;
+    setDistance?: Dispatch<any>;
+    setLoading?: Dispatch<any>;
     tripDate: Date;
     tripId?: string | string[];
     showWrongOrder?: () => void;
+    index?: number;
+    tripDay?: string;
+    loading?: any;
+    setMarker?: Dispatch<any>;
 }
 
-export default function DestCard({
+const DestCard = ({
     destData,
-    complete,
-    period,
-    orderedDestinations,
-    setOrderedDestinations,
+    complete = false,
+    orderedDestinations = [],
     tripDate,
     tripId,
-    showWrongOrder
-}: DestCardPropsInterface) {
-    const dayOfWeek = format(tripDate || new Date(), "EEEE");
-    const todayOpeningClosingHours = destData.openingHours[dayOfWeek as keyof typeof destData.openingHours];
+    index,
+    tripDay,
+    setDestinations,
+    setDistance,
+    setLoading,
+    loading,
+    setMarker
+}: DestCardPropsInterface) => {
+    const dayOfWeek = format(tripDate, "EEEE");
+    const todayOpeningClosingHours = destData.openingHours[dayOfWeek];
 
-    const handleNavigateToDiscoverPageDetail = () => {
+    const handleNavigateToDiscoverPageDetail = useCallback(() => {
         window.open(`/discover/${destData.destID}`, '_blank');
-    };
+    }, [destData.destID]);
 
-    const periodKey = period as "morning" | "afternoon" | "night";
-    const destinationIndex = orderedDestinations?.[periodKey]?.findIndex(
-        (item) => item.destID === destData.destID
-    );
-    const isLastDestination =
-        periodKey === "night" && orderedDestinations?.[periodKey]?.length
-            ? destinationIndex === orderedDestinations[periodKey]?.length - 1
-            : false;
+    const handleMove = useCallback(async (direction: "move-up" | "move-down") => {
+        // Move the early return logic inside the callback
+        if (index === undefined || !setDestinations || !setDistance) {
+            return;
+        }
 
-    const handleMoveUp = (
-        index: number,
-        periodKey: "morning" | "afternoon" | "night",
-        destinationID: string
-    ) => {
-        const fromCategory = periodKey;
-        let action: "move" | "reorder" = "move";
-        let toCategory: "morning" | "afternoon" | "night" | null = null;
-        let newIndex = null;       
+        setLoading?.(true);
+        const oldOrder = index + 1;
+        const newOrder = direction === "move-up" ? oldOrder - 1 : oldOrder + 1;
 
-        if (index === 0) {
-            action =  "move";
-            if (period === "afternoon") {
-                toCategory = "morning"
-            } else {
-                toCategory = "afternoon"
+        try {
+            const res = await updateDestination({
+                destinationID: destData.destID,
+                action: direction,
+                tripDay: Number(tripDay),
+                tripId: Number(tripId),
+                oldOrder,
+                newOrder
+            });
+
+            if (res) {
+                setDestinations(res.voted_dests);
+                setDistance(res.distance);
+                    const markers = res.voted_dests.map((dest: any, index: number) => ({
+                        lat: dest.lat,
+                        lng: dest.lon,
+                        name: complete ? `(${index + 1}) ${dest.destName}` : dest.destName
+                    }));
+                //     setMarker?.(markers);
+                setMarker?.(markers)
             }
-        } else {
-            action =  "reorder";
-            newIndex = index - 1;
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading?.(false);
         }
-        
-        const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
-        if (res !== null) {
-            console.log(`Destination successfully updated.`);
-            console.log(res);
-        } else {
-            console.error(`Failed to update destination.`);
-        }
-    };
-
-    const handleMoveDown = (
-        index: number,
-        periodKey: "morning" | "afternoon" | "night",
-        destinationID: string
-    ) => {  
-        const fromCategory = periodKey;
-        let action: "move" | "reorder" = "move";
-        let toCategory: "morning" | "afternoon" | "night" | null = null;
-        let newIndex = null;
-
-        const newDestinations = { ...orderedDestinations };
-        const periodDestinations = newDestinations[periodKey];
-
-        if (index === periodDestinations?.length - 1) {
-            action =  "move";
-            if (period === "morning") {
-                toCategory = "afternoon"
-            } else {
-                toCategory = "night"
-            }
-        } else {
-            action =  "reorder";
-            newIndex = index + 1;
-        }
-
-        const res = updateDestination({ action, destinationID, fromCategory, toCategory, newIndex, tripDate, tripId });
-
-        if (res !== null) {
-            console.log(`Destination successfully updated.`);
-            console.log(res);
-        } else {
-            console.error(`Failed to update destination.`);
-        }
-    };
+    }, [
+        index,
+        destData.destID,
+        tripDay,
+        tripId,
+        setDestinations, // These should be stable references
+        setDistance,     // If they can be undefined, keep them in deps
+    ]);
 
     return (
         <div
             className={clsx(
                 "flex justify-left p-4 gap-4 rounded-lg bg-satin-linen h-[150px] cursor-pointer",
-                complete ? "w-full" : "w-[500px]"
+                complete ? "w-full" : "w-[500px]",
+                loading ? "cursor-wait" : ""
             )}
             onClick={handleNavigateToDiscoverPageDetail}
         >
-            <div className={clsx("relative", !complete ? "w-[250px]" : "w-[400px]")}>
-                <Image
-                    src={destData.photo}
-                    alt="Destination Image"
-                    fill
-                    className="object-cover"
-                />
+            <div className="relative w-[250px]">
+                <Image src={destData.photo} alt="Destination Image" fill className="object-cover" />
             </div>
 
-            <div className={clsx("flex flex-col justify-between h-full", complete ? "" : "w-2/3")}>
-                <div className="flex items-center gap-2 text-2xl">
-                    <label className='font-bold cursor-pointer line-clamp-2'>{destData.destName} </label>
+            <div className="flex flex-col justify-between h-full w-2/3">
+                <div className="flex items-center gap-2 text-2xl font-bold cursor-pointer">
+                    <label className="line-clamp-2">
+                        {complete && index !== undefined ? `(${index + 1}) ` : ""}{destData.destName}
+                    </label>
                 </div>
                 {complete && (
-                    <div className={'text-md text-gray-600'}>
-                        Open: {todayOpeningClosingHours.open} | Close: {todayOpeningClosingHours.close}
+                    <div className="text-md text-gray-600">
+                        Open: {todayOpeningClosingHours?.open} | Close: {todayOpeningClosingHours?.close}
                     </div>
                 )}
-                <div className={clsx("overflow-hidden text-ellipsis text-lg line-clamp-2")}>
-                    {destData.desc !== "" ? destData.desc : "No description provided"}
+                <div className="overflow-hidden text-ellipsis text-lg line-clamp-2">
+                    {destData.desc || "<No description provided>"}
                 </div>
             </div>
 
-            {complete && destinationIndex !== undefined && (
-                <div className="flex flex-col justify-between">
-                    {/* Hide ChevronUpIcon if first destination in morning */}
-                    {destinationIndex === 0 && period === "morning" ? (
-                        <></>
-                    ) : (
+            {complete && (
+                <div className={clsx("flex flex-col items-end pr-4 w-1/5", index === 0 ? "justify-end h-full" : "justify-between")}>
+                    {index !== 0 && (
                         <ChevronUpIcon
                             width={40}
                             height={40}
                             className="opacity-25 hover:opacity-100"
-                            onClick={(event: any) => {
-                                event.stopPropagation();
-                                handleMoveUp(
-                                    destinationIndex,
-                                    periodKey,
-                                    destData.destID,
-                                );
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleMove("move-up");
                             }}
                         />
                     )}
-                    {/* Hide ChevronDownIcon if last destination in night */}
-                    {isLastDestination && period === "night" ? (
-                        <></>
-                    ) : (
-                        <div className={clsx(period === "morning" && destinationIndex === 0 ? "flex flex-col justify-end h-full" : "")}>
-                            <ChevronDownIcon
-                                width={40}
-                                height={40}
-                                className="opacity-25 hover:opacity-100"
-                                onClick={(event: any) => {
-                                    event.stopPropagation();
-                                    handleMoveDown(
-                                        destinationIndex,
-                                        periodKey,
-                                        destData.destID,
-                                    );
-                                }}
-                            />
-                        </div>
+                    {index !== orderedDestinations.length - 1 && (
+                        <ChevronDownIcon
+                            width={40}
+                            height={40}
+                            className="opacity-25 hover:opacity-100"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleMove("move-down");
+                            }}
+                        />
                     )}
                 </div>
             )}
         </div>
     );
-}
+};
+
+export default memo(DestCard);

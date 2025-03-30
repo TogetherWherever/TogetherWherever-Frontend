@@ -1,43 +1,57 @@
 'use client';
 
 import { ChevronDownIcon, ChevronRightIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
-import { SunIcon, MoonIcon, CloudIcon } from "@heroicons/react/24/solid";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { format } from "date-fns";
 import DestCard from "@/components/cards/DestCard";
 import clsx from "clsx";
 import { BaseButton } from "@/components/buttons/BaseButton";
 import { jwtDecode } from 'jwt-decode';
+import { TripDateDropdownPropsInterface } from "@/utils/types"
+import { ClipLoader } from "react-spinners";
 
-interface TripDateDropdownPropsInterface {
-    key: any;
-    tripDate: Date;
-    tripDay: any;
-    showToast: () => void;
-    showWrongOrder?: () => void;
-};
-
-export default function TripDayDropDown({ key, tripDate, tripDay, showToast, showWrongOrder }: TripDateDropdownPropsInterface) {
+const TripDayDropDown = ({ key, tripDate, tripDay, showToast, showWrongOrder, setMarker, selectedDay, setSelectedDay }: TripDateDropdownPropsInterface) => {
     const formattedDate = format(tripDate, "EEEE, MMMM dd");
-    const [showDestination, setShowDestination] = useState<boolean>(false);
-    const [orderedDestinations, setOrderedDestinations] = useState(tripDay.voted_dests);
+    const isOpen = selectedDay === tripDay.day;
     const router = useRouter();
     const { tripId } = useParams();
+    const [destinations, setDestinations] = useState(tripDay.voted_dests || []);
+    const [distance, setDistance] = useState(tripDay.distance || []);
+    const [loading, setLoading] = useState(false);
 
-    const numOfAvailableDest = tripDay.status === "complete"
-        ? Object.values(tripDay.voted_dests).reduce((acc, dests: any) => acc + dests.length, 0)
-        : tripDay.suitableDests?.length || 0;
+    // Memoizing calculation of number of available destinations
+    const numOfAvailableDest = useMemo(() => {
+        return tripDay.status === "complete"
+            ? tripDay.voted_dests?.length
+            : tripDay.suitableDests?.length || 0;
+    }, [tripDay]);
 
     // Function to toggle showing destinations
     const showContent = () => {
         if (tripDay.status === "pending") {
-            setShowDestination(false);
+            setSelectedDay?.(null);
             showToast();
-        } else {
-            setShowDestination(prevState => !prevState); // Toggle state
+            return;
+        }
+
+        setSelectedDay?.(isOpen ? null : tripDay.day); // Close if already open, otherwise open
+
+        if (setMarker) {
+            if (!isOpen) {
+                const destinations_markers = tripDay.status === "complete" ? destinations : tripDay.suitableDests;
+                const markers = destinations_markers?.map((dest: any, index: number) => ({
+                    lat: dest.lat,
+                    lng: dest.lon,
+                    name: tripDay.status === "complete" ? `(${index + 1}) ${dest.destName}` : dest.destName
+                })) || [];
+                setMarker(markers);
+            } else {
+                setMarker([]); // Clear markers when hiding destinations
+            }
         }
     };
+
 
     const navigateToVotingPage = (day: string) => {
         const token = localStorage.getItem('token');
@@ -52,14 +66,58 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
         }
     };
 
+    // Memoize distance calculation
+    const getDistanceInfo = (dest: any, index: number) => {
+        return useMemo(() => {
+            return distance.find((d: any, distanceIndex: number) => d.fromID === dest.destID && index === distanceIndex);
+        }, [distance, dest.destID, index]);
+    };
+
+    // const handleSetManker = () => {
+    //     console.log("activated")
+    //     const markers = destinations.map((dest: any, index: number) => ({
+    //         lat: dest.lat,
+    //         lng: dest.lon,
+    //         name: tripDay.status === "complete" ? `(${index + 1}) ${dest.destName}` : dest.destName
+    //     }));
+    //     setMarker?.(markers);
+    // }
+
+    // useEffect to automatically update markers when destinations change
+    // useEffect(() => {
+    //     if (setMarker) {
+    //         const markers = destinations.map((dest: any, index: number) => ({
+    //             lat: dest.lat,
+    //             lng: dest.lon,
+    //             name: tripDay.status === "complete" ? `(${index + 1}) ${dest.destName}` : dest.destName
+    //         }));
+    //         setMarker(markers);
+    //     }
+    // }, [destinations]);
+
+    useEffect(() => {
+        if (loading) {
+            document.documentElement.style.cursor = "wait"; // Apply to the entire document
+            document.body.style.cursor = "wait"; // Ensure it's applied to body
+            document.body.style.pointerEvents = "none"; // Disable interactions
+        } else {
+            document.documentElement.style.cursor = "default";
+            document.body.style.cursor = "default";
+            document.body.style.pointerEvents = "auto";
+        }
+
+        return () => {
+            document.documentElement.style.cursor = "default";
+            document.body.style.cursor = "default";
+            document.body.style.pointerEvents = "auto";
+        };
+    }, [loading]);
+
     return (
-        <div className="flex flex-col bg-transparent w-full">
+        <div className={clsx("flex flex-col bg-transparent w-full")}>
             {/* Clickable Icon for toggling */}
-            <div
-                onClick={showContent} // Fix: Call the function to toggle state
-                className="flex items-center gap-4"
-            >
-                {showDestination ? (
+            <div onClick={showContent} className="flex items-center gap-4">
+                {isOpen ? (
                     <ChevronDownIcon className="w-12 h-12 cursor-pointer" />
                 ) : (
                     <ChevronRightIcon className="w-12 h-12 cursor-pointer" />
@@ -76,10 +134,10 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                         )}
                         {tripDay.status === "voting" && (
                             <div className="flex justify-center items-center gap-4">
-                                <label className="text-xl"> Total vote: {tripDay.members_voted} / {tripDay.total_members}, </label>
+                                <div className="text-xl"> Total vote: {tripDay.members_voted} / {tripDay.total_members}, </div>
                                 <BaseButton
-                                    buttonTxt="Vote"
-                                    className="text-sm"
+                                    buttonTxt={tripDay.user_voted ? "Voted" : "Vote"}
+                                    className={clsx("text-sm", tripDay.user_voted ? "!bg-gray-200 text-gray-400" : "")}
                                     leftIconCustomization="w-[15px] h-[15px]"
                                     onClick={(event: any) => {
                                         event.stopPropagation(); // Prevents triggering showContent
@@ -99,96 +157,66 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
                     </div>
                 </div>
             </div>
-            <div
-                className={`overflow-hidden transition-all duration-300 ${showDestination ? "h-auto" : "h-0"}`}
-            >
+            <div className={`overflow-hidden transition-all duration-300 ${isOpen ? "h-auto" : "h-0"}`}>
                 <div className={clsx(
                     "flex border-b-2 border-black/50 ml-16 pb-4 pt-2",
-                    tripDay.status === "complete" ? "flex-col justify-center overflow-y-auto" : "items-center overflow-x-auto pb-4"
+                    tripDay.status === "complete" ? "flex-col justify-center overflow-y-auto" : "items-center overflow-x-auto pb-4",
                 )}>
-                    {tripDay.status === "complete" && (
-                        <div className="flex flex-col">
-                            {Object.keys(tripDay.voted_dests).map((periodKey: string) => {
-                                const period = tripDay.voted_dests[periodKey]; // Get list of destinations
+                    {tripDay.status === "complete" && destinations?.map((dest: any, index: number) => {
+                        const distanceInfo = getDistanceInfo(dest, index);
 
-                                return (
-                                    <div key={periodKey} className="rounded-lg p-2 pt-0 pb-0 pr-4">
-                                        {periodKey === "morning" && (
-                                            <div className="flex ml-14 gap-4">
-                                                <SunIcon className="w-6 h-6 text-yellow" />
-                                                <label className="text-xl capitalize">{periodKey}</label>
-                                                <label className="text-xl capitalize">(6:00 - 12:00) o'clock </label>
-                                            </div>
-                                        )}
-                                        {(periodKey === "afternoon" || periodKey === "night") && (
-                                            <div className="flex items-center gap-4">
-                                                <div className="flex items-center justify-center w-[40px] pl-[1px]">
+                        return (
+                            <div key={dest.destID} className="rounded-lg p-2 pt-0 pb-0 pr-4">
+                                <div className="flex flex-col justify-between">
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex flex-col h-full">
+                                            <MapPinIcon width={40} height={40} fill="red" />
+                                            {distanceInfo && (
+                                                <div className="flex flex-col items-center justify-center w-[40px] text-center pl-[1px]">
+                                                    <div className="w-[2px] h-7 bg-black"></div>
+                                                    <p className="py-2">
+                                                        {distanceInfo.distance_km < 1 ? (
+                                                            <>
+                                                                {distanceInfo.distance_km * 1000} m
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                {distanceInfo.distance_km} km
+                                                            </>
+                                                        )}
+                                                    </p>
                                                     <div className="w-[2px] h-7 bg-black"></div>
                                                 </div>
-                                                {periodKey === "afternoon" && <CloudIcon className="w-6 h-6 text-blue" />}
-                                                {periodKey === "night" && <MoonIcon className="w-6 h-6 text-gray" />}
-                                                <label className="text-xl capitalize">{periodKey}</label>
-                                                {periodKey === "afternoon" && (
-                                                    <label className="text-xl capitalize">(12:00 - 18:00) o'clock </label>
-                                                )}
-                                                {periodKey === "night" && (
-                                                    <label className="text-xl capitalize">(18:00 - 00:00) o'clock </label>
-                                                )}
-                                            </div>
-                                        )}
-                                        <div className="flex flex-col justify-between">
-                                            {period.map((dest: any, index: number) => {
-                                                const distanceInfo = tripDay.distance.find(
-                                                    (d: any) => d.fromID === dest.destID
-                                                );
-
-                                                return (
-                                                    <div key={`${periodKey}-${index}`} className="flex flex-col">
-                                                        {/* Destination */}
-                                                        <div className="flex items-center gap-4">
-                                                            <div className="flex flex-col h-full"> {/* Set minimum height */}
-                                                                <MapPinIcon width={40} height={40} fill="red" />
-                                                                {distanceInfo && (
-                                                                    <div className="flex flex-col items-center justify-center w-[40px] text-center pl-[1px]">
-                                                                        <div className="w-[2px] h-7 bg-black"></div>
-                                                                        <p className="py-2"> {distanceInfo.distance_km} km</p>
-                                                                        <div className="w-[2px] h-7 bg-black"></div>
-                                                                    </div>
-                                                                )}
-                                                                {!distanceInfo && (
-                                                                    <div className="flex flex-col justify-center items-center">
-                                                                        <div className="w-[2px] h-11 bg-transparent"></div>
-                                                                        <p className="text-lg text-transparent h-7 py-2"> </p>
-                                                                        <div className="w-[2px] h-11 bg-transparent"></div>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            {period.length > 0 ? (
-                                                                <DestCard
-                                                                    key={dest.destID}
-                                                                    destData={dest}
-                                                                    complete={true}
-                                                                    period={periodKey as "morning" | "afternoon" | "night"}
-                                                                    orderedDestinations={tripDay.voted_dests}
-                                                                    setOrderedDestinations={setOrderedDestinations}
-                                                                    showWrongOrder={showWrongOrder}
-                                                                    tripDate={tripDate}
-                                                                    tripId={tripId}
-                                                                />
-                                                            ) : (
-                                                                <div className="h-[50px]"></div>
-                                                            )
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
+                                            )}
+                                            {!distanceInfo && (
+                                                <div className="flex flex-col justify-center items-center">
+                                                    <div className="w-[2px] h-11 bg-transparent"></div>
+                                                    <p className="text-lg text-transparent h-7 py-2"> </p>
+                                                    <div className="w-[2px] h-11 bg-transparent"></div>
+                                                </div>
+                                            )}
                                         </div>
+                                        <DestCard
+                                            key={dest.destID}
+                                            tripDay={tripDay.day}
+                                            destData={dest}
+                                            complete={true}
+                                            orderedDestinations={tripDay.voted_dests}
+                                            showWrongOrder={showWrongOrder}
+                                            tripDate={tripDate}
+                                            tripId={tripId}
+                                            index={index}
+                                            setDestinations={setDestinations}
+                                            setDistance={setDistance}
+                                            setLoading={setLoading}
+                                            loading={loading}
+                                            setMarker={setMarker}
+                                        />
                                     </div>
-                                );
-                            })}
-                        </div>
-                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
                     {tripDay.status === "voting" && (
                         <div className="flex items-center gap-8 min-w-max">
                             {tripDay.suitableDests.map((dest: any) => (
@@ -200,4 +228,6 @@ export default function TripDayDropDown({ key, tripDate, tripDay, showToast, sho
             </div>
         </div>
     );
-}
+};
+
+export default TripDayDropDown;

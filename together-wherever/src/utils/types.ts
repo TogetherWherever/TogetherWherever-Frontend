@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type NearbyPlaces = {
     destID: string;
     destName: string;
@@ -94,18 +96,13 @@ interface Distance {
     to: string;
     toID: string;
     distance_km: number;
-    duration_min: number;
 }
 
 export interface TripDay {
     day: number;
     status: "complete" | "voting" | "pending";
     distance?: Distance[];
-    voted_dests?: {
-        morning: Destination[];
-        afternoon: Destination[];
-        night: Destination[];
-    };
+    voted_dests?: Destination[];
     suitableDests?: Destination[];
     members_voted?: number;
     total_members?: number;
@@ -129,4 +126,57 @@ export type VotingSubmitBody = {
     trip_day_number: number | null;
     voted_person: string | string[];
     scores: Record<string, number>;
+};
+
+// recently view
+export type RecentlyViewData = {
+    username: string,
+    viewTripId: number,
+    tripName: string,
+    startDate: string,
+    endDate: string,
+    destinationsNumber: number,
+    photo: string,
+    viewDateTime: Date
+};
+
+// your trip
+export type YourTripDara = {
+    owner: string;
+    tripId: number,
+    tripName: string,
+    startDate: string,
+    endDate: string,
+    destinationsNumber: number,
+    photo: string,
+};
+
+// profile page
+export type UserProfileDataType = {
+    username: string | undefined;
+    email: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    preferences: string[] | undefined;
+    tripsCount: number | undefined;
+    setIsLogout: any;
+};
+
+// marker
+export type MarkerDestination = { 
+    lat: number;
+    lng: number;
+    name?: string; 
+};
+
+// tripdaydropdown
+export interface TripDateDropdownPropsInterface {
+    key: any;
+    tripDate: Date;
+    tripDay: any;
+    showToast: () => void;
+    showWrongOrder?: () => void;
+    setMarker?: Dispatch<SetStateAction<MarkerDestination[]>>;
+    selectedDay?: string | null;
+    setSelectedDay?: Dispatch<SetStateAction<string | null>>
 };

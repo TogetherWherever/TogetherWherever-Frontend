@@ -1,55 +1,44 @@
 'use client';
 
-// import axios from "axios";
+import axios from "axios";
 
 interface UpdateDestinationParams {
-    action: "move" | "reorder";
     destinationID: string;
-    fromCategory: "morning" | "afternoon" | "night";
-    toCategory?: "morning" | "afternoon" | "night" | null;
-    newIndex?: number | null;
-    tripDate: Date;
-    tripId: string | string[] | undefined;
+    action: string;
+    tripDay: number | undefined;
+    tripId: number | number[] | undefined;
+    oldOrder: number | undefined;
+    newOrder: number | undefined;
 }
 
 export async function updateDestination({
-    action,
     destinationID,
-    fromCategory,
-    toCategory = null,
-    newIndex = null,
-    tripDate,
-    tripId
+    action,
+    tripDay,
+    tripId,
+    oldOrder,
+    newOrder
 }: UpdateDestinationParams) {
     try {
         // Prepare the request body
-        const body = JSON.stringify({
-            tripDate,
+        const body = {
+            tripDay,
             tripId,
-            action,
             destinationID,
-            fromCategory,
-            toCategory,
-            newIndex
-        });
-
-        // Uncomment when connecting to a real API
-        // const response = await axios.patch("end-point", body);
-        // const updatedDestinations = await response.data;
-
-        // Simulating the update response as a log
-        const updatedDestinations = {
-            tripDate,
-            tripId,
             action,
-            destinationID,
-            fromCategory,
-            toCategory,
-            newIndex
-        };
+            oldOrder,
+            newOrder
+        }
+        
+        const response = await axios.patch("http://localhost:8000/api/planning-details/move-activities", body);
 
-        return updatedDestinations;
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                console.log("something wrong");
+            }
+
     } catch (error: any) {
-        return null;
+        return console.log(error);
     }
 };

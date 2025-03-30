@@ -12,7 +12,7 @@ interface MapProps {
         lng: number;
         name?: string;
     }[];
-}
+};
 
 const mapContainerStyle = {
     width: "100%",
