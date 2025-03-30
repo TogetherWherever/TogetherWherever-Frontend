@@ -9,7 +9,7 @@ export const fetchVotingPageData = async (tripId: string | string[], day: string
 }> => {
     try {
 
-        const response = await axios.get(`http://localhost:8000/api/vote/vote-details?trip_id=${tripId}&day_number=${day}&username=${username}`);
+        const response = await axios.get(`https://togetherwherever-backend.onrender.com/api/vote/vote-details?trip_id=${tripId}&day_number=${day}&username=${username}`);
         if (response.status === 200) {
             const data = response.data;
             const tripDetails = data;
@@ -36,7 +36,7 @@ export const fetchVotingPageData = async (tripId: string | string[], day: string
 
 export const votingSubmit = async (body: VotingSubmitBody) => {
     try {
-        const response = await axios.patch("http://localhost:8000/api/vote/submit-vote", body);
+        const response = await axios.patch("https://togetherwherever-backend.onrender.com/api/vote/submit-vote", body);
 
         if (response.status === 200) {
             return response.status;

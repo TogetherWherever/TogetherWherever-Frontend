@@ -10,7 +10,7 @@ export const editUserPreferences = async (username: string | undefined, preferen
         };
 
         try {
-            const response = await axios.patch(`http://localhost:8000/api/user-profile/update-preferences`, body);
+            const response = await axios.patch(`https://togetherwherever-backend.onrender.com/api/user-profile/update-preferences`, body);
 
             if (response.status !== 200) {
                 throw new Error("Something wrong with recording recently view.");

@@ -6,7 +6,7 @@ import { CreateNewTripBodyInterface } from "@/utils/types";
 // simulate fetching users data
 export const fetchingUsersData = async (ownerName: string | undefined) => {
     try {
-        const response = await axios.get(`http://localhost:8000/api/get-users-data/?username=${ownerName}`);
+        const response = await axios.get(`https://togetherwherever-backend.onrender.com/api/get-users-data/?username=${ownerName}`);
         if (response.status === 200) {
             return response.data;
         } else {
@@ -20,7 +20,7 @@ export const fetchingUsersData = async (ownerName: string | undefined) => {
 
 export const createNewTrip = async (body: CreateNewTripBodyInterface) => {
     try {
-        const response = await axios.post('http://localhost:8000/api/create-new-trip/', body);
+        const response = await axios.post('https://togetherwherever-backend.onrender.com/api/create-new-trip/', body);
         // Handle successful response        
         if (response.status === 200) {
             return response.data

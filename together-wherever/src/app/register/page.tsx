@@ -61,7 +61,7 @@ export default function RegisterPage() {
         }
 
         try {
-            await axios.post("http://localhost:8000/api/auth/register", formData);
+            await axios.post("https://togetherwherever-backend.onrender.com/api/auth/register", formData);
             // alert("Registration successful! Please login.");
             router.push("/login");
         } catch (error: any) {

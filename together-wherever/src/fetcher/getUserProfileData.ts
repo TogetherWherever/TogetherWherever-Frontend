@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetxhUserProfileData = async(username: string | undefined) => {
     try {
-        const response = await axios.get(`http://localhost:8000/api/user-profile/?username=${username}`);
+        const response = await axios.get(`https://togetherwherever-backend.onrender.com/api/user-profile/?username=${username}`);
         if (response.status === 200) {
     
             return response.data;

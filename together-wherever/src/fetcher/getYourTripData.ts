@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchGetYourTripsData = async (username: string | undefined) => {
     try {
-        const res = await axios.get(`http://localhost:8000/api/your-trips/?username=${username}`);
+        const res = await axios.get(`https://togetherwherever-backend.onrender.com/api/your-trips/?username=${username}`);
         if (res.status === 200) {
             return res.data;
         } else {

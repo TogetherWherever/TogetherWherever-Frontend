@@ -30,7 +30,7 @@ export async function updateDestination({
             newOrder
         }
         
-        const response = await axios.patch("http://localhost:8000/api/planning-details/move-activities", body);
+        const response = await axios.patch("https://togetherwherever-backend.onrender.com/api/planning-details/move-activities", body);
 
             if (response.status === 200) {
                 return response.data;

@@ -7,7 +7,7 @@ type RecordRecentlyViewType = {
 
 export const recordRecentlyView = async ({username, view_trip_id}: RecordRecentlyViewType) => {
     try {
-        const res = await axios.post(`http://localhost:8000/api/recently-view/?username=${username}&view_trip_id=${view_trip_id}`);
+        const res = await axios.post(`https://togetherwherever-backend.onrender.com/api/recently-view/?username=${username}&view_trip_id=${view_trip_id}`);
 
         if (res.status !== 200) {
             throw new Error("Something wrong with recording recently view.");
