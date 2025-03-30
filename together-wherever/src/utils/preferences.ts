@@ -24,6 +24,7 @@ export const preferences = [
     "pub",
     "shopping_mall",
     "ski_resort",
+    "sports_activity_location",
     "tourist_attraction",
     "visitor_center",
     "water_park",

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useGetRecentlyViewData } from "@/hooks/useGetRecentlyViewData";
 
 export const useHomePageData = () => {
-    const { recentlyViewData, loading } = useGetRecentlyViewData();
+    const { recentlyViewData, loading, error } = useGetRecentlyViewData();
     const [token, setToken] = useState<string | null>(null);
 
     // Fetch token from localStorage only in the client-side (useEffect ensures this)
@@ -17,5 +17,5 @@ export const useHomePageData = () => {
         }
     }, []); // Only run once when component mounts
 
-    return { recentlyViewData, loading, token };
+    return { recentlyViewData, loading, token, error };
 };

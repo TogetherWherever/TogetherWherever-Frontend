@@ -6,6 +6,8 @@ import Link from "next/link";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { preferences } from "@/utils/preferences";
 import { formatPreference } from "@/utils/format-preferences";
+import ToastNotification from '@/components/ToastNotification';
+import { toast } from "react-toastify";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -18,6 +20,10 @@ export default function RegisterPage() {
     });
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
+
+    const showError = () => {
+        toast.error("Registration failed, please try again.");
+    };
 
     // Handle input changes for text fields
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,26 +51,27 @@ export default function RegisterPage() {
         e.preventDefault();
 
         if (!isValidPassword(formData.password)) {
-            alert("Password must be at least 8 characters long and contain both letters and numbers.");
+            toast.error("Password must be at least 8 characters long and contain both letters and numbers.");
             return;
         }
 
         if (formData.preferences.length < 3) {
-            alert("Please select at least 3 preferences.");
+            toast.error("Please select at least 3 preferences.");
             return;
         }
 
         try {
             await axios.post("http://localhost:8000/api/auth/register", formData);
-            alert("Registration successful! Please login.");
+            // alert("Registration successful! Please login.");
             router.push("/login");
         } catch (error: any) {
-            alert(error.response?.data?.detail || "Registration failed");
+            showError();
         }
     };
 
     return (
         <div className="flex flex-col items-center justify-center p-4">
+            <ToastNotification />
             <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-6 space-y-4">
                 <h2 className="text-2xl font-bold text-center text-earth-yellow">Register</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">

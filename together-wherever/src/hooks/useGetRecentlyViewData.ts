@@ -8,6 +8,7 @@ import { RecentlyViewData } from "@/utils/types";
 export const useGetRecentlyViewData = () => {
     const [recentlyViewData, setRecentlyViewData] = useState<RecentlyViewData[] | null>(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<boolean>(false);
 
     // Use useCallback to memoize the fetching logic
     const getRecentlyViewData = useCallback(async (token: string) => {
@@ -16,7 +17,7 @@ export const useGetRecentlyViewData = () => {
             const res = await fetchRecentlyView(decoded.sub);
             setRecentlyViewData(res);
         } catch (error) {
-            console.error("Error fetching recently viewed trips:", error);
+            setError(true);
         } finally {
             setLoading(false);
         }
@@ -31,5 +32,5 @@ export const useGetRecentlyViewData = () => {
         }
     }, [getRecentlyViewData]); // Only re-run when getRecentlyViewData is updated
 
-    return { recentlyViewData, loading };
+    return { recentlyViewData, loading, error };
 };

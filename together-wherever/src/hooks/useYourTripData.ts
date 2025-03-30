@@ -11,7 +11,8 @@ export const useYourTripData = () => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     const pathName = usePathname();
-    
+    const [error, setError] = useState<boolean>(false);
+
     const handleNavigateTripPlanningPage = () => {
         router.push(`${pathName}/create-new-trip`)
     };
@@ -36,7 +37,7 @@ export const useYourTripData = () => {
                     setYourTripData(res);
                 }
             } catch (error) {
-                console.error("Error fetching recently viewed trips:", error);
+                setError(true);
             } finally {
                 setLoading(false);
 
@@ -49,6 +50,7 @@ export const useYourTripData = () => {
         yoryTripData,
         router,
         handleNavigateTripPlanningPage,
-        loading
+        loading,
+        error
     };
 };

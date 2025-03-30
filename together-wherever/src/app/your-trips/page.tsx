@@ -6,13 +6,15 @@ import { useYourTripData } from "@/hooks/useYourTripData";
 import { YourTripDara } from "@/utils/types";
 import { PlusIcon, MapPinIcon, GlobeAsiaAustraliaIcon } from '@heroicons/react/24/solid';
 import { ClipLoader } from "react-spinners";
+import ErrorReport from "@/components/ErrorReport";
 
 export default function YourTrips() {
     const {
         yoryTripData,
         router,
         handleNavigateTripPlanningPage,
-        loading
+        loading,
+        error
     } = useYourTripData();
 
     const handleNavigateToDiscoverPage: () => void = () => {
@@ -25,6 +27,10 @@ export default function YourTrips() {
                 <ClipLoader size={50} color={"#60993E"} loading={loading} />
             </div>
         );
+    } else if (error) {
+        <div className="fixed inset-0 flex items-center justify-center">
+            <ErrorReport />
+        </div>
     }
 
     return (

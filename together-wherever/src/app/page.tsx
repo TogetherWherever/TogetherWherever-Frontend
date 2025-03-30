@@ -7,10 +7,10 @@ import { PlusIcon, MapPinIcon, GlobeAsiaAustraliaIcon, MagnifyingGlassIcon } fro
 import { ClipLoader } from "react-spinners";
 import { useHomePageData } from "@/hooks/useHomePageData";
 import { RecentlyViewData } from "@/utils/types";
-import { useState, useEffect } from "react";
+import ErrorReport from "@/components/ErrorReport";
 
 export default function Home() {
-    const { recentlyViewData, loading, token } = useHomePageData();
+    const { recentlyViewData, loading, token, error } = useHomePageData();
     const router = useRouter();
 
     const handleNavigateTripPlanningPage = () => router.push('home/create-new-trip');
@@ -22,6 +22,10 @@ export default function Home() {
                 <ClipLoader size={50} color={"#60993E"} loading={loading} />
             </div>
         );
+    } else if (error) {
+        <div className="fixed inset-0 flex items-center justify-center">
+            <ErrorReport />
+        </div>
     }
 
     if (!token || recentlyViewData?.length === 0) {
@@ -95,7 +99,7 @@ export default function Home() {
                             key={item.viewTripId}
                             className={`w-[400px] ${index % 3 === 0 ? "justify-self-start" :
                                 index % 3 === 1 ? "justify-self-center" : "justify-self-end"
-                            }`}
+                                }`}
                         >
                             <TripCard
                                 tripId={item.viewTripId}

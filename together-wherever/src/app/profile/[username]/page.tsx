@@ -9,6 +9,7 @@ import DialogBox from "@/components/Dialog";
 import ToastNotification from "@/components/ToastNotification";
 import { ClipLoader } from "react-spinners";
 import clsx from "clsx";
+import ErrorReport from "@/components/ErrorReport";
 
 export default function Profile() {
     const {
@@ -23,7 +24,8 @@ export default function Profile() {
         setIsLogoutDialogOpen,
         handlePreferenceChange,
         handleClickEditPreferences,
-        handleResetPreferences
+        handleResetPreferences,
+        error
     } = useProfilePageData();
 
     if (loading || userProfileData === null) {
@@ -32,6 +34,10 @@ export default function Profile() {
                 <ClipLoader size={50} color={"#60993E"} loading={loading} />
             </div>
         );
+    } else if (error) {
+        <div className="fixed inset-0 flex items-center justify-center">
+            <ErrorReport />
+        </div>
     }
 
     return (
@@ -71,11 +77,10 @@ export default function Profile() {
                         <label
                             key={pref}
                             onClick={() => handlePreferenceChange(pref)}
-                            className={`text-center cursor-pointer items-center space-x-2 p-2 rounded-lg ${
-                                preferenceData.includes(pref)
+                            className={`text-center cursor-pointer items-center space-x-2 p-2 rounded-lg ${preferenceData.includes(pref)
                                     ? "bg-asparagus-green text-white"
                                     : "bg-gray-100 hover:bg-gray-200"
-                            }`}
+                                }`}
                         >
                             <span>{formatPreference(pref)}</span>
                         </label>

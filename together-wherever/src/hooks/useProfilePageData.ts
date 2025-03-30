@@ -19,6 +19,7 @@ export const useProfilePageData = () => {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
     const [originalData, setOriginalData] = useState<string[]>();
+    const [error, setError] = useState<boolean>(false);
 
     // Fetch user profile data and preferences
     useEffect(() => {
@@ -34,7 +35,7 @@ export const useProfilePageData = () => {
                     setLoading(false);
                 }
             } catch (error) {
-                console.error("Error fetching user profile:", error);
+                setError(true);
                 if (isMounted) setLoading(false);
             }
         };
@@ -77,7 +78,7 @@ export const useProfilePageData = () => {
             const res = await editUserPreferences(decodedUsername, preferenceData);
             if (res === 200) window.location.reload();
         } catch (error) {
-            console.error("Error updating preferences:", error);
+            setError(true);
         }
     };
 
@@ -106,6 +107,7 @@ export const useProfilePageData = () => {
         setIsLogoutDialogOpen,
         handlePreferenceChange,
         handleClickEditPreferences,
-        handleResetPreferences
+        handleResetPreferences,
+        error
     };
 };
