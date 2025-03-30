@@ -24,29 +24,28 @@ export const usePlanningPageDetails = () => {
         }
     }, [router]);
 
-    // Fetch trip details when the tripId changes
-    useEffect(() => {
-        const getTripDetails = async () => {
-            setLoading(true);
-            try {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    const decoded = jwtDecode(token);
-                    const tripDetails = await fetchTripDetail(params.tripId, decoded.sub);
-                    await recordRecentlyView({
-                        username: decoded.sub,
-                        view_trip_id: Number(params.tripId)
-                    });
-                    setDetails(tripDetails);
-                    // setMarker([{ lat: tripDetails.lat, lng: tripDetails.lon }])
-                }
-            } catch (error) {
-                console.error(error); // Log error instead of throwing
-            } finally {
-                setLoading(false);
+    const getTripDetails = async () => {
+        setLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decoded = jwtDecode(token);
+                const tripDetails = await fetchTripDetail(params.tripId, decoded.sub);
+                await recordRecentlyView({
+                    username: decoded.sub,
+                    view_trip_id: Number(params.tripId)
+                });
+                setDetails(tripDetails);
             }
-        };
+        } catch (error) {
+            console.error(error); // Log error instead of throwing
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    // Fetch trip details when the tripId changes
+    useEffect(() => {        
         getTripDetails();
     }, [params.tripId]);
 
@@ -70,6 +69,7 @@ export const usePlanningPageDetails = () => {
         showWrongOrder,
         details,
         marker,
-        setMarker
+        setMarker,
+        getTripDetails
     };
 };
