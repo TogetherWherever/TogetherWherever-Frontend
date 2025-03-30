@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { addDays } from "date-fns";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from 'jwt-decode';
@@ -15,7 +15,7 @@ export const useCreateNewTrips = () => {
 
     // States
     const [isOpen, setIsOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const [tripName, setTripName] = useState('');
     const [tripNameLength, setTripNameLength] = useState(0);
@@ -30,20 +30,20 @@ export const useCreateNewTrips = () => {
     const [lon, setLon] = useState<number>();
 
     const [ownerName, setOwnerName] = useState<string>();
-    const [usersData, setUsersData] = useState<Array<{ userId: string; name: string; profileImage: string; }>>();
-    const filteredResults = (usersData || []).filter((item) =>
-        item.name.toLowerCase().includes(companionName.toLowerCase())
-    );
-    const [range, setRange] = useState([
-        {
-            startDate: new Date(),
-            endDate: addDays(new Date(), 7),
-            key: "selection",
-        },
-    ]);
+    const [usersData, setUsersData] = useState<Array<{ userId: string; name: string; profileImage: string; }>>([]);
 
-    const showDataNowLoading = () => {
-        toast.info("Currently loading location data. Please try again shortly.");
+    const [range, setRange] = useState([{
+        startDate: new Date(),
+        endDate: addDays(new Date(), 5),
+        key: "selection",
+    }]);
+
+    const showMissingData = () => {
+        toast.warning("The system is processing your request, or some required fields are still missing. Please check and try again.");
+    };
+
+    const showMaxDateSpan = () => {
+        toast.error("You can select a maximum date range of 5 days.");
     };
 
     // Handlers for form and trip interactions
@@ -77,13 +77,12 @@ export const useCreateNewTrips = () => {
         const end = new Date(endDate);
 
         const timeDifference = end.getTime() - start.getTime();
-
         const daysDifference = Math.round(timeDifference / (1000 * 3600 * 24));
 
-        return daysDifference + 1
+        return daysDifference + 1;
     };
 
-    const getPlacesData = async (placeId: string) => {
+    const getPlacesData = useCallback(async (placeId: string) => {
         try {
             const data = await fetchPlaceDetails(placeId);
 
@@ -98,14 +97,24 @@ export const useCreateNewTrips = () => {
         } catch (error) {
             console.error("Error fetching place details:", error);
         }
-    };
+    }, []);
 
     const handleClickStartPlanning = async () => {
-        const { startDate, endDate } = range[0];
+        // Extract values
+        const { startDate, endDate } = range[0] || {};
         const companionNames = companionIds.map((companionId) => {
             const companion = usersData?.find(user => user.userId === companionId);
-            return companion ? companion.name : ''; // Default to an empty string if the user is not found
+            return companion ? companion.name : '';
         });
+
+        // Validate required fields
+        if (!ownerName || !placeId || !placeName || !lat || !lon || !startDate || !endDate) {
+            showMissingData();
+            return;
+        }
+
+        setLoading(true);
+
         const body: CreateNewTripBodyInterface = {
             owner: ownerName,
             trip_name: tripName,
@@ -120,30 +129,17 @@ export const useCreateNewTrips = () => {
         };
 
         try {
-            if (
-                ownerName !== undefined &&
-                placeId != undefined &&
-                placeName !== undefined &&
-                lat !== undefined &&
-                lon !== undefined &&
-                startDate !== undefined &&
-                endDate !== undefined &&
-                companionIds !== undefined
-            ) {                
-                const res = await createNewTrip(body);
-                router.push(`/planning/${res.trip_id}`);
-            } else {
-                showDataNowLoading()
-            }
+            const res = await createNewTrip(body);
+            router.push(`/planning/${res.trip_id}`);
         } catch (error: any) {
-            throw new Error(error.message)
+            console.error(error);
         }
     };
 
     // Fetch users data when the component mounts
     useEffect(() => {
         const getUsersData = async () => {
-
+            setLoading(true);
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
@@ -152,16 +148,12 @@ export const useCreateNewTrips = () => {
                     setUsersData(allUsersData);
                 }
             } catch (err) {
-                console.error("Error loading voting page data:", err);
+                console.error("Error loading users data:", err);
+            } finally {
                 setLoading(false);
             }
         };
         getUsersData();
-    }, []);
-
-    // Simulate loading state for 1 second
-    useEffect(() => {
-        setTimeout(() => setLoading(false), 1000);
     }, []);
 
     // Check for token in localStorage to enforce login
@@ -188,6 +180,23 @@ export const useCreateNewTrips = () => {
         setTripNameLength(tripName.length);
     }, [tripName]);
 
+    // Debounce for companionName input field
+    const [debouncedCompanionName, setDebouncedCompanionName] = useState(companionName);
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setDebouncedCompanionName(companionName);
+        }, 500);
+
+        return () => clearTimeout(timeoutId);
+    }, [companionName]);
+
+    // Memoize filtered results
+    const filteredResults = useMemo(() => {
+        return (usersData || []).filter((item) =>
+            item.name.toLowerCase().includes(debouncedCompanionName.toLowerCase())
+        );
+    }, [usersData, debouncedCompanionName]);
+
     return {
         tripName,
         tripNameLength,
@@ -211,6 +220,6 @@ export const useCreateNewTrips = () => {
         setIsOpen,
         isOpen,
         filteredResults,
-        showDataNowLoading
+        showMaxDateSpan
     };
 };

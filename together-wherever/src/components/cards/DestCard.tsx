@@ -29,6 +29,7 @@ interface DestCardPropsInterface {
     index?: number;
     tripDay?: string;
     loading?: any;
+    setMarker?: Dispatch<any>;
 }
 
 const DestCard = ({
@@ -42,7 +43,8 @@ const DestCard = ({
     setDestinations,
     setDistance,
     setLoading,
-    loading
+    loading,
+    setMarker
 }: DestCardPropsInterface) => {
     const dayOfWeek = format(tripDate, "EEEE");
     const todayOpeningClosingHours = destData.openingHours[dayOfWeek];
@@ -56,11 +58,11 @@ const DestCard = ({
         if (index === undefined || !setDestinations || !setDistance) {
             return;
         }
-    
+
         setLoading?.(true);
         const oldOrder = index + 1;
         const newOrder = direction === "move-up" ? oldOrder - 1 : oldOrder + 1;
-    
+
         try {
             const res = await updateDestination({
                 destinationID: destData.destID,
@@ -70,10 +72,17 @@ const DestCard = ({
                 oldOrder,
                 newOrder
             });
-    
+
             if (res) {
                 setDestinations(res.voted_dests);
                 setDistance(res.distance);
+                    const markers = res.voted_dests.map((dest: any, index: number) => ({
+                        lat: dest.lat,
+                        lng: dest.lon,
+                        name: complete ? `(${index + 1}) ${dest.destName}` : dest.destName
+                    }));
+                //     setMarker?.(markers);
+                setMarker?.(markers)
             }
         } catch (error) {
             console.log(error)
@@ -81,10 +90,10 @@ const DestCard = ({
             setLoading?.(false);
         }
     }, [
-        index, 
-        destData.destID, 
-        tripDay, 
-        tripId, 
+        index,
+        destData.destID,
+        tripDay,
+        tripId,
         setDestinations, // These should be stable references
         setDistance,     // If they can be undefined, keep them in deps
     ]);
@@ -119,7 +128,7 @@ const DestCard = ({
             </div>
 
             {complete && (
-                <div className="flex flex-col justify-between items-center w-1/5">
+                <div className={clsx("flex flex-col items-end pr-4 w-1/5", index === 0 ? "justify-end h-full" : "justify-between")}>
                     {index !== 0 && (
                         <ChevronUpIcon
                             width={40}

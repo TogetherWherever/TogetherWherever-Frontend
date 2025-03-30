@@ -19,7 +19,7 @@ export default function YourTrips() {
         router.push('/discover');
     };
 
-    if (loading || yoryTripData === null) {
+    if (loading) {
         return (
             <div className="fixed inset-0 flex items-center justify-center">
                 <ClipLoader size={50} color={"#60993E"} loading={loading} />

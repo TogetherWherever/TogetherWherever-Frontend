@@ -7,6 +7,7 @@ import { PlusIcon, MapPinIcon, GlobeAsiaAustraliaIcon, MagnifyingGlassIcon } fro
 import { ClipLoader } from "react-spinners";
 import { useHomePageData } from "@/hooks/useHomePageData";
 import { RecentlyViewData } from "@/utils/types";
+import { useState, useEffect } from "react";
 
 export default function Home() {
     const { recentlyViewData, loading, token } = useHomePageData();

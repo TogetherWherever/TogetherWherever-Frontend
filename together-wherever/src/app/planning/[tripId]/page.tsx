@@ -7,7 +7,7 @@ import { addDays, format } from "date-fns";
 import { ClipLoader } from "react-spinners";
 
 import MapView from "@/components/Map";
-import { BaseButton } from "@/components/buttons/BaseButton";
+// import { BaseButton } from "@/components/buttons/BaseButton";
 import TripDayDropDown from '@/components/TripDayDropDown';
 import ToastNotification from '@/components/ToastNotification';
 import ProfileIcon from "@/components/ProfileIcon";
@@ -72,7 +72,7 @@ export default function Planning() {
                                 <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.push("/")} />
                                 <Image src="/logo.png" alt="Logo" width={1000} height={1000} className="h-14 w-auto pr-4" />
                             </div>
-                            <div className="flex w-full h-full gap-2 items-center justify-end">
+                            <div className="flex w-full h-full gap-2 items-center justify-end pr-9">
                                 <label className="text-xl"> Companions: </label>
                                 {details.companion.length > 0 && (
                                     <div className="flex items-center">
@@ -113,14 +113,14 @@ export default function Planning() {
                                         )}
                                     </div>
                                 )}
-                                <BaseButton
+                                {/* <BaseButton
                                     buttonTxt="Share"
                                     color=""
                                     className="border !h-[40px] !border-2 border-earth-yellow !text-earth-yellow !px-4 py-2 !gap-3"
                                     leftIcon={ShareIcon}
                                     leftIconCustomization="w-[25px] h-[25px]"
                                     onClick={() => alert("Share")}
-                                />
+                                /> */}
                             </div>
                         </div>
                         <div className="w-full mt-1 h-full">

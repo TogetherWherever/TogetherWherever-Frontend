@@ -104,13 +104,16 @@ export default function DiscoverPage() {
                                 {placeDetails.photos && placeDetails.photos.length > 0 && (
                                     <div className="mt-3 flex overflow-x-auto space-x-3">
                                         {placeDetails.photos.map((photoUrl, index) => (
-                                            <Image
-                                                src={photoUrl}
-                                                alt={"Destination"}
-                                                width={300}
-                                                height={300}
-                                                className="h-32 rounded-md object-cover"
-                                            />
+                                            photoUrl && (
+                                                <Image
+                                                    key={index} // Always use a unique key when mapping in React
+                                                    src={photoUrl}
+                                                    alt={"Destination"}
+                                                    width={300}
+                                                    height={300}
+                                                    className="h-32 rounded-md object-cover"
+                                                />
+                                            )
                                         ))}
                                     </div>
                                 )}

@@ -15,6 +15,7 @@ import ToastNotification from '@/components/ToastNotification';
 
 import { useCreateNewTrips } from "@/hooks/useCreateNewTrip";
 import { CREATE_NEW_TRIP_CONFIRMATION_DIALOG } from "@/constants/createNewTripDialog";
+import { useEffect, useState } from 'react';
 
 export default function CreateNewTrip() {
     const {
@@ -35,8 +36,26 @@ export default function CreateNewTrip() {
         setIsOpen,
         isOpen,
         filteredResults,
+        showMaxDateSpan
     } = useCreateNewTrips();
-    
+
+    const [isPageLoaded, setIsPageLoaded] = useState(false);
+
+    // Simulate a delay to show loading spinner (useful for showing spinner during initial loading)
+    useEffect(() => {
+        setTimeout(() => setIsPageLoaded(true), 1000); // You can adjust the timeout or remove this if not needed
+    }, []);
+
+    // If the page is still loading or data is being fetched, show the loader
+    if (!isPageLoaded) {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center">
+                <ClipLoader size={50} color={"#60993E"} loading={true} />
+            </div>
+        );
+    }
+
+
     return (
         <>
             {loading ? (
@@ -53,7 +72,7 @@ export default function CreateNewTrip() {
                         <form onSubmit={handleClickStartPlanning} className="flex flex-col w-full gap-2">
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="trip-name" className="text-xl font-bold text-black">
-                                    Trip Name
+                                    Trip Name <label className='text-red font-normal'> * </label>
                                 </label>
                                 <Input
                                     id="trip-name"
@@ -67,17 +86,23 @@ export default function CreateNewTrip() {
                             </div>
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="trip-name" className="text-xl font-bold text-black">
-                                    Where to?
+                                    Where to? <label className='text-red font-normal'> * </label>
                                 </label>
                                 <PlaceSearchBox onSelect={getPlacesData} />
                             </div>
                             <div className="flex w-full mt-4 gap-4">
                                 <div className="flex flex-col gap-2 w-1/2">
-                                    <label htmlFor="trip-name" className="text-xl font-bold text-black">
-                                        Dates
-                                    </label>
+                                    <div className="flex items-center">
+                                        <label htmlFor="trip-name" className="text-xl font-bold text-black">
+                                            Dates <label className='text-red font-normal'> * </label>
+                                        </label> 
+                                        <label className='text-base pl-4'>
+                                            Please select a date range (Max: 5 days)
+                                        </label>
+                                    </div>
+
                                     <div className="w-full">
-                                        <DateRangeInput range={range} setRange={setRange} />
+                                        <DateRangeInput range={range} setRange={setRange} showMaxDateSpan={showMaxDateSpan} />
                                     </div>
                                 </div>
                                 <div className="flex flex-col w-1/2 h-full">
@@ -96,7 +121,7 @@ export default function CreateNewTrip() {
                                                 className="mt-1 block w-full h-[50px] rounded-xl border-2 border-hurricane bg-transparent py-1.5 px-3 focus:outline-none focus:ring-0"
                                             />
                                             {filteredResults.length > 0 && companionName && (
-                                                <div className="absolute mt-2 w-[545px] bg-white border border-gray-300 rounded-xl shadow-md z-10">
+                                                <div className="absolute mt-2 w-[545px] bg-white border border-gray-300 rounded-xl shadow-md z-10 max-h-60 overflow-y-auto">
                                                     <ul className="divide-y divide-gray-200">
                                                         {filteredResults.map((item: { userId: string; name: string }) => (
                                                             <li

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useGetRecentlyViewData } from "@/hooks/useGetRecentlyViewData";
 
 export const useHomePageData = () => {

@@ -34,13 +34,12 @@ export const useYourTripData = () => {
                     const decoded: { sub: string } = jwtDecode(token);
                     const res = await fetchGetYourTripsData(decoded.sub);
                     setYourTripData(res);
-                    setLoading(false);
-                } else {
-                    setLoading(false);
                 }
             } catch (error) {
                 console.error("Error fetching recently viewed trips:", error);
+            } finally {
                 setLoading(false);
+
             }
         };
         getYourTripData();

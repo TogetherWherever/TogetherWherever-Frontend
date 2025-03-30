@@ -73,17 +73,27 @@ const TripDayDropDown = ({ key, tripDate, tripDay, showToast, showWrongOrder, se
         }, [distance, dest.destID, index]);
     };
 
+    // const handleSetManker = () => {
+    //     console.log("activated")
+    //     const markers = destinations.map((dest: any, index: number) => ({
+    //         lat: dest.lat,
+    //         lng: dest.lon,
+    //         name: tripDay.status === "complete" ? `(${index + 1}) ${dest.destName}` : dest.destName
+    //     }));
+    //     setMarker?.(markers);
+    // }
+
     // useEffect to automatically update markers when destinations change
-    useEffect(() => {
-        if (setMarker) {
-            const markers = destinations.map((dest: any, index: number) => ({
-                lat: dest.lat,
-                lng: dest.lon,
-                name: tripDay.status === "complete" ? `(${index + 1}) ${dest.destName}` : dest.destName
-            }));
-            setMarker(markers);
-        }
-    }, [destinations, tripDay.status, setMarker]);
+    // useEffect(() => {
+    //     if (setMarker) {
+    //         const markers = destinations.map((dest: any, index: number) => ({
+    //             lat: dest.lat,
+    //             lng: dest.lon,
+    //             name: tripDay.status === "complete" ? `(${index + 1}) ${dest.destName}` : dest.destName
+    //         }));
+    //         setMarker(markers);
+    //     }
+    // }, [destinations]);
 
     useEffect(() => {
         if (loading) {
@@ -95,7 +105,7 @@ const TripDayDropDown = ({ key, tripDate, tripDay, showToast, showWrongOrder, se
             document.body.style.cursor = "default";
             document.body.style.pointerEvents = "auto";
         }
-    
+
         return () => {
             document.documentElement.style.cursor = "default";
             document.body.style.cursor = "default";
@@ -150,8 +160,8 @@ const TripDayDropDown = ({ key, tripDate, tripDay, showToast, showWrongOrder, se
             <div className={`overflow-hidden transition-all duration-300 ${isOpen ? "h-auto" : "h-0"}`}>
                 <div className={clsx(
                     "flex border-b-2 border-black/50 ml-16 pb-4 pt-2",
-                    tripDay.status === "complete" ? "flex-col justify-center overflow-y-auto" : "items-center overflow-x-auto pb-4",                    
-                )}>                    
+                    tripDay.status === "complete" ? "flex-col justify-center overflow-y-auto" : "items-center overflow-x-auto pb-4",
+                )}>
                     {tripDay.status === "complete" && destinations?.map((dest: any, index: number) => {
                         const distanceInfo = getDistanceInfo(dest, index);
 
@@ -200,6 +210,7 @@ const TripDayDropDown = ({ key, tripDate, tripDay, showToast, showWrongOrder, se
                                             setDistance={setDistance}
                                             setLoading={setLoading}
                                             loading={loading}
+                                            setMarker={setMarker}
                                         />
                                     </div>
                                 </div>

@@ -14,7 +14,7 @@ interface VotingCardPropsInterface {
 };
 
 const STEP = 1;
-const MIN = 0;
+const MIN = 1;
 const MAX = 10;
 
 export default function VotingCard({ destinations, value, onChange }: VotingCardPropsInterface) {
