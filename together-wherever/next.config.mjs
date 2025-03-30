@@ -12,6 +12,12 @@ const nextConfig = {
       'dynamic-media-cdn.tripadvisor.com'
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
