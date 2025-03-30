@@ -123,7 +123,9 @@ export default function DiscoverDetail() {
                         <div className="flex flex-col">
                             <div className="grid grid-cols-2 gap-4">
                                 {placeDetails.nearbyPlaces.map((place) => (
-                                    <NearbyCard key={place.destID} place={place} onSelect={getDiscoverPageDetails} />
+                                    place.photos && (
+                                        <NearbyCard key={place.destID} place={place} onSelect={getDiscoverPageDetails} />
+                                    )
                                 ))}
                             </div>
                         </div>
