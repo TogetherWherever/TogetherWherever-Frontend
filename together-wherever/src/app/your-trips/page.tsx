@@ -1,11 +1,11 @@
 'use client';
 
-import {BaseButton} from "@/components/buttons/BaseButton";
-import {TripCard} from "@/components/cards/TripCard"
-import {useYourTripData} from "@/hooks/useYourTripData";
-import {YourTripData} from "@/utils/types";
-import {PlusIcon, MapPinIcon, GlobeAsiaAustraliaIcon, MagnifyingGlassIcon} from '@heroicons/react/24/solid';
-import {ClipLoader} from "react-spinners";
+import { BaseButton } from "@/components/buttons/BaseButton";
+import { TripCard } from "@/components/cards/TripCard"
+import { useYourTripData } from "@/hooks/useYourTripData";
+import { YourTripData } from "@/utils/types";
+import { PlusIcon, MapPinIcon, GlobeAsiaAustraliaIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { ClipLoader } from "react-spinners";
 import ErrorReport from "@/components/ErrorReport";
 
 export default function YourTrips() {
@@ -24,12 +24,12 @@ export default function YourTrips() {
     if (loading) {
         return (
             <div className="fixed inset-0 flex items-center justify-center">
-                <ClipLoader size={50} color={"#60993E"} loading={loading}/>
+                <ClipLoader size={50} color={"#60993E"} loading={loading} />
             </div>
         );
     } else if (error) {
         <div className="fixed inset-0 flex items-center justify-center">
-            <ErrorReport/>
+            <ErrorReport />
         </div>
     }
 
@@ -48,7 +48,7 @@ export default function YourTrips() {
                     <div className="flex flex-col md:flex-row w-full mt-auto">
                         <div className="flex items-center flex-col gap-6 w-full pr-4">
                             <div className="flex items-center flex-col gap-6">
-                                <MapPinIcon className="lg:w-[100px] w-[50px] text-earth-yellow"/>
+                                <MapPinIcon className="lg:w-[100px] w-[50px] text-earth-yellow" />
                                 <BaseButton
                                     className="bg-asparagus-green !text-lg"
                                     color="earth-yellow"
@@ -66,7 +66,7 @@ export default function YourTrips() {
 
                         <div className="flex justify-center items-center flex-col gap-6 w-full">
                             <div className="flex items-center flex-col gap-6">
-                                <GlobeAsiaAustraliaIcon className="lg:w-[100px] w-[50px] text-earth-yellow"/>
+                                <GlobeAsiaAustraliaIcon className="lg:w-[100px] w-[50px] text-earth-yellow" />
                                 <BaseButton
                                     className="bg-asparagus-green !text-lg"
                                     color="earth-yellow"
@@ -85,43 +85,46 @@ export default function YourTrips() {
                 </div>
             ) : (
                 <>
-                    <div className="lg:px-[150px] sm:px-[75px] px-[50px] pt-[50px]">
-                        <div className="flex flex-col py-2">
-                            <div className="flex flex-col sm:flex-row justify-between">
-                                <div className="font-bold text-asparagus-green text-4xl mb-4"> Your Trips</div>
-                                <BaseButton
-                                    className="bg-moonstone-blue !text-lg"
-                                    color="earth-yellow"
-                                    buttonTxt="New Trip"
-                                    leftIcon={PlusIcon}
-                                    leftIconCustomization="w-[25px] h-[25px]"
-                                    onClick={handleNavigateTripPlanningPage}
-                                />
-                            </div>
-                            <div className="grid sm:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-x-2 mt-2 justify-items-center">
-                                {yourTripData?.map((item: YourTripData, index: number) => (
-                                    <div
-                                        key={item.tripId}
-                                        className={`w-full pt-2 lg:pt-0 justify-self-start`}
-                                    >
-                                        <TripCard
-                                            key={item.tripId} // ✅ React uses this for list rendering
-                                            tripId={item.tripId}
-                                            owner={item.owner}
-                                            cardName={item.tripName}
-                                            image={item.photo}
-                                            startDate={new Date(item.startDate)}
-                                            endDate={new Date(item.endDate)}
-                                            destinationsNumber={item.destinationsNumber}
-                                            onClick={() => router.push(`/planning/${item.tripId}`)}
-                                        />
-                                    </div>
-
-                                ))}
+                    <div className="flex justify-center px-[75px] px-[50px] pt-[50px]">
+                        <div className="w-full max-w-[1620px]">
+                            <div className="flex flex-col py-2">
+                                <div className="flex flex-col sm:flex-row justify-between">
+                                    <div className="font-bold text-asparagus-green text-4xl mb-4"> Your Trips</div>
+                                    <BaseButton
+                                        className="bg-moonstone-blue !text-lg"
+                                        color="earth-yellow"
+                                        buttonTxt="New Trip"
+                                        leftIcon={PlusIcon}
+                                        leftIconCustomization="w-[25px] h-[25px]"
+                                        onClick={handleNavigateTripPlanningPage}
+                                    />
+                                </div>
+                                <div className="grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-x-2 mt-2 gap-y-2 justify-items-center">
+                                    {yourTripData?.map((item: YourTripData, index: number) => (
+                                        <div
+                                            key={item.tripId}
+                                            className={`pt-2 justify-self-start
+                                                ${index % 2 === 0 ? 'lg:justify-self-start' : 'lg:justify-self-end'}
+                                                ${index % 3 === 0 ? '2xl:justify-self-start' : index % 3 === 1 ? '2xl:justify-self-center' : '2xl:justify-self-end'}
+                                            `}
+                                        >                                            
+                                            <TripCard
+                                                key={item.tripId}
+                                                tripId={item.tripId}
+                                                owner={item.owner}
+                                                cardName={item.tripName}
+                                                image={item.photo}
+                                                startDate={new Date(item.startDate)}
+                                                endDate={new Date(item.endDate)}
+                                                destinationsNumber={item.destinationsNumber}
+                                                onClick={() => router.push(`/planning/${item.tripId}`)}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </>
             )}
         </>
