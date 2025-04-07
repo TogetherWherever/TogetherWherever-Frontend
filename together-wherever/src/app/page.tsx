@@ -74,17 +74,17 @@ export default function Home() {
     }
 
     return (
-        <div className="px-[150px] pt-[50px] pb-6">
+        <div className="lg:px-[150px] sm:px-[75px] px-[50px] pt-[50px] pb-6">
             <div className="flex flex-col py-2">
-                <div className="flex justify-between items-center">
+                <div className="lg:flex flex-row justify-between items-center">
                     <div className="flex flex-col gap-6">
-                        <label className="text-5xl font-bold text-asparagus-green">Plan Your Perfect Trip</label>
-                        <label className="text-2xl">
+                        <label className="lg:text-5xl text-3xl font-bold text-asparagus-green">Plan Your Perfect Trip</label>
+                        <label className="lg:text-2xl text-xl">
                             Whether traveling with friends or on your own, your next adventure starts here!
                         </label>
                     </div>
                     <BaseButton
-                        className="bg-moonstone-blue"
+                        className="bg-moonstone-blue mt-5 lg:mt-0 text-xl"
                         color="earth-yellow"
                         buttonTxt="New Trip"
                         leftIcon={PlusIcon}
@@ -92,14 +92,12 @@ export default function Home() {
                         onClick={handleNavigateTripPlanningPage}
                     />
                 </div>
-                <div className="text-extrabold text-4xl mt-12 mb-4">Recently viewed</div>
-                <div className="grid grid-cols-3 gap-x-2 mt-2 justify-items-center">
+                <div className="font-bold lg:text-4xl text-2xl lg:mt-12 mt-8 mb-4">Recently viewed</div>
+                <div className="grid sm:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-x-2 mt-2 justify-items-center">
                     {recentlyViewData?.map((item: RecentlyViewData, index: number) => (
                         <div
                             key={item.viewTripId}
-                            className={`w-[400px] ${index % 3 === 0 ? "justify-self-start" :
-                                index % 3 === 1 ? "justify-self-center" : "justify-self-end"
-                                }`}
+                            className={`w-full pt-2 lg:pt-0 justify-self-start`}
                         >
                             <TripCard
                                 tripId={item.viewTripId}
