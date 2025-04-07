@@ -141,7 +141,7 @@ export type RecentlyViewData = {
 };
 
 // your trip
-export type YourTripDara = {
+export type YourTripData = {
     owner: string;
     tripId: number,
     tripName: string,
