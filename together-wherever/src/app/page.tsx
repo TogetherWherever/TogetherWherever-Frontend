@@ -102,17 +102,17 @@ export default function Home() {
                         />
                     </div>
                     <div className="font-bold lg:text-4xl text-2xl lg:mt-12 mt-8 mb-4">Recently viewed</div>
-                    <div className="grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-x-2 sm:gap-y-2 mt-2 justify-items-center">
+                    <div className="grid xl:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-x-2 sm:gap-y-2 mt-2 justify-items-center">
                         {recentlyViewData?.map((item: RecentlyViewData, index: number) => (
                             <div
                                 key={item.viewTripId}
                                 className={`pt-2 lg:pt-0 ${index % 3 === 0
                                     ? "justify-self-start"
                                     : index % 3 === 1
-                                        ? "2xl:justify-self-center justify-self-start"
+                                        ? "2xl:justify-self-center xl:justify-self-end justify-self-start"
                                         : "2xl:justify-self-end justify-self-start"
                                     }`}
-                            >
+                            >                                
                                 <TripCard
                                     tripId={item.viewTripId}
                                     owner={item.username}
