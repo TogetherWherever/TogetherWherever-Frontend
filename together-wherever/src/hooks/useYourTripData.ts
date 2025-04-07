@@ -3,11 +3,11 @@
 import { fetchGetYourTripsData } from "@/fetcher/getYourTripData";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { YourTripDara } from "@/utils/types";
+import { YourTripData } from "@/utils/types";
 import { usePathname, useRouter } from "next/navigation";
 
 export const useYourTripData = () => {
-    const [yoryTripData, setYourTripData] = useState<YourTripDara[] | null>(null);
+    const [yoryTripData, setYourTripData] = useState<YourTripData[] | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     const pathName = usePathname();
