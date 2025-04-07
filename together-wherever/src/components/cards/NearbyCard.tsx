@@ -16,7 +16,7 @@ export const NearbyCard = ({ place, width=400, height=300, onSelect }: NearbyCar
             width={width}
             height={height}
             onClick={() => onSelect(place.destID)}
-            className={"rounded-2xl w-[400px] h-[300px]"}
+            className={"rounded-2xl w-[400px] h-[200px]"}
         />
     );
 };
