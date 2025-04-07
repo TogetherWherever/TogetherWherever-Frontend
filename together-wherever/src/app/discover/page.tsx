@@ -138,7 +138,7 @@ export default function DiscoverPage() {
             </div>
 
             {/* Right Panel: Map View */}
-            <div className="md:w-2/5 md:h-dvh h-1/4 item-start" style={{ pointerEvents: loading ? "none" : "auto" }}>
+            <div className="md:w-2/5 md:h-dvh h-1/4 items-start" style={{ pointerEvents: loading ? "none" : "auto" }}>
                 <MapView lat={selectedPlace.lat} lng={selectedPlace.lng}
                     makers={[{ lat: selectedPlace.lat, lng: selectedPlace.lng }]} />
             </div>
