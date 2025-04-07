@@ -85,12 +85,12 @@ export default function YourTrips() {
                 </div>
             ) : (
                 <>
-                    <div className="px-[150px] pt-[50px]">
+                    <div className="lg:px-[150px] sm:px-[75px] px-[50px] pt-[50px]">
                         <div className="flex flex-col py-2">
-                            <div className="flex justify-between items-center">
-                                <div className="text-extrabold text-4xl mb-4"> Your Trips</div>
+                            <div className="flex flex-col sm:flex-row justify-between">
+                                <div className="font-bold text-asparagus-green text-4xl mb-4"> Your Trips</div>
                                 <BaseButton
-                                    className="bg-moonstone-blue"
+                                    className="bg-moonstone-blue !text-lg"
                                     color="earth-yellow"
                                     buttonTxt="New Trip"
                                     leftIcon={PlusIcon}
@@ -98,14 +98,11 @@ export default function YourTrips() {
                                     onClick={handleNavigateTripPlanningPage}
                                 />
                             </div>
-                            <div className="grid grid-cols-3 gap-y-4 gap-x-2 mt-2 justify-items-center">
+                            <div className="grid sm:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-x-2 mt-2 justify-items-center">
                                 {yoryTripData?.map((item: YourTripData, index: number) => (
                                     <div
                                         key={item.tripId}
-                                        className={`w-[400px] ${index % 3 === 0 ? "justify-self-start" :
-                                            index % 3 === 1 ? "justify-self-center" :
-                                                "justify-self-end"
-                                        }`}
+                                        className={`w-full pt-2 lg:pt-0 justify-self-start`}
                                     >
                                         <TripCard
                                             key={item.tripId} // ✅ React uses this for list rendering
