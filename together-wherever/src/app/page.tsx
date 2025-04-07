@@ -19,53 +19,60 @@ export default function Home() {
     if (loading) {
         return (
             <div className="fixed inset-0 flex items-center justify-center">
-                <ClipLoader size={50} color={"#60993E"} loading={loading} />
+                <ClipLoader size={50} color={"#60993E"} loading={loading}/>
             </div>
         );
     } else if (error) {
         <div className="fixed inset-0 flex items-center justify-center">
-            <ErrorReport />
+            <ErrorReport/>
         </div>
     }
 
     if (!token || recentlyViewData?.length === 0) {
         return (
-            <div className="flex flex-col justify-between px-12 pt-[50px] pb-6 gap-24">
+            <div className="flex flex-col justify-between px-12 pt-[50px] pb-6 lg:gap-24 gap-10">
                 <div className="flex flex-col gap-6">
-                    <label className="text-5xl font-bold text-asparagus-green">Plan Your Perfect Trip</label>
-                    <label className="text-2xl">
+                    <label className="lg:text-5xl text-3xl font-bold text-asparagus-green">Plan Your Perfect
+                        Trip</label>
+                    <label className="lg:text-2xl text-xl">
                         Whether traveling with friends or on your own, your next adventure starts here!
                     </label>
                 </div>
 
-                <div className="flex w-full mt-auto">
+                <div className="flex flex-col md:flex-row w-full mt-auto">
                     <div className="flex items-center flex-col gap-6 w-full pr-4">
-                        <MapPinIcon className="w-[100px] text-earth-yellow" />
-                        <BaseButton
-                            className="bg-asparagus-green"
-                            color="earth-yellow"
-                            buttonTxt="New Trip"
-                            leftIcon={PlusIcon}
-                            leftIconCustomization="w-[25px] h-[25px]"
-                            onClick={handleNavigateTripPlanningPage}
-                        />
-                        <label className="text-xl text-center px-24">
-                            Start by adding your travel companions and preferences to design the perfect trip for everyone.
+                        <div className="flex items-center flex-col gap-6">
+                            <MapPinIcon className="lg:w-[100px] w-[50px] text-earth-yellow"/>
+                            <BaseButton
+                                className="bg-asparagus-green !text-lg"
+                                color="earth-yellow"
+                                buttonTxt="New Trip"
+                                leftIcon={PlusIcon}
+                                leftIconCustomization="w-[25px] h-[25px]"
+                                onClick={handleNavigateTripPlanningPage}
+                            />
+                        </div>
+                        <label className="lg:text-xl text-lg text-center lg:px-24">
+                            Start by adding your travel companions and preferences to design the perfect trip for
+                            everyone.
                         </label>
                     </div>
 
                     <div className="flex justify-center items-center flex-col gap-6 w-full">
-                        <GlobeAsiaAustraliaIcon className="w-[100px] text-earth-yellow" />
-                        <BaseButton
-                            className="bg-asparagus-green"
-                            color="earth-yellow"
-                            buttonTxt="Explore Attractions"
-                            leftIcon={MagnifyingGlassIcon}
-                            leftIconCustomization="w-[25px] h-[25px]"
-                            onClick={handleNavigateToDiscoverPage}
-                        />
-                        <label className="text-xl text-center px-24">
-                            Browse and explore top places to visit in your destination—perfect for solo travelers or inspiration for group trips.
+                        <div className="flex items-center flex-col gap-6">
+                            <GlobeAsiaAustraliaIcon className="lg:w-[100px] w-[50px] text-earth-yellow"/>
+                            <BaseButton
+                                className="bg-asparagus-green !text-lg"
+                                color="earth-yellow"
+                                buttonTxt="Explore Attractions"
+                                leftIcon={MagnifyingGlassIcon}
+                                leftIconCustomization="w-[25px] h-[25px]"
+                                onClick={handleNavigateToDiscoverPage}
+                            />
+                        </div>
+                        <label className="lg:text-xl text-lg text-center lg:px-24">
+                            Browse and explore top places to visit in your destination—perfect for solo travelers or
+                            inspiration for group trips.
                         </label>
                     </div>
                 </div>
@@ -78,7 +85,8 @@ export default function Home() {
             <div className="flex flex-col py-2">
                 <div className="lg:flex flex-row justify-between items-center">
                     <div className="flex flex-col gap-6">
-                        <label className="lg:text-5xl text-3xl font-bold text-asparagus-green">Plan Your Perfect Trip</label>
+                        <label className="lg:text-5xl text-3xl font-bold text-asparagus-green">Plan Your Perfect
+                            Trip</label>
                         <label className="lg:text-2xl text-xl">
                             Whether traveling with friends or on your own, your next adventure starts here!
                         </label>
