@@ -10,7 +10,7 @@ import ErrorReport from "@/components/ErrorReport";
 
 export default function YourTrips() {
     const {
-        yoryTripData,
+        yourTripData,
         router,
         handleNavigateTripPlanningPage,
         loading,
@@ -35,7 +35,7 @@ export default function YourTrips() {
 
     return (
         <>
-            {yoryTripData?.length === 0 ? (
+            {yourTripData?.length === 0 ? (
                 <div className="flex flex-col justify-between px-12 pt-[50px] pb-6 lg:gap-24 gap-10">
                     <div className="flex flex-col gap-6">
                         <label className="lg:text-5xl text-3xl font-bold text-asparagus-green">Plan Your Perfect
@@ -99,7 +99,7 @@ export default function YourTrips() {
                                 />
                             </div>
                             <div className="grid sm:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-x-2 mt-2 justify-items-center">
-                                {yoryTripData?.map((item: YourTripData, index: number) => (
+                                {yourTripData?.map((item: YourTripData, index: number) => (
                                     <div
                                         key={item.tripId}
                                         className={`w-full pt-2 lg:pt-0 justify-self-start`}

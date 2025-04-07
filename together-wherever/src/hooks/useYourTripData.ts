@@ -7,7 +7,7 @@ import { YourTripData } from "@/utils/types";
 import { usePathname, useRouter } from "next/navigation";
 
 export const useYourTripData = () => {
-    const [yoryTripData, setYourTripData] = useState<YourTripData[] | null>(null);
+    const [yourTripData, setYourTripData] = useState<YourTripData[] | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     const pathName = usePathname();
@@ -47,7 +47,7 @@ export const useYourTripData = () => {
     }, []);
 
     return {
-        yoryTripData,
+        yourTripData,
         router,
         handleNavigateTripPlanningPage,
         loading,
