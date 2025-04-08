@@ -88,7 +88,7 @@ export default function YourTrips() {
                     <div className="flex justify-center px-[75px] px-[50px] pt-[50px]">
                         <div className="w-full max-w-[1620px]">
                             <div className="flex flex-col py-2">
-                                <div className="flex flex-col sm:flex-row justify-between">
+                                <div className="flex flex-col md:flex-row justify-between">
                                     <div className="font-bold text-asparagus-green text-4xl mb-4"> Your Trips</div>
                                     <BaseButton
                                         className="bg-moonstone-blue !text-lg"
