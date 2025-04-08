@@ -53,7 +53,7 @@ export default function DiscoverPage() {
                             <div>
                                 <h2 className="text-3xl font-bold text-asparagus-green">{placeDetails.destName}</h2>
                                 {placeDetails.destType && (
-                                    <span className="py-2 flex flex-row">
+                                    <span className="py-2 flex 2xl:flex-row flex-col">
                                         {placeDetails.destType.map((type, index) => (
                                             <p key={index} className="">{formatString(type)} |&nbsp;</p>
                                         ))}
@@ -72,7 +72,7 @@ export default function DiscoverPage() {
                                     className="pl-2">{placeDetails.rating || "No rating"}</p></span>
                                 <div className="flex flex-col">
                                     <p className="">Facilities</p>
-                                    <div className="flex flex-row">
+                                    <div className="flex lg:flex-row flex-col">
                                         {placeDetails.fac.goodForChildren && (
                                             <span className="flex flex-row"><CheckIcon className="w-4 h-4" /><p
                                                 className="px-1 text-sm">Good for Children</p></span>

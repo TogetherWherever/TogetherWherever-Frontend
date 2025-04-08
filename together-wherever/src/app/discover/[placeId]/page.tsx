@@ -52,11 +52,11 @@ export default function DiscoverDetail() {
                                 <h2 className="text-3xl font-bold text-asparagus-green">{placeDetails.destName}</h2>
                                 <div className="py-2 flex flex-row divide-x-2 divide-bistre">
                                     {placeDetails.destType && (
-                                        <>
+                                        <span className="py-2 flex 2xl:flex-row flex-col">
                                             {placeDetails.destType.map((type, index) => (
-                                                <p key={index} className="px-1">{formatString(type)}</p>
+                                                <p key={index} className="">{formatString(type)} |&nbsp;</p>
                                             ))}
-                                        </>
+                                        </span>
                                     )}
                                 </div>
                             </div>
@@ -72,7 +72,7 @@ export default function DiscoverDetail() {
                                     className="pl-2">{placeDetails.rating || "No rating"}</p></span>
                                 <div className="flex flex-col">
                                     <p className="">Facilities</p>
-                                    <div className="flex flex-row">
+                                    <div className="flex lg:flex-row flex-col">
                                         {placeDetails.fac.goodForChildren && (
                                             <span className="flex flex-row"><CheckIcon className="w-4 h-4" /><p
                                                 className="px-1 text-sm">Good for Children</p></span>
