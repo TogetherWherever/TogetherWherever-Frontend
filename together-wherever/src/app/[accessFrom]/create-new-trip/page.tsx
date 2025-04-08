@@ -12,6 +12,7 @@ import DateRangeInput from '@/components/DateRangeInput';
 import { BaseButton } from "@/components/buttons/BaseButton";
 import DialogBox from "@/components/Dialog";
 import ToastNotification from '@/components/ToastNotification';
+import ProfileIcon from "@/components/ProfileIcon";
 
 import { useCreateNewTrips } from "@/hooks/useCreateNewTrip";
 import { CREATE_NEW_TRIP_CONFIRMATION_DIALOG } from "@/constants/createNewTripDialog";
@@ -153,17 +154,12 @@ export default function CreateNewTrip() {
                                                                     <TrashIcon className="w-[25px] text-white" />
                                                                 </div>
 
-                                                                <Image
-                                                                    key={user.userId}
-                                                                    src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
-                                                                    alt={user.name}
-                                                                    width={50}
-                                                                    height={50}
-                                                                    objectFit="cover"
-                                                                    className="rounded-full aspect-square object-cover mr-2"
-                                                                />
-                                                                <div className="pr-2 flex w-full justify-center itmes-center absolute left-0 right-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                    {user.name}                                                             </div>
+                                                                <div className="w-[50px] h-[50px]">
+                                                                    <ProfileIcon username={user.name} width={50} height={50} />
+                                                                </div>
+                                                                <div className="flex w-full justify-center itmes-center absolute left-0 right-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                    {user.name}
+                                                                </div>
                                                             </div>
                                                         ))}
                                                     {(usersData ?? []).filter((user) => companionIds.includes(user.userId)).length > 2 && (
