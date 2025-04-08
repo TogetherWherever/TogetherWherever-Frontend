@@ -8,6 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        ultra: "2865px", // 👈 Custom breakpoint for ultrawide screens
+        threecol: "2105px",
+        twocol: "1416px"
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

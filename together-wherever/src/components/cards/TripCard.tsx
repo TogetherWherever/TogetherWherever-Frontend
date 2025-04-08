@@ -61,8 +61,8 @@ export const TripCard = ({ key, owner, image, startDate, endDate, destinationsNu
                     </h2>
                 </div>
             </div>
-            <div className="mt-3 flex justify-between items-center">
-                {owner && (<div className="flex flex-col group items-center" key={owner}>
+            <div className="mt-3 flex justify-start items-center">
+                {owner && (<div className="flex flex-col group items-center mr-2" key={owner}>
                     <div className="w-[40px] h-[40px]">
                         <ProfileIcon username={owner} width={40} height={40} />
                     </div>

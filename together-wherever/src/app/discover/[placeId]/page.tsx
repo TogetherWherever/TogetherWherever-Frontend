@@ -36,8 +36,8 @@ export default function DiscoverDetail() {
     }
 
     return (
-        <div className="flex flex-row h-screen">
-            <div className="w-3/5 p-5 flex flex-col space-y-4">
+        <div className="flex md:flex-row flex-col-reverse h-dvh">
+            <div className="md:w-3/5 md:h-full h-3/4 p-5 flex flex-col space-y-4 ">
                 <div className="flex w-full items-center gap-2">
                     <div className="w-full" style={{ pointerEvents: loading ? "none" : "auto" }}>
                         <PlaceSearchBox onSelect={getDiscoverPageDetails} />
@@ -52,11 +52,11 @@ export default function DiscoverDetail() {
                                 <h2 className="text-3xl font-bold text-asparagus-green">{placeDetails.destName}</h2>
                                 <div className="py-2 flex flex-row divide-x-2 divide-bistre">
                                     {placeDetails.destType && (
-                                        <>
+                                        <span className="py-2 flex 2xl:flex-row flex-col">
                                             {placeDetails.destType.map((type, index) => (
-                                                <p key={index} className="px-1">{formatString(type)}</p>
+                                                <p key={index} className="">{formatString(type)} |&nbsp;</p>
                                             ))}
-                                        </>
+                                        </span>
                                     )}
                                 </div>
                             </div>
@@ -72,7 +72,7 @@ export default function DiscoverDetail() {
                                     className="pl-2">{placeDetails.rating || "No rating"}</p></span>
                                 <div className="flex flex-col">
                                     <p className="">Facilities</p>
-                                    <div className="flex flex-row">
+                                    <div className="flex lg:flex-row flex-col">
                                         {placeDetails.fac.goodForChildren && (
                                             <span className="flex flex-row"><CheckIcon className="w-4 h-4" /><p
                                                 className="px-1 text-sm">Good for Children</p></span>
@@ -119,12 +119,32 @@ export default function DiscoverDetail() {
                                 )}
                             </div>
                         </div>
-                        <h2 className="text-2xl font-bold text-asparagus-green">Related Destinations</h2>
+                        <h2 className="text-2xl font-bold mt-5 mb-1 text-asparagus-green">Related Destinations</h2>
                         <div className="flex flex-col">
-                            <div className="grid grid-cols-2 gap-4">
-                                {placeDetails.nearbyPlaces.map((place) => (
+                            <div className="grid twocol:grid-cols-2 threecol:grid-cols-3 grid-cols-1 gap-4 ultra:grid-cols-4">
+                                {placeDetails.nearbyPlaces.map((place, index: number) => (
                                     place.photos && (
-                                        <NearbyCard key={place.destID} place={place} onSelect={getDiscoverPageDetails} />
+                                        <div
+                                            className={`justify-self-start
+                                                    ${index % 2 === 0 ? 'twocol:justify-self-start' : 'twocol:justify-self-end'}
+                                                    ${index % 3 === 0
+                                                    ? 'threecol:justify-self-start'
+                                                    : index % 3 === 1
+                                                        ? 'threecol:justify-self-center'
+                                                        : 'threecol:justify-self-end'
+                                                }
+                                                    ${index % 4 === 0
+                                                    ? 'ultra:justify-self-start'
+                                                    : index % 4 === 1
+                                                        ? 'ultra:justify-self-stretch'
+                                                        : index % 4 === 2
+                                                            ? 'ultra:justify-self-end'
+                                                            : 'ultra:justify-self-end'
+                                                }
+                                                `}
+                                        >
+                                            <NearbyCard key={place.destID} place={place} onSelect={getDiscoverPageDetails} />
+                                        </div>
                                     )
                                 ))}
                             </div>
@@ -138,7 +158,7 @@ export default function DiscoverDetail() {
             </div>
 
             {/* Right Panel: Map View */}
-            <div className="w-2/5 h-full" style={{ pointerEvents: loading ? "none" : "auto" }}>
+            <div className="md:w-2/5 md:h-dvh h-1/4 items-start" style={{ pointerEvents: loading ? "none" : "auto" }}>
                 <MapView lat={selectedPlace.lat} lng={selectedPlace.lng}
                     makers={[{ lat: selectedPlace.lat, lng: selectedPlace.lng }]} />
             </div>
