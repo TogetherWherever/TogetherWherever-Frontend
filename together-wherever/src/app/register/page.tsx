@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -8,6 +8,13 @@ import { preferences } from "@/utils/preferences";
 import { formatPreference } from "@/utils/format-preferences";
 import ToastNotification from '@/components/ToastNotification';
 import { toast } from "react-toastify";
+import DialogBox from "@/components/Dialog";
+import { ClipLoader } from "react-spinners";
+
+export const REGISTER_CONFIRMATION = {
+    topic: "Confirm Registration",
+    desc: "Please confirm that you want to register and create an account on our platform.",
+};
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -19,7 +26,26 @@ export default function RegisterPage() {
         preferences: [] as string[]
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const router = useRouter();
+
+    const [isPageLoaded, setIsPageLoaded] = useState(false);
+
+    // Simulate a delay to show loading spinner (useful for showing spinner during initial loading)
+    useEffect(() => {
+        setTimeout(() => setIsPageLoaded(true), 500); // You can adjust the timeout or remove this if not needed
+    }, []);
+
+    // If the page is still loading or data is being fetched, show the loader
+    if (!isPageLoaded) {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center">
+                <ClipLoader size={50} color={"#60993E"} loading={true} />
+            </div>
+        );
+    }
 
     const showError = () => {
         toast.error("Registration failed, please try again.");
@@ -47,7 +73,7 @@ export default function RegisterPage() {
     };
 
     // Handle form submission
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!isValidPassword(formData.password)) {
@@ -60,12 +86,20 @@ export default function RegisterPage() {
             return;
         }
 
+        setIsOpen(true); // Open confirmation dialog
+    };
+
+    const handleConfirmRegistration = async () => {
+        setIsOpen(false);
+        setIsSubmitting(true);
+
         try {
             await axios.post("https://togetherwherever-backend.onrender.com/api/auth/register", formData);
-            // alert("Registration successful! Please login.");
             router.push("/login");
         } catch (error: any) {
             showError();
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -100,11 +134,10 @@ export default function RegisterPage() {
                                 <label
                                     key={pref}
                                     onClick={() => handlePreferenceChange(pref)} // Handle toggle on click
-                                    className={`cursor-pointer items-center space-x-2 p-2 rounded-lg ${
-                                        formData.preferences.includes(pref)
-                                            ? "bg-asparagus-green text-white"
-                                            : "bg-gray-100 hover:bg-gray-200"
-                                    }`}
+                                    className={`cursor-pointer items-center space-x-2 p-2 rounded-lg ${formData.preferences.includes(pref)
+                                        ? "bg-asparagus-green text-white"
+                                        : "bg-gray-100 hover:bg-gray-200"
+                                        }`}
                                 >
                                     <span>{formatPreference(pref)}</span>
                                 </label>
@@ -113,14 +146,28 @@ export default function RegisterPage() {
                     </div>
 
                     {/* Submit Button */}
-                    <button type="submit" className="w-full bg-moonstone-blue text-white p-2 rounded-xl hover:bg-teal-blue transition">
-                        Register
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`w-full p-2 rounded-xl transition bg-moonstone-blue text-white 
+                        ${isSubmitting
+                                ? "cursor-not-allowed"
+                                : "hover:bg-teal-blue"}
+                        `}
+                    >
+                        {isSubmitting ? "Registering..." : "Register"}
                     </button>
                 </form>
                 <p className="text-center text-sm">
                     Already have an account? <Link href="/login" className="text-moonstone-blue hover:underline">Login here</Link>
                 </p>
             </div>
+            <DialogBox
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                onConfirm={handleConfirmRegistration}
+                dialogTxt={REGISTER_CONFIRMATION}
+            />
         </div>
     );
 }

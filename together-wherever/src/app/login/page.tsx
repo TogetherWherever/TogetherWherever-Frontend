@@ -5,6 +5,8 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 import { useLogin } from "@/hooks/useLogin";
 import ToastNotification from '@/components/ToastNotification';
+import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 
 export default function LoginPage() {
     const {
@@ -13,6 +15,22 @@ export default function LoginPage() {
         handleChange,
         handleSubmit
     } = useLogin();
+
+    const [isPageLoaded, setIsPageLoaded] = useState(false);
+
+    // Simulate a delay to show loading spinner (useful for showing spinner during initial loading)
+    useEffect(() => {
+        setTimeout(() => setIsPageLoaded(true), 500); // You can adjust the timeout or remove this if not needed
+    }, []);
+
+    // If the page is still loading or data is being fetched, show the loader
+    if (!isPageLoaded) {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center">
+                <ClipLoader size={50} color={"#60993E"} loading={true} />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center justify-center p-4">
