@@ -200,7 +200,7 @@ export default function CreateNewTrip() {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="mt-auto flex justify-end w-full ">
+                                    <div className="mt-auto flex justify-end w-full pb-4">
                                         <BaseButton
                                             buttonTxt="Start Planning"
                                             onClick={() => setIsOpen(true)}
