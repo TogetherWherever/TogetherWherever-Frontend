@@ -37,7 +37,7 @@ export default function DiscoverDetail() {
 
     return (
         <div className="flex md:flex-row flex-col-reverse h-dvh">
-            <div className="md:w-3/5 md:h-full h-3/4 p-5 flex flex-col space-y-4">
+            <div className="md:w-3/5 md:h-full h-3/4 p-5 flex flex-col space-y-4 ">
                 <div className="flex w-full items-center gap-2">
                     <div className="w-full" style={{ pointerEvents: loading ? "none" : "auto" }}>
                         <PlaceSearchBox onSelect={getDiscoverPageDetails} />
@@ -121,10 +121,30 @@ export default function DiscoverDetail() {
                         </div>
                         <h2 className="text-2xl font-bold mt-5 mb-1 text-asparagus-green">Related Destinations</h2>
                         <div className="flex flex-col">
-                            <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
-                                {placeDetails.nearbyPlaces.map((place) => (
+                            <div className="grid twocol:grid-cols-2 threecol:grid-cols-3 grid-cols-1 gap-4 ultra:grid-cols-4">
+                                {placeDetails.nearbyPlaces.map((place, index: number) => (
                                     place.photos && (
-                                        <NearbyCard key={place.destID} place={place} onSelect={getDiscoverPageDetails} />
+                                        <div
+                                            className={`justify-self-start
+                                                    ${index % 2 === 0 ? 'twocol:justify-self-start' : 'twocol:justify-self-end'}
+                                                    ${index % 3 === 0
+                                                    ? 'threecol:justify-self-start'
+                                                    : index % 3 === 1
+                                                        ? 'threecol:justify-self-center'
+                                                        : 'threecol:justify-self-end'
+                                                }
+                                                    ${index % 4 === 0
+                                                    ? 'ultra:justify-self-start'
+                                                    : index % 4 === 1
+                                                        ? 'ultra:justify-self-stretch'
+                                                        : index % 4 === 2
+                                                            ? 'ultra:justify-self-end'
+                                                            : 'ultra:justify-self-end'
+                                                }
+                                                `}
+                                        >
+                                            <NearbyCard key={place.destID} place={place} onSelect={getDiscoverPageDetails} />
+                                        </div>
                                     )
                                 ))}
                             </div>
