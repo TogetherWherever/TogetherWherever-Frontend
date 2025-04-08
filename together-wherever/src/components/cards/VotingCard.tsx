@@ -11,7 +11,7 @@ interface VotingCardPropsInterface {
   };
   value: number;
   onChange: (e: any) => void;
-};
+}
 
 const STEP = 1;
 const MIN = 1;
@@ -25,8 +25,12 @@ export default function VotingCard({ destinations, value, onChange }: VotingCard
   };
 
   return (
-    <div className='flex gap-4 h-[200px]'>
-      <div className="cursor-pointer relative h-[200px] w-[240px] rounded-xl overflow-hidden" onClick={handleNavigateToDiscoverPageDetail}>
+    <div className='flex gap-4 h-[200px] w-full'>
+      {/* Image Section */}
+      <div
+        className="cursor-pointer relative h-[200px] w-[240px] rounded-xl overflow-hidden"
+        onClick={handleNavigateToDiscoverPageDetail}
+      >
         <Image
           src={destinations.photo}
           alt="Destination Image"
@@ -34,13 +38,21 @@ export default function VotingCard({ destinations, value, onChange }: VotingCard
           className="object-cover"
         />
       </div>
-      <div className='flex flex-col h-[200px] w-[400px] rounded-lg bg-satin-linen p-8 justify-between'>
-        <div className='flex items-center '>
+
+      {/* Info + Slider Section */}
+      <div className='flex flex-col h-[200px] flex-1 max-w-full rounded-lg bg-satin-linen p-8 justify-between'>
+        {/* Destination Name */}
+        <div className='flex items-center'>
           <MapPinIcon width={40} height={40} fill="red" />
-          <div className='font-bold text-lg underline cursor-pointer' onClick={handleNavigateToDiscoverPageDetail}>
+          <div
+            className='font-bold text-lg underline cursor-pointer ml-2'
+            onClick={handleNavigateToDiscoverPageDetail}
+          >
             {destinations.destName}
           </div>
         </div>
+
+        {/* Slider */}
         <div className="mt-4 flex justify-center items-center w-full pl-4 gap-4">
           <Range
             values={[value]}
@@ -78,7 +90,6 @@ export default function VotingCard({ destinations, value, onChange }: VotingCard
           <span className="text-xl font-semibold text-moonstone-blue">{value.toFixed(0)}</span>
         </div>
       </div>
-      {/* Slider */}
     </div>
   );
-};
+}

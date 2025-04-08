@@ -65,9 +65,9 @@ export default function Planning() {
     return (
         <>
             {details && (
-                <div className="flex xl:flex-row flex-col-reverse h-dvh">
+                <div className="flex xl:flex-row flex-col-reverse h-dvh min-w-[715px] w-full">
                     {/* Left Panel: Search and Place Details */}
-                    <div className="w-full xl:w-2/3 flex flex-col gap-4 overflow-hidden">
+                    <div className="w-full xl:w-2/3 flex flex-col gap-4 h-dvh overflow-hidden ">
                         <div className="flex justify-between h-14 items-center pt-5 px-5">
                             <div className="flex w-full h-full items-center gap-2">
                                 <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.push("/")} />
