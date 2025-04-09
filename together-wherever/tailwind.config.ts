@@ -11,7 +11,8 @@ const config: Config = {
       screens: {
         ultra: "2865px", // 👈 Custom breakpoint for ultrawide screens
         threecol: "2105px",
-        twocol: "1416px"
+        twocol: "1416px",
+        votebreakpoint: "1365px"
       },
       colors: {
         background: "var(--background)",

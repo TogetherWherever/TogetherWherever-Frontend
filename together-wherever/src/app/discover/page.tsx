@@ -24,7 +24,7 @@ export default function DiscoverPage() {
 
     // Simulate a delay to show loading spinner (useful for showing spinner during initial loading)
     useEffect(() => {
-        setTimeout(() => setIsPageLoaded(true), 1000); // You can adjust the timeout or remove this if not needed
+        setTimeout(() => setIsPageLoaded(true), 500); // You can adjust the timeout or remove this if not needed
     }, []);
 
     // If the page is still loading or data is being fetched, show the loader

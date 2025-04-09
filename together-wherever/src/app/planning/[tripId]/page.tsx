@@ -65,9 +65,9 @@ export default function Planning() {
     return (
         <>
             {details && (
-                <div className="flex flex-row w-full h-full">
+                <div className="flex xl:flex-row flex-col-reverse h-dvh min-w-[800px] w-full">
                     {/* Left Panel: Search and Place Details */}
-                    <div className="w-2/3 flex flex-col gap-4">
+                    <div className="w-full xl:w-2/3 flex flex-col gap-4 h-dvh overflow-hidden ">
                         <div className="flex justify-between h-14 items-center pt-5 px-5">
                             <div className="flex w-full h-full items-center gap-2">
                                 <ArrowLeftIcon className="h-8 cursor-pointer" onClick={() => router.push("/")} />
@@ -123,7 +123,7 @@ export default function Planning() {
                                 />
                             </div>
                         </div>
-                        <div className="w-full mt-1 h-full">
+                        <div className="w-full mt-1 flex-1 overflow-y-auto">
                             <div className="h-[300px] w-full bg-cover bg-center relative flex flex-col justify-between py-6 pl-4">
                                 <div className="absolute top-0 left-0 w-full h-full">
                                     <Image
@@ -144,14 +144,14 @@ export default function Planning() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-full pt-12 py-6 pt-6 pr-12 px-4 flex flex-col gap-12">
+                            <div className="w-full pt-6 pb-6 pr-12 px-4 flex flex-col gap-12">
                                 {renderTripDayDropDown(tripDuration, details.startDate, details)}
                             </div>
                         </div>
                     </div>
                     <ToastNotification />
                     {/* Right Panel: Map View */}
-                    <div className="w-1/3">
+                    <div className="xl:w-2/5 xl:h-dvh h-2/5 items-start" style={{ pointerEvents: loading ? "none" : "auto" }}>
                         <MapView lat={details.lat} lng={details.lon} makers={marker} />
                     </div>
                 </div>

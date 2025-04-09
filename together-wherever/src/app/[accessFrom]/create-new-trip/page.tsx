@@ -12,6 +12,7 @@ import DateRangeInput from '@/components/DateRangeInput';
 import { BaseButton } from "@/components/buttons/BaseButton";
 import DialogBox from "@/components/Dialog";
 import ToastNotification from '@/components/ToastNotification';
+import ProfileIcon from "@/components/ProfileIcon";
 
 import { useCreateNewTrips } from "@/hooks/useCreateNewTrip";
 import { CREATE_NEW_TRIP_CONFIRMATION_DIALOG } from "@/constants/createNewTripDialog";
@@ -68,7 +69,7 @@ export default function CreateNewTrip() {
                     <div className="flex justify-center font-bold text-4xl">
                         Plan a Trip
                     </div>
-                    <div className="flex w-[1100px]">
+                    <div className="flex w-full max-w-[1100px]">
                         <form onSubmit={handleClickStartPlanning} className="flex flex-col w-full gap-2">
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="trip-name" className="text-xl font-bold text-black">
@@ -90,12 +91,12 @@ export default function CreateNewTrip() {
                                 </label>
                                 <PlaceSearchBox onSelect={getPlacesData} />
                             </div>
-                            <div className="flex w-full mt-4 gap-4">
-                                <div className="flex flex-col gap-2 w-1/2">
+                            <div className="flex xl:flex-row flex-col w-full mt-4 gap-4">
+                                <div className="flex flex-col gap-2 xl:w-1/2">
                                     <div className="flex items-center">
                                         <label htmlFor="trip-name" className="text-xl font-bold text-black">
                                             Dates <label className='text-red font-normal'> * </label>
-                                        </label> 
+                                        </label>
                                         <label className='text-base pl-4'>
                                             Please select a date range (Max: 5 days)
                                         </label>
@@ -105,11 +106,11 @@ export default function CreateNewTrip() {
                                         <DateRangeInput range={range} setRange={setRange} showMaxDateSpan={showMaxDateSpan} />
                                     </div>
                                 </div>
-                                <div className="flex flex-col w-1/2 h-full">
+                                <div className="flex flex-col xl:w-1/2 xl:h-full h-[calc(100vh-880px)]">
                                     <label htmlFor="trip-name" className="text-xl font-bold text-black">
                                         Companion
                                     </label>
-                                    <div className="flex flex-col flex-grow">
+                                    <div className="flex flex-col mb-6">
                                         <div className="mt-1">
                                             <label className="text-base">Invite companions</label>
                                             <Input
@@ -146,20 +147,19 @@ export default function CreateNewTrip() {
                                                                 onClick={() => handleRemoveCompanion(user.name)}
                                                                 className="cursor-pointer relative group"
                                                             >
-                                                                <div className="w-[50px] h-[50px] absolute flex items-center justify-center rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                    <TrashIcon className="w-[25px] text-white" />                                                             </div>
+                                                                <div
+                                                                    className="w-[50px] h-[50px] absolute flex items-center justify-center rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                                    onClick={() => handleRemoveCompanion(user.userId)}
+                                                                >
+                                                                    <TrashIcon className="w-[25px] text-white" />
+                                                                </div>
 
-                                                                <Image
-                                                                    key={user.userId}
-                                                                    src={"https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"}
-                                                                    alt={user.name}
-                                                                    width={50}
-                                                                    height={50}
-                                                                    objectFit="cover"
-                                                                    className="rounded-full aspect-square object-cover mr-2"
-                                                                />
-                                                                <div className="pr-2 flex w-full justify-center itmes-center absolute left-0 right-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                    {user.name}                                                             </div>
+                                                                <div className="w-[50px] h-[50px]">
+                                                                    <ProfileIcon username={user.name} width={50} height={50} />
+                                                                </div>
+                                                                <div className="flex w-full justify-center itmes-center absolute left-0 right-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                    {user.name}
+                                                                </div>
                                                             </div>
                                                         ))}
                                                     {(usersData ?? []).filter((user) => companionIds.includes(user.userId)).length > 2 && (
@@ -196,7 +196,7 @@ export default function CreateNewTrip() {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="mt-auto flex justify-center w-full">
+                                    <div className="mt-auto flex justify-end w-full pb-4">
                                         <BaseButton
                                             buttonTxt="Start Planning"
                                             onClick={() => setIsOpen(true)}
